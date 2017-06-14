@@ -1,0 +1,26 @@
+server:
+  id: $API_ID
+  box: $API_BOX
+  datacenter: $API_DATACENTER
+  role: $API_ROLE
+api:
+  http:
+    base-url: $API_HTTP_URL
+    threads: 10
+    connect-timeout: 20000
+    read-timeout: 20000
+    retries: 10
+queue:
+  addresses:
+  - $API_AMQP_URL
+  username: $API_AMQP_USERNAME
+  password: $API_AMQP_PASSWORD
+  virtual-host: /
+  connection-timeout: 0
+  network-recovery-interval: 5000
+  threads: 0
+logging:
+  root:
+    level: $API_LOGGER
+  tc-oc-api-bukkit-BukkitApi:
+    level: $API_LOGGER

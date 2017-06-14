@@ -1,0 +1,13 @@
+nicks:
+  enabled: $NICKS
+stats:
+  join-buffer: 1d
+reports:
+  enabled: true
+  cooldown: 5s
+  families: []
+  cross-server: $CROSS_SERVER
+channels:
+  admin:
+    enabled: true
+    cross-server: $CROSS_SERVER
