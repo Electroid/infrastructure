@@ -1,0 +1,19 @@
+FROM ubuntu:14.04
+
+# Install more build tools
+RUN apt-get update && \
+  apt-get install -y \
+  build-essential \
+  tcl8.5 \
+  wget
+
+# Install and make Redis server 
+RUN wget http://download.redis.io/releases/redis-stable.tar.gz
+RUN tar xzf redis-stable.tar.gz
+WORKDIR redis-stable
+RUN make
+RUN make install
+
+EXPOSE 6379
+CMD redis-cli CONFIG SET bind 0.0.0.0
+ENTRYPOINT exec redis-server --protected-mode no

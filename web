@@ -1,0 +1,24 @@
+FROM ruby:2.1.10
+
+# Ensure bundle is installed
+RUN gem install bundle
+
+RUN apt-get update && apt-get install -y \
+  software-properties-common \
+  python-software-properties \
+  apt-transport-https
+
+# Setup git configuration (does not need to be changed)
+RUN git config --global user.email "example@email.com"
+RUN git config --global user.name "example"
+
+# Clone the web repository using git
+RUN git clone -b master https://github.com/Electroid/OCN.git web
+
+# Setup the web repo with scripts
+WORKDIR web
+RUN bundle install
+
+# Load ocn data repository (needs to be in this directory)
+RUN mkdir -p /minecraft/repo
+RUN git clone -b master https://github.com/OvercastNetwork/OCN-Data.git /minecraft/repo/data

@@ -1,0 +1,25 @@
+FROM blacklabelops/jobber:latest
+
+RUN apk add --update git
+
+RUN git config --global user.email "example@email.com" && \
+    git config --global user.name "example"
+
+ENV CRON_DIR=cron
+ENV CRON_CMD="echo 'Running cron in $CRON_DIR'"
+ENV CRON_TIME=30
+
+#RUN "export JOB_NAME1=cron" >> ~/.bashrc
+#RUN "export JOB_COMMAND1='bash -c "cd $CRON_DIR; $CRON_CMD"'" >> ~/.bashrc
+#RUN "export JOB_TIME1=$CRON_TIME" >> ~/.bashrc
+#RUN source ~/.bashrc
+
+ONBUILD CMD jobberd
+
+#ONBUILD CMD sudo mkdir -p $CRON_DIR && \
+#            sudo "export JOB_NAME1=cron" >> ~/.bashrc && \
+#            sudo "export JOB_COMMAND1='bash -c "cd $CRON_DIR; $CRON_CMD"'" >> ~/.bashrc && \
+#            sudo "export JOB_TIME1=$CRON_TIME" >> ~/.bashrc && \
+#            sudo echo "Hi" && \
+#            sudo source ~/.bashrc && \
+#            sudo jobberd
