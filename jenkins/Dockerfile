@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y \
   patch \
   rake \
   software-properties-common \
-  python-software-properties \
   apt-transport-https \
   ca-certificates
 
