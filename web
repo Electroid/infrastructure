@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y \
   apt-transport-https
 
 # Setup git configuration (does not need to be changed)
-RUN git config --global user.email "example@email.com"
-RUN git config --global user.name "example"
+RUN git config --global user.email "web@docker.com"
+RUN git config --global user.name "web"
 
 # Clone the web repository using git
 RUN git clone -b master https://github.com/Electroid/OCN.git web
