@@ -13,12 +13,12 @@ RUN git config --global user.email "web@docker.com"
 RUN git config --global user.name "web"
 
 # Clone the web repository using git
-RUN git clone -b master https://github.com/Electroid/OCN.git web
+RUN git clone -b master https://github.com/StratusNetwork/OCN.git web
 
 # Setup the web repo with scripts
 WORKDIR web
 RUN bundle install
 
 # Load ocn data repository (needs to be in this directory)
-RUN mkdir -p /minecraft/repo
-RUN git clone -b master https://github.com/OvercastNetwork/OCN-Data.git /minecraft/repo/data
+RUN mkdir -p /minecraft/repo/data
+VOLUME /minecraft/repo/data
