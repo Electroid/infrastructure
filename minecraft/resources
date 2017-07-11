@@ -1,0 +1,29 @@
+FROM alpine
+
+# Install git packages
+RUN apk update && apk upgrade && apk add --no-cache bash git openssh
+
+# Setup git identity
+ARG GIT_EMAIL=resources@docker.com
+RUN git config --global user.email $GIT_EMAIL
+ARG GIT_NAME=resources
+RUN git config --global user.name $GIT_NAME
+
+# Clone git repository
+ARG GIT_URL
+ARG GIT_BRANCH=master
+RUN git clone -b $GIT_BRANCH $GIT_URL data
+VOLUME data
+WORKDIR data 
+
+# Create and run cron script
+ENV GIT_CMD=""
+ENV GIT_TIME=15
+CMD echo -e 'while true; do \n\
+  if ! git diff --quiet remotes/origin/HEAD; then \n\
+    git reset --hard origin/master && git pull && $GIT_CMD \n\
+  fi \n\
+  sleep $GIT_TIME \n\
+  done' >> pull.sh && \
+  chmod +x pull.sh && \
+  ./pull.sh
