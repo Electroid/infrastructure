@@ -14,7 +14,9 @@ VOLUME ["/data/db"]
 WORKDIR /data
 
 # Define default command.
-CMD ["mongod", "--bind_ip", "0.0.0.0", "--smallfiles"]
+ENV MONGO_PATH=/data/db
+ENV MONGO_STORAGE_ENGINE=mmapv1
+CMD ["mongod", "--bind_ip", "0.0.0.0", "--smallfiles", "--dbpath", "$MONGO_PATH", "--storageEngine", "$MONGO_STORAGE_ENGINE"]
 
 EXPOSE 27017
 EXPOSE 28017
