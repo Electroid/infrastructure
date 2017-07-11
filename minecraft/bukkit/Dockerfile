@@ -21,5 +21,20 @@ RUN mv /minecraft/build/ProtocolSupport/target/ProtocolSupport.jar protocol.jar 
   mv /minecraft/build/ProjectAres/Commons/bukkit/target/commons-bukkit-1.12-SNAPSHOT.jar commons.jar && \
   mv /minecraft/build/ProjectAres/PGM/target/PGM-1.12-SNAPSHOT.jar pgm.jar
 
+
 # Start the minecraft server
-echo "Start Bukkit!"
+WORKDIR ..
+RUN chmod +x sportbukkit.jar
+ENV SERVER_STAGE=DEVELOPMENT
+CMD java -Xmx1G \
+     -XX:+UseLargePages \
+     -XX:+AggressiveOpts \
+     -XX:+UseFastAccessorMethods \
+     -XX:+OptimizeStringConcat \
+     -XX:+UseBiasedLocking -Xincgc \
+     -XX:MaxGCPauseMillis=50 \
+     -XX:SoftRefLRUPolicyMSPerMB=10000 \
+     -XX:+CMSParallelRemarkEnabled \
+     -XX:ParallelGCThreads=5 \
+     -Djava.net.preferIPv4Stack=true \
+     -jar sportbukkit.jar nogui -stage $SERVER_STAGE
