@@ -1,0 +1,37 @@
+custom_server_name: BungeeCord
+log_commands: false
+listeners:
+- query_port: 25577
+  motd: |-
+    BungeeCord Server
+    (on Docker)
+  priorities:
+  - default
+  bind_local_address: true
+  tab_list: SERVER
+  query_enabled: false
+  host: 0.0.0.0:25565
+  forced_hosts: {}
+  max_players: 1
+  tab_size: 60
+  ping_passthrough: true
+  force_default_server: true
+  proxy_protocol: false
+name: Connect with
+online_mode: true
+connection_throttle: 1000
+ip_forward: true
+always_handle_packets: false
+network_compression_threshold: 256
+stats: 382055f7-b196-48db-b636-a97aea12b388
+require_all_plugins: true
+disabled_commands:
+- disabledcommandhere
+prevent_proxy_connections: false
+timeout: 30000
+servers:
+  default:
+    motd: Lobby
+    address: vps02.stratus.plom.me:25581
+    restricted: false
+player_limit: -1
