@@ -1,0 +1,26 @@
+server:
+  id: $SERVER_ID
+  role: $SERVER_ROLE
+  box: $HOSTNAME
+  datacenter: US
+api:
+  http:
+    base-url: api:3010
+    threads: 10
+    connect-timeout: 20000
+    read-timeout: 20000
+    retries: 10
+queue:
+  addresses:
+  - rabbit
+  username: admin
+  password: admin
+  virtual-host: /
+  connection-timeout: 0
+  network-recovery-interval: 5000
+  threads: 0
+logging:
+  root:
+    level: INFO
+  tc-oc-api-bukkit-BukkitApi:
+    level: INFO

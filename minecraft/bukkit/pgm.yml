@@ -1,0 +1,133 @@
+# 
+# PvP Game Manager Sample Configuration
+enabled: true
+announce:
+  enabled: false
+environment:
+  ranked: false
+rotation:
+  dynamic: true
+  default-name: mini
+  initial-wait: 20000
+  providers:
+    file:
+      micro:
+        path: /minecraft/rotations/Beta/micro
+        count: 0
+        priority: 1
+      mini:
+        path: /minecraft/rotations/Beta/mini
+        count: 30
+        priority: 2
+      medium:
+        path: /minecraft/rotations/Beta/medium
+        count: 40
+        priority: 3
+      mega:
+        path: /minecraft/rotations/Beta/mega
+        count: 60
+        priority: 4
+poll:
+  maps: {}
+map:
+  sources:
+    public:
+      priority: 100
+      path: /minecraft/maps
+      url: https://maps.oc.tc/
+      depth: 20
+  include-path:
+  - /minecraft/maps/Include
+  autoreload:
+    enabled: true
+    reload-when-error: false
+  global-includes:
+  - /minecraft/maps/Include/global.xml
+map-ratings:
+  enabled: false
+autorestart:
+  enabled: true
+  time: 30
+  match-limit: 20
+  memory-limit: -1
+start:
+  auto: true
+  countdown: 30s
+  huddle: 0s
+cycle:
+  countdown: 15s
+  running-match: false
+  match-empty:
+    enabled: false
+    countdown: 5s
+  match-end:
+    enabled: true
+    countdown: 30s
+join:
+  priority-kick: true
+  mid-match: true
+  commit-players: false
+  capacity:
+    enabled: true
+    overfill: true
+    overfill-ratio: 1.25
+  requirements:
+    minimum-kills: 0
+minimum-players: 1
+teams:
+  minimum-players: 1
+  autobalance: true
+  allow-choose: true
+  allow-switch: true
+  even: false
+broadcast:
+  title: false
+  periodic: false
+  frequency: 600
+fireworks:
+  post-match:
+    enabled: false
+    number: 5
+    delay: 40
+    frequency: 40
+    iterations: 15
+    power: 2
+  goals:
+    enabled: true
+antigrief:
+  diffuse:
+    enabled: true
+  craft-protect:
+    enabled: true
+  vechicle-protect:
+    enabled: true
+  anvil-protect:
+    enabled: true
+arrowremoval:
+  enabled: true
+  delay: 10
+fishing:
+  disable-treasure: false
+scoreboard:
+  show-proximity: true
+  precise-progress: true
+wool:
+  auto-refill: true
+stats:
+  deaths: true
+  engagements:
+    enabled: false
+    max-continuous-absence: oo
+    max-cumulative-absence: oo
+    min-participation-percent: 0
+mutations:
+  enabled: true
+license:
+  control-access: true
+  auto-grant: true
+  auto-revoke: true
+freeze:
+  enabled: true
+  remove-tnt:
+    victim-radius: 10
+    sender-radius: 10

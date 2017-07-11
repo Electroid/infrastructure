@@ -1,0 +1,2 @@
+FROM stratusnetwork/minecraft:shared
+

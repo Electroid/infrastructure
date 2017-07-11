@@ -1,0 +1,19 @@
+restart:
+  interval: 1m
+  uptime: 12h
+  defer-timeout: 1h
+  #memory: 2560
+nicks:
+  enabled: true
+join-messages:
+  enabled: true
+  cross-network: true
+reports:
+  enabled: true
+  cooldown: 5s
+  families: []
+  cross-server: true
+channels:
+  admin:
+    enabled: true
+    cross-server: true
