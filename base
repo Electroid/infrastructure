@@ -12,12 +12,8 @@ ARG GIT_BRANCH_PRODUCTION=master
 ARG GIT_BRANCH_TEST=staging
 ARG GIT_CACHE=false
 ARG GIT_REMOTE=true
-
-# Install and setup git
 ARG GIT_EMAIL=$GIT_USER@github.com
-RUN git config --global user.email $GIT_EMAIL
 ARG GIT_NAME=$GIT_USER
-RUN git config --global user.name $GIT_NAME
 
 # Convert git build args to environment variables
 # This allows child Dockerfiles to access them
@@ -28,6 +24,10 @@ ENV GIT_CACHE=$GIT_CACHE
 ENV GIT_REMOTE=$GIT_REMOTE
 ENV GIT_EMAIL=$GIT_EMAIL
 ENV GIT_NAME=$GIT_NAME
+
+# Install and setup git
+RUN git config --global user.email $GIT_EMAIL
+RUN git config --global user.name $GIT_NAME
 
 # Create build directory
 VOLUME build

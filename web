@@ -1,24 +1,15 @@
-FROM ruby:2.1.10
+FROM stratusnetwork/resources:base
 
 # Ensure bundle is installed
 RUN gem install bundle
 
-RUN apt-get update && apt-get install -y \
-  software-properties-common \
-  python-software-properties \
-  apt-transport-https
-
-# Setup git configuration (does not need to be changed)
-RUN git config --global user.email "web@docker.com"
-RUN git config --global user.name "web"
-
 # Clone the web repository using git
-RUN git clone -b master https://github.com/StratusNetwork/OCN.git web
-
-# Setup the web repo with scripts
-WORKDIR web
-RUN bundle install
+RUN ./clone.sh OCN "bundle install"
 
 # Load ocn data repository (needs to be in this directory)
-RUN mkdir -p /minecraft/repo/data
 VOLUME /minecraft/repo/data
+
+# Expose the default web ports
+EXPOSE 3000
+EXPOSE 3005
+EXPOSE 3010
