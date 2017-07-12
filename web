@@ -5,6 +5,7 @@ RUN gem install bundle
 
 # Clone the web repository using git
 RUN ./clone.sh OCN "bundle install"
+WORKDIR OCN
 
 # Load ocn data repository (needs to be in this directory)
 VOLUME /minecraft/repo/data
