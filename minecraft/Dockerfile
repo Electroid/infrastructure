@@ -1,13 +1,9 @@
-FROM ruby:2.1.10
+FROM stratusnetwork/resources:base
 
 # Install software tools
 RUN apt-get update && \
   apt-get install -y \
-  software-properties-common \
-  python-software-properties \
-  apt-transport-https \
   ca-certificates \
-  screen \
   python-pip \
   git \
   maven \
@@ -35,24 +31,22 @@ ENV PATH=$PATH:/opt/gradle/gradle-4.0.1/bin
 # Install mcstatus for healthchecks
 RUN pip install mcstatus
 
-# Create the minecraft folder
-RUN mkdir minecraft
-WORKDIR minecraft
-
 # Compile plugins for Bukkit and Bungee
-WORKDIR build
-RUN git config --global user.email "minecraft@docker.com"
-RUN git config --global user.name "minecraft"
-RUN git clone -b master https://github.com/StratusNetwork/test-util.git && cd test-util && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/minecraft-api.git && cd minecraft-api && mvn clean install
-RUN git clone -b rebase-1.12 https://github.com/StratusNetwork/SportBukkit.git && cd SportBukkit && rake compile
-RUN git clone -b master https://github.com/StratusNetwork/BungeeCord.git && cd BungeeCord && mvn clean install
-RUN git clone -b sportbukkit https://github.com/StratusNetwork/ProtocolSupport.git && cd ProtocolSupport && gradle build
-RUN git clone -b master https://github.com/StratusNetwork/raven-minecraft.git && cd raven-minecraft && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/sk89q-command-framework.git && cd sk89q-command-framework && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/Settings.git && cd Settings && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/BukkitSettings.git && cd BukkitSettings && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/Channels.git && cd Channels && mvn clean install
-#RUN git clone -b master https://github.com/StratusNetwork/commandbook.git && cd commandbook && mvn clean install
-RUN git clone -b master https://github.com/StratusNetwork/ProjectAres.git && cd ProjectAres && mvn clean install
+RUN ./clone.sh test-util               "mvn clean install"
+RUN ./clone.sh minecraft-api           "mvn clean install"
+RUN ./clone.sh SportBukkit             "rake compile"      staging
+RUN ./clone.sh BungeeCord              "mvn clean install"
+RUN ./clone.sh ProtocolSupport         "gradle build"      staging
+RUN ./clone.sh raven-minecraft         "mvn clean install"
+RUN ./clone.sh sk89q-command-framework "mvn clean install"
+RUN ./clone.sh Settings                "mvn clean install"
+RUN ./clone.sh BukkitSettings          "mvn clean install"
+RUN ./clone.sh Channels                "mvn clean install"
+RUN ./clone.sh ProjectAres             "mvn clean install"
+
+# Start healthcheck with a delay for startup time
+HEALTHCHECK --start-period=2m --interval=15s --timeout=10s CMD mcstatus localhost ping
+
+# Move out of build directory and create minecraft directory
 WORKDIR ..
+WORKDIR minecraft

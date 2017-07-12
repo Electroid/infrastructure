@@ -3,16 +3,16 @@ FROM stratusnetwork/minecraft:shared
 # Merge Bungee configuration to shared
 COPY . .
 
-# Move BungeeCord jar to server folder
-RUN mv /minecraft/build/BungeeCord/bootstrap/target/BungeeCord.jar bungeecord.jar
+# Copy BungeeCord jar to server folder
+RUN cp /minecraft/build/BungeeCord/bootstrap/target/BungeeCord.jar bungeecord.jar
 
 # Move to plugins folder
 WORKDIR plugins
 
-# Move plugin jars to folder (maybe change to use find)
-RUN mv /minecraft/build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
-  mv /minecraft/build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
-  mv /minecraft/build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
+# Copy plugin jars to folder (maybe change to use find)
+RUN cp /minecraft/build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
+  cp /minecraft/build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
+  cp /minecraft/build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
 
 # Start the bungee server
 WORKDIR ..
