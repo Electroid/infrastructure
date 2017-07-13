@@ -9,18 +9,13 @@ RUN git config --global user.email $GIT_EMAIL
 ARG GIT_NAME=resources
 RUN git config --global user.name $GIT_NAME
 
-# Create and run cron script
+# Setup git environment variables
 ENV GIT_URL=""
+ENV GIT_CMD=""
 ENV GIT_BRANCH=master
-ENV GIT_CMD="echo 'Done!'"
 ENV GIT_TIME=15
-CMD echo -e 'git clone -b $GIT_BRANCH $GIT_URL data \n\
-  cd data \n\
-  while true; do \n\
-    if ! git diff --quiet remotes/origin/HEAD; then \n\
-      git reset --hard origin/master && git pull && $GIT_CMD \n\
-    fi \n\
-    sleep $GIT_TIME \n\
-  done' >> pull.sh && \
-  chmod +x pull.sh && \
-  ./pull.sh
+
+# Copy and setup the git cron script
+COPY script/git.sh ./git.sh
+RUN chmod +x git.sh
+CMD ./git.sh
