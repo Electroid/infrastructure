@@ -1,7 +1,7 @@
 FROM alpine
 
 # Install git packages
-RUN apk update && apk upgrade && apk add bash git openssh
+RUN apk update && apk upgrade && apk add bash git openssh curl
 
 # Setup git identity
 ARG GIT_EMAIL=resources@docker.com
