@@ -30,8 +30,10 @@ RUN git config --global user.email $GIT_EMAIL
 RUN git config --global user.name $GIT_NAME
 
 # Create build directory
-VOLUME build
 WORKDIR build
+
+# Copy local development builds (only used when GIT_REMOTE=false)
+COPY build ./remote
 
 # Copy git cloning script
 COPY script/clone.sh ./clone.sh

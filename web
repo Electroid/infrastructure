@@ -3,13 +3,23 @@ FROM stratusnetwork/resources:base
 # Ensure bundle is installed
 RUN gem install bundle
 
-# Clone the web repository using git
-RUN ./clone.sh OCN "bundle install"
+# Eagerly install old Gemfile to speed up build time
+ADD https://raw.githubusercontent.com/StratusNetwork/OCN/a99a718a61fea043610a1ab8db5911e5b0f207d6/Gemfile Gemfile
+ADD https://raw.githubusercontent.com/StratusNetwork/OCN/a99a718a61fea043610a1ab8db5911e5b0f207d6/Gemfile.lock Gemfile.lock
+RUN bundle package --no-prune --all
+
+# Invalidate cache and get the latest web repo
+RUN ./clone.sh OCN "mv ../vendor vendor"
 WORKDIR OCN
+RUN bundle install
+
+# Website role and port variables
+ENV WEB_ROLE=octc
+ENV WEB_PORT=3000
+
+# Default to running rails with role on build
+CMD rails $WEB_ROLE -b 0.0.0.0 
+ONBUILD EXPOSE $WEB_PORT
 
 # Load ocn data repository (needs to be in this directory)
 VOLUME /minecraft/repo/data
-
-# Expose the default web ports
-ENV WEB_PORT=3000
-ONBUILD EXPOSE $WEB_PORT

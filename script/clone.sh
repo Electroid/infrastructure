@@ -1,5 +1,5 @@
 #! /bin/bash
-# Usage: ./clone.sh {GitRepoName} {BuildCommand} {Test:false}
+# Usage: ./clone.sh {GitRepoName} {BuildCommand} {TestBranch:false}
 
 # Figure out which branch to use
 if [ $# -lt 3 ]; then
@@ -17,9 +17,8 @@ if [ $GIT_REMOTE ]; then
   # Clone the remote repository
   git clone -b $GIT_BRANCH -- https://github.com/$GIT_USER/$1.git $1
 else
-  # Make sure the code folder exists
-  # (although the host should have already put their code here)
-  mkdir -p $1
+  # Copy build from remote directory
+  cp -r remote/$1 $1
 fi
 
 # Execute the build command
