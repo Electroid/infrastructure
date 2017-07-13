@@ -33,7 +33,7 @@ RUN git config --global user.name $GIT_NAME
 WORKDIR build
 
 # Copy local development builds (only used when GIT_REMOTE=false)
-COPY build ./remote
+COPY build ./local
 
 # Copy git cloning script
 COPY script/clone.sh ./clone.sh

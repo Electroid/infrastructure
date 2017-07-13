@@ -9,16 +9,15 @@ else
 fi
 
 # Fetch git repo either locally or remotely
-if [ $GIT_REMOTE ]; then
-  if [ ! $GIT_CACHE ]; then
+if [ -d "local/$1" -a "$GIT_REMOTE" != "true" ]; then
+  rsync -aq --exclude='.git' local/$1 .
+else
+  if [ "$GIT_CACHE" != "true" ]; then
     # Download the version information from github to invalidate the Docker cache
     rm -rf $1 && curl -L "https://api.github.com/repos/$GIT_USER/$1/git/refs/heads/$GIT_BRANCH" -o $1.json && rm $1.json
   fi
   # Clone the remote repository
   git clone -b $GIT_BRANCH -- https://github.com/$GIT_USER/$1.git $1
-else
-  # Copy build from remote directory
-  cp -r remote/$1 $1
 fi
 
 # Execute the build command
