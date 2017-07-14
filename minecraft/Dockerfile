@@ -34,9 +34,9 @@ RUN pip install mcstatus
 # Compile plugins for Bukkit and Bungee
 RUN ./clone.sh test-util               "mvn clean install"
 RUN ./clone.sh minecraft-api           "mvn clean install"
-RUN ./clone.sh SportBukkit             "rake compile"      staging
+RUN ./clone.sh SportBukkit             "rake compile"      rebase-1.12
 RUN ./clone.sh BungeeCord              "mvn clean install"
-RUN ./clone.sh ProtocolSupport         "gradle build"      staging
+RUN ./clone.sh ProtocolSupport         "gradle build"      sportbukkit
 RUN ./clone.sh raven-minecraft         "mvn clean install"
 RUN ./clone.sh sk89q-command-framework "mvn clean install"
 RUN ./clone.sh Settings                "mvn clean install"
@@ -45,7 +45,7 @@ RUN ./clone.sh Channels                "mvn clean install"
 RUN ./clone.sh ProjectAres             "mvn clean install"
 
 # Start healthcheck with a delay for startup time
-HEALTHCHECK --start-period=2m --interval=15s --timeout=10s CMD mcstatus localhost ping
+HEALTHCHECK --start-period=90s --interval=15s --timeout=10s CMD mcstatus localhost:$SERVER_PORT ping
 
 # Move out of build directory and create minecraft directory
 WORKDIR ..

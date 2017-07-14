@@ -4,15 +4,15 @@ FROM stratusnetwork/minecraft:shared
 COPY . .
 
 # Copy BungeeCord jar to server folder
-RUN cp /minecraft/build/BungeeCord/bootstrap/target/BungeeCord.jar server.jar && chmod +x server.jar
+RUN cp /build/BungeeCord/bootstrap/target/BungeeCord.jar server.jar && chmod +x server.jar
 
 # Move to plugins folder
 WORKDIR plugins
 
 # Copy plugin jars to folder (maybe change to use find)
-RUN cp /minecraft/build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
-  cp /minecraft/build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
-  cp /minecraft/build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
+RUN cp /build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
+  cp /build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
+  cp /build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
 WORKDIR ..
 
 # Bungee specific variables

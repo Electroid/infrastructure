@@ -5,7 +5,7 @@
 if [ $# -lt 3 ]; then
   export GIT_BRANCH=$GIT_BRANCH_PRODUCTION
 else
-  export GIT_BRANCH=$GIT_BRANCH_TEST
+  export GIT_BRANCH=$3
 fi
 
 # Fetch git repo either locally or remotely

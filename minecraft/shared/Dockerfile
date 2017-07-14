@@ -14,4 +14,6 @@ RUN chmod +x start.sh
 
 # Shared variables
 ENV SERVER_STAGE=DEVELOPMENT
-ENV SERVER_ID=null # Must be provided
+ENV SERVER_IP=play.stratus.network
+ENV SERVER_PORT=25565
+ENV SERVER_ID=null

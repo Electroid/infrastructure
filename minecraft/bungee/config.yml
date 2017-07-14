@@ -1,7 +1,7 @@
 custom_server_name: BungeeCord
 log_commands: false
 listeners:
-- query_port: 25577
+- query_port: $SERVER_PORT
   motd: |-
     BungeeCord Server
     (on Docker)
@@ -10,7 +10,7 @@ listeners:
   bind_local_address: true
   tab_list: SERVER
   query_enabled: false
-  host: 0.0.0.0:25565
+  host: 0.0.0.0:$SERVER_PORT
   forced_hosts: {}
   max_players: 1
   tab_size: 60

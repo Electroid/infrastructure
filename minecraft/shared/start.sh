@@ -1,5 +1,7 @@
 #! /bin/bash
 
 cd /minecraft/server
-find . -name '*.yml' -or -name '*.json' -or -name '*.properties' -exec envsubst < {} > {} \;
+for query in '*.yml' '*.json' '*.properties'; do
+	find . -name $query -exec sh -c "envsubst < {} > env_temp && rm {} && mv env_temp {}" \;
+done
 java -jar server.jar nogui -stage $SERVER_STAGE

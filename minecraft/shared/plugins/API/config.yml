@@ -5,14 +5,14 @@ server:
   datacenter: US
 api:
   http:
-    base-url: api:3010
+    base-url: http://$SERVER_IP:3010/
     threads: 10
     connect-timeout: 20000
     read-timeout: 20000
     retries: 10
 queue:
   addresses:
-  - rabbit
+  - $SERVER_IP
   username: admin
   password: admin
   virtual-host: /
