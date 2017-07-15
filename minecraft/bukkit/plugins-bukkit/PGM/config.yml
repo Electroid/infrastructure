@@ -109,7 +109,7 @@ arrowremoval:
 fishing:
   disable-treasure: false
 scoreboard:
-  show-proximity: true
+  show-proximity: false
   precise-progress: true
 wool:
   auto-refill: true
