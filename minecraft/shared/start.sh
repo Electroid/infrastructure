@@ -23,4 +23,4 @@ else
 fi
 
 echo "Starting the server daemon with $JAVA_OPTS..."
-java -jar server.jar nogui -stage $SERVER_STAGE
+java -d64 -jar server.jar nogui -stage $SERVER_STAGE
