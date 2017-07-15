@@ -1,8 +1,7 @@
 restart:
   interval: 1m
-  uptime: 12h
+  #uptime: $SERVER_RESTART
   defer-timeout: 1h
-  #memory: 2560
 nicks:
   enabled: true
 join-messages:
@@ -11,9 +10,20 @@ join-messages:
 reports:
   enabled: true
   cooldown: 5s
-  families: []
+  families: ['pgm', 'lobby']
   cross-server: true
 channels:
   admin:
     enabled: true
     cross-server: true
+navigator:
+  enabled: true
+  buttons:
+    8,2:
+      icon:
+        id: NETHER_STAR
+      to: $default
+    4,1:
+      icon:
+        id: SPECTRAL_ARROW
+      to: '@Beta'

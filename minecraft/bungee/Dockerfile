@@ -10,13 +10,15 @@ RUN cp /build/BungeeCord/bootstrap/target/BungeeCord.jar server.jar && chmod +x 
 WORKDIR plugins
 
 # Copy plugin jars to folder (maybe change to use find)
-RUN cp /build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
+RUN cp /build/raven-minecraft/raven-bungee/target/raven-bungee-1.11-SNAPSHOT.jar raven.jar && \
+  cp /build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
   cp /build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
   cp /build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
 WORKDIR ..
 
 # Bungee specific variables
 ENV SERVER_ROLE=BUNGEE
+ENV SERVER_RESTART=7d
 ENV JAVA_OPTS='-Xms100m -Xmx500m'
 
 # Start the bungee server

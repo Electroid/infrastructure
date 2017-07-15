@@ -19,7 +19,7 @@ listeners:
   proxy_protocol: false
 name: Connect with
 online_mode: true
-connection_throttle: 1000
+connection_throttle: -1
 ip_forward: true
 always_handle_packets: false
 network_compression_threshold: 256
@@ -32,6 +32,6 @@ timeout: 30000
 servers:
   default:
     motd: Lobby
-    address: vps02.stratus.plom.me:25581
+    address: 144.217.5.82:25581 # HACK
     restricted: false
 player_limit: -1

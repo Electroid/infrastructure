@@ -1,0 +1,3 @@
+raven:
+  enabled: true
+  dsn: "$SENTRY_DSN_PLUGINS"
