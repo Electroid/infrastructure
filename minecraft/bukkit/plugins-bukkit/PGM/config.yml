@@ -47,12 +47,12 @@ map-ratings:
   enabled: false
 autorestart:
   enabled: true
-  time: 30
+  time: 15
   match-limit: 20
   memory-limit: -1
 start:
   auto: true
-  countdown: 30s
+  countdown: 15s
   huddle: 0s
 cycle:
   countdown: 15s
@@ -62,7 +62,7 @@ cycle:
     countdown: 5s
   match-end:
     enabled: true
-    countdown: 30s
+    countdown: 15s
 join:
   priority-kick: true
   mid-match: true
