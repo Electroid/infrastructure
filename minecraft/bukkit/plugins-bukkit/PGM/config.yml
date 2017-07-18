@@ -123,9 +123,9 @@ stats:
 mutations:
   enabled: true
 license:
-  control-access: true
-  auto-grant: true
-  auto-revoke: true
+  control-access: false
+  auto-grant: false
+  auto-revoke: false
 freeze:
   enabled: true
   remove-tnt:
