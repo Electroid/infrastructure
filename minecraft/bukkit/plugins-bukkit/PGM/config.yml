@@ -11,22 +11,18 @@ rotation:
   initial-wait: 20000
   providers:
     file:
-      micro:
-        path: /minecraft/rotations/Beta/micro
-        count: 0
-        priority: 1
       mini:
         path: /minecraft/rotations/Beta/mini
-        count: 30
-        priority: 2
+        count: 0
+        priority: 1
       medium:
         path: /minecraft/rotations/Beta/medium
-        count: 40
-        priority: 3
+        count: 32
+        priority: 2
       mega:
         path: /minecraft/rotations/Beta/mega
-        count: 60
-        priority: 4
+        count: 50
+        priority: 3
 poll:
   maps: {}
 map:
