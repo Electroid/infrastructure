@@ -127,3 +127,7 @@ freeze:
   remove-tnt:
     victim-radius: 10
     sender-radius: 10
+player-list:
+  enabled: true
+  players-see-observers: true
+  datacenter: PLAY.STRATUS.NETWORK
