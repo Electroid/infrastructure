@@ -1,16 +1,27 @@
 restart:
   interval: 1m
-  #uptime: $SERVER_RESTART
-  defer-timeout: 1h
+  uptime: 12h
+  kick-limit: 1
+  defer-timeout: 6h
+  empty-timeout: $SERVER_EMPTY_TIMEOUT
+  stop-signal:
+    priority: 0
+    timeout: 24h
+    signals:
+      - INT
+      - TERM
 nicks:
   enabled: true
+flairs:
+  overhead: $SERVER_FLAIRS_OVERHEAD
+  limit: $SERVER_FLAIRS_LIMIT
 join-messages:
   enabled: true
   cross-network: true
 reports:
   enabled: true
   cooldown: 5s
-  families: ['pgm', 'lobby']
+  families: ['pgm', 'lobby', 'global']
   cross-server: true
 channels:
   admin:
@@ -22,7 +33,7 @@ navigator:
     8,2:
       icon:
         id: NETHER_STAR
-      to: $default
+      to: ${ESCAPE}default
     4,1:
       icon:
         id: SPECTRAL_ARROW

@@ -22,8 +22,8 @@ settings:
   query-plugins: true
   require-all-plugins: true
   deprecated-verbose: false
-  shutdown-message: Server closed
-  bungeecord: true
+  shutdown-message: Server restarting
+  bungeecord: $SERVER_BUNGEECORD
   fetch-skulls: false
   ping-packet-limit: 100
   use-exact-login-location: false

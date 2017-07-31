@@ -1,9 +1,0 @@
-FROM stratusnetwork/resources:base
-
-# Ensure bundle is installed
-RUN gem install bundle
-
-# Eagerly install old Gemfile to speed up build time
-ADD https://raw.githubusercontent.com/StratusNetwork/OCN/a99a718a61fea043610a1ab8db5911e5b0f207d6/Gemfile Gemfile
-ADD https://raw.githubusercontent.com/StratusNetwork/OCN/a99a718a61fea043610a1ab8db5911e5b0f207d6/Gemfile.lock Gemfile.lock
-RUN bundle package --no-prune --all

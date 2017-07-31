@@ -1,25 +1,17 @@
-FROM stratusnetwork/minecraft:shared
+FROM stratusnetwork/minecraft-shared
 
 # Merge Bungee configuration to shared
 COPY . .
 
-# Copy BungeeCord jar to server folder
-RUN cp /build/BungeeCord/bootstrap/target/BungeeCord.jar server.jar && chmod +x server.jar
-
-# Move to plugins folder
-WORKDIR plugins
-
-# Copy plugin jars to folder (maybe change to use find)
-RUN cp /build/raven-minecraft/raven-bungee/target/raven-bungee-1.11-SNAPSHOT.jar raven.jar && \
-  cp /build/ProjectAres/API/ocn/target/api-ocn-1.12-SNAPSHOT.jar api-ocn.jar && \
-  cp /build/ProjectAres/API/bungee/target/api-bungee-1.12-SNAPSHOT.jar api.jar && \
-  cp /build/ProjectAres/Commons/bungee/target/commons-bungee-1.12-SNAPSHOT.jar commons.jar
-WORKDIR ..
+# Copy bungee artifacts to the server folder
+RUN cp -R /minecraft/bungee/* .
 
 # Bungee specific variables
 ENV SERVER_ROLE=BUNGEE
-ENV SERVER_RESTART=7d
-ENV JAVA_OPTS='-Xms100m -Xmx500m'
+ENV SERVER_PROXY=false
+ENV SERVER_RESTART=24h
+ENV SERVER_EMPTY_TIMEOUT=6h
+ENV JAVA_OPTS='-Xms50m -Xmx200m'
 
 # Start the bungee server
-CMD ./start.sh
+CMD exec ./start.sh

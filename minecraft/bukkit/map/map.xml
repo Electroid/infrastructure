@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<map proto="1.3.2">
+<name>The Fenland</name>
+<version>1.2.7</version>
+<objective>Break the obsidian from the enemy team's monument.</objective>
+<authors>
+    <author uuid="e5953ddf-c1fc-4405-9ac9-6939631cd185"/> <!-- McSpider -->
+</authors>
+<teams>
+    <team color="dark red" max="14">Red</team>
+    <team color="blue" max="14">Blue</team>
+</teams>
+<maxbuildheight>25</maxbuildheight>
+<spawns>
+    <spawns kit="spawn" safe="true">
+        <spawn team="red" yaw="-90">
+            <cuboid min="-43,11,-2" max="-46,11,3"/>
+        </spawn>
+        <spawn team="blue" yaw="90">
+            <cuboid min="44,11,3" max="47,11,-2"/>
+        </spawn>
+    </spawns>
+    <default yaw="180">
+        <cuboid min="-3,25,-44" max="3,25,-50"/>
+    </default>
+</spawns>
+<filters>
+    <filter name="only-blue">
+        <team>blue</team>
+    </filter>
+    <filter name="only-red">
+        <team>red</team>
+    </filter>
+    <filter name="no-beacon">
+        <not>
+            <block>beacon</block>
+        </not>
+    </filter>
+</filters>
+<regions>
+    <apply enter="only-red" message="You may not enter the enemy team's base!">
+        <cuboid min="-49,13,-4" max="-40,10,4"/>
+    </apply>
+    <apply block="deny-all" message="You may not modify the base!">
+        <cuboid min="-49,7,5" max="-36,16,-4"/>
+    </apply>
+    <apply enter="only-blue" message="You may not enter the enemy team's base!">
+        <cuboid min="49,13,4" max="41,10,-4"/>
+    </apply>
+    <apply block="deny-all" message="You may not modify the base!">
+        <cuboid min="50,7,-4" max="37,16,5"/>
+    </apply>
+    <apply block="deny-all" message="You may not build outside the playing area!">
+        <negative name="playable-inverse">
+            <cuboid name="playable" min="64,0,-38" max="-63,31,39"/>
+        </negative>
+    </apply>
+    <apply enter="deny-all" message="Don't enter the observers spawn area!">
+        <cylinder base="0.5,19,-46.5" radius="6" height="oo"/>
+    </apply>
+    <apply use="no-beacon">
+        <region name="playable"/>
+    </apply>
+</regions>
+<destroyables name="Monument" materials="obsidian" completion="100%" mode-changes="true">
+    <destroyable owner="blue">
+        <cuboid min="46,16,26" max="45,14,25"/>
+    </destroyable>
+    <destroyable owner="red">
+        <cuboid min="-44,16,-24" max="-45,14,-25"/>
+    </destroyable>
+</destroyables>
+<modes>
+    <mode material="beacon" after="20m"/>
+</modes>
+<kits>
+    <kit name="spawn">
+        <item slot="0" enchantment="durability:1">diamond axe</item>
+        <item slot="1" enchantment="arrow infinite:1">bow</item>
+        <item slot="2">diamond pickaxe</item>
+        <item slot="3" amount="64">wood</item>
+        <item slot="4" amount="32">glass</item>
+        <item slot="7" amount="4">gold nugget</item>
+        <item slot="8" amount="32">cooked fish</item>
+        <item slot="28">arrow</item>
+        <chestplate enchantment="protection projectile:2">iron chestplate</chestplate>
+        <boots>iron boots</boots>
+    </kit>
+</kits>
+<kill-rewards>
+    <kill-reward>
+        <item amount="1" material="golden_apple"/>
+    </kill-reward>
+</kill-rewards>
+<toolrepair>
+    <tool>diamond axe</tool>
+    <tool>diamond pickaxe</tool>
+    <tool>bow</tool>
+</toolrepair>
+<itemremove>
+    <item>arrow</item>
+    <item>iron chestplate</item>
+    <item>iron boots</item>
+    <item>glass</item>
+    <item>wood</item>
+    <item>log</item>
+    <item>cooked fish</item>
+    <item>obsidian</item>
+    <item>beacon</item>
+</itemremove>
+<tnt>
+    <instantignite>on</instantignite>
+    <licensing>off</licensing>
+    <friendly-defuse>off</friendly-defuse>
+</tnt>
+</map>

@@ -3,10 +3,8 @@
 echo "Starting $SERVER_ROLE server in $SERVER_STAGE..."
 cd /minecraft/server
 
-echo "Injecting environment variables in configuration files..."
-for query in '*.yml' '*.yaml' '*.json' '*.properties'; do
-	find . -name $query -type f -exec sh -c "echo ' > {}' && envsubst < {} > env_temp && rm {} && mv env_temp {}" \;
-done
+echo "Removing Tourney plugin..."
+rm plugins/tourney.jar
 
 echo "Performing role specific commands..."
 if [[ $SERVER_ROLE == "PGM" ]]; then
@@ -22,5 +20,10 @@ else
 	exit 1
 fi
 
+echo "Injecting environment variables in configuration files..."
+for query in '*.yml' '*.yaml' '*.json' '*.properties'; do
+	find . -name $query -type f -exec sh -c "echo ' > {}' && envsubst < {} > env_temp && rm {} && mv env_temp {}" \;
+done
+
 echo "Starting the server daemon with $JAVA_OPTS..."
-java -d64 -jar server.jar nogui -stage $SERVER_STAGE
+exec java -d64 -jar server.jar nogui -stage $SERVER_STAGE

@@ -80,7 +80,7 @@ component:
         npc-compatibility-mode: false
     messaging:
         console-say-format: <`r*Console`w> %s
-        broadcast-format: '`r[Broadcast] %s'
+        broadcast-format: '`B`l[`x`CBroadcast`B`l] `x`c%s'
         pm-color: GRAY
         pm-text-color: RESET
         twitter-style: false
