@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+git:
+  depth: 1
+  submodules: false
+branches:
+  only:
+    - master
+    - staging
+jobs:
+  include:
+    - stage: build
+      script: docker build -t stratusnetwork/git -f git build
+      script: docker build -t stratusnetwork/maven -f git maven
+      script: docker build -t stratusnetwork/gradle -f git gradle
+    - stage: web
+      script: docker build -t stratusnetwork/web web
+    - stage: minecraft
+      script: docker build -t stratusnetwork/minecraft2 minecraft
+    - stage: minecraft-shared
+      script: docker build -t stratusnetwork/minecraft-shared minecraft/shared
+    - stage: minecraft-specific
+      script: docker build -t stratusnetwork/minecraft-bungee minecraft/bungee
+      script: docker build -t stratusnetwork/minecraft-bukkit minecraft/bukkit
