@@ -44,7 +44,7 @@ map-ratings:
 autorestart:
   enabled: true
   time: 15
-  match-limit: 20
+  match-limit: 30
   memory-limit: -1
 start:
   auto: true
@@ -106,7 +106,7 @@ fishing:
   disable-treasure: false
 scoreboard:
   show-proximity: false
-  precise-progress: true
+  precise-progress: false
 wool:
   auto-refill: true
 stats:

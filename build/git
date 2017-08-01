@@ -1,4 +1,4 @@
-FROM alpine
+FROM docker
 
 # Install git packages
 RUN apk update && apk upgrade && apk add bash git openssh curl

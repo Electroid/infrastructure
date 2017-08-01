@@ -1,8 +1,8 @@
 restart:
   interval: 1m
   uptime: 12h
-  kick-limit: 1
-  defer-timeout: 6h
+  kick-limit: $SERVER_KICK_LIMIT
+  defer-timeout: 12h
   empty-timeout: $SERVER_EMPTY_TIMEOUT
   stop-signal:
     priority: 0
