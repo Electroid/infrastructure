@@ -3,6 +3,7 @@ server:
   role: $SERVER_ROLE
   box: $HOSTNAME
   datacenter: US
+  publishIp: $SERVER_PUBLISH
 api:
   http:
     base-url: http://$SERVER_WEB_IP:3010/
