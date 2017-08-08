@@ -52,11 +52,11 @@ ARG AUTH
 ADD https://${AUTH}api.github.com/repos/StratusNetwork/ProjectAres/git/refs/heads/master plugins.json
 RUN ./clone.sh StratusNetwork ProjectAres master
 
-FROM stratusnetwork/gradle as worldedit
-COPY --from=sportbukkit /root/.m2 /root/.m2
-ARG AUTH
-ADD https://${AUTH}api.github.com/repos/StratusNetwork/WorldEdit/git/refs/heads/master worldedit.json
-RUN git clone -b master https://github.com/StratusNetwork/WorldEdit && cd WorldEdit && ./gradlew clean setupDecompWorkspace && ./gradlew build
+#FROM stratusnetwork/gradle as worldedit
+#COPY --from=sportbukkit /root/.m2 /root/.m2
+#ARG AUTH
+#ADD https://${AUTH}api.github.com/repos/StratusNetwork/WorldEdit/git/refs/heads/master worldedit.json
+#RUN git clone -b master https://github.com/StratusNetwork/WorldEdit && cd WorldEdit && ./gradlew clean setupDecompWorkspace && ./gradlew build
 
 FROM alpine as artifacts
 RUN mkdir -p /artifacts/bukkit && mkdir -p /artifacts/bungee 
@@ -78,7 +78,7 @@ RUN find com/github/rmsy -name 'Channels-*.jar' -exec cp {} /artifacts/bukkit/ch
 RUN find me/anxuiz/bukkit-settings -name 'bukkit-settings-*.jar' -exec cp {} /artifacts/bukkit/settings.jar \;
 RUN find net/anxuiz/Tourney -name 'Tourney-*.jar' -exec cp {} /artifacts/bukkit/tourney.jar \;
 COPY --from=protocol /home/gradle/ProtocolSupport/target/ProtocolSupport.jar /artifacts/bukkit/protocol.jar
-COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
+#COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
 
 FROM anapsix/alpine-java:8_server-jre as server
 RUN apk update && apk add --no-cache py-pip gettext
