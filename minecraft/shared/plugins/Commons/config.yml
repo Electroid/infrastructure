@@ -21,8 +21,8 @@ join-messages:
 reports:
   enabled: true
   cooldown: 5s
-  families: ['pgm', 'lobby', 'global']
-  cross-server: true
+  families: $SERVER_REPORTS
+  cross-server: $SERVER_CROSS
 channels:
   admin:
     enabled: true
