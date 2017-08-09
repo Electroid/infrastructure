@@ -13,7 +13,7 @@
 command-block-overrides: []
 aliases:
   tp:
-  - rtp $$1
+  - commandbook:tp $$1-
   list:
   - commandbook:list
   kick:
