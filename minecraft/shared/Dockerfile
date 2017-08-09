@@ -18,6 +18,7 @@ ENV SERVER_BACKEND_IP=db.stratus.network
 ENV SERVER_WEB_IP=db.stratus.network
 ENV SERVER_PORT=25565
 ENV SERVER_PUBLISH=true
+ENV SERVER_SIGNAL=0
 
 # Required variables for each container
 ENV SERVER_ID=null

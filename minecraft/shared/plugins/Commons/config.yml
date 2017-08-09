@@ -5,7 +5,7 @@ restart:
   defer-timeout: 12h
   empty-timeout: $SERVER_EMPTY_TIMEOUT
   stop-signal:
-    priority: 0
+    priority: $SERVER_SIGNAL
     timeout: 24h
     signals:
       - INT
