@@ -19,7 +19,7 @@ ENV SERVER_WEB_IP=db.stratus.network
 ENV SERVER_PORT=25565
 ENV SERVER_PUBLISH=true
 ENV SERVER_SIGNAL=0
-ENV SERVER_REPORTS=['pgm', 'lobby']
+ENV SERVER_REPORTS="['pgm', 'lobby']"
 ENV SERVER_CROSS=true
 
 # Required variables for each container

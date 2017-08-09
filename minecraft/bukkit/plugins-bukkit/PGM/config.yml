@@ -110,7 +110,8 @@ scoreboard:
 wool:
   auto-refill: true
 stats:
-  deaths: true
+  deaths: $STATS
+  objectives: $STATS
   engagements:
     enabled: false
     max-continuous-absence: oo

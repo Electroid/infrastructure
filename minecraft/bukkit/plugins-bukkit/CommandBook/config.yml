@@ -19,7 +19,7 @@ crappy-wrapper-compat: true
 low-priority-command-registration: true
 
 # Give operators (set with the Minecraft /op command) all permissions.
-op-permissions: true
+op-permissions: false
 component-class-dirs:
 - component-classes
 component-jar-dirs:
