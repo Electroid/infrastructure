@@ -22,3 +22,9 @@ aliases:
   - finish $1-
   tell:
   - commons:msg $$1-
+  ban-ip:
+  - []
+  pardon-ip:
+  - []
+  whois:
+  - []
