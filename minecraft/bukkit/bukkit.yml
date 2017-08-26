@@ -30,6 +30,8 @@ settings:
   water-pushes-tnt: false
   legacy-knockback: true
   isolate-plugins: true
+  tick-empty-worlds: false
+  empty-server-suspend: 10m
 spawn-limits:
   monsters: 70
   animals: 15

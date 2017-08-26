@@ -30,7 +30,7 @@ map:
     public:
       priority: 100
       path: /minecraft/maps
-      url: https://maps.oc.tc/
+      url: http://maps.stratus.network/
       depth: 20
   include-path:
   - /minecraft/maps/Include
@@ -131,4 +131,4 @@ freeze:
 player-list:
   enabled: true
   players-see-observers: true
-  datacenter: PLAY.STRATUS.NETWORK
+  datacenter: play.stratus.network

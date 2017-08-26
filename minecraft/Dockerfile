@@ -81,7 +81,7 @@ COPY --from=protocol /home/gradle/ProtocolSupport/target/ProtocolSupport.jar /ar
 #COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
 
 FROM anapsix/alpine-java:8_server-jre as server
-RUN apk update && apk add --no-cache py-pip gettext
+RUN apk update && apk add --no-cache py-pip gettext jq
 RUN pip install mcstatus
 WORKDIR minecraft
 COPY --from=artifacts /artifacts/bungee /minecraft/bungee/plugins

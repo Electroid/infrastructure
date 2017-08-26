@@ -14,7 +14,7 @@ listeners:
   max_players: 1
   tab_size: 60
   ping_passthrough: true
-  force_default_server: true
+  force_default_server: false
   proxy_protocol: $SERVER_PROXY
 name: Connect with
 online_mode: true
@@ -31,6 +31,6 @@ timeout: 30000
 servers:
   default:
     motd: Lobby
-    address: 144.217.5.82:25581 # HACK
+    address: $SERVER_LOBBY_IP:$SERVER_LOBBY_PORT
     restricted: false
 player_limit: -1
