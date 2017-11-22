@@ -7,49 +7,31 @@ environment:
   ranked: false
 rotation:
   dynamic: true
-  default-name: mini
+  default-name: halloween
   initial-wait: 20000
   providers:
     file:
-      micro:
-        path: /minecraft/rotations/Beta/micro
+      halloween:
+        path: /minecraft/dropbox/rotation/mini
         count: 0
         priority: 1
-      mini:
-        path: /minecraft/rotations/Beta/mini
-        count: 26
-        priority: 2
-      medium:
-        path: /minecraft/rotations/Beta/medium
-        count: 40
-        priority: 3		
-      mega:
-        path: /minecraft/rotations/Beta/mega
-        count: 60
-        priority: 4
 poll:
-  maps:
-    path: /minecraft/maps/bannedmaps.txt
+  maps: {}
 map:
   sources:
-    public:
-      priority: 100
-      path: /minecraft/maps
-      url: https://stratus.nyc3.digitaloceanspaces.com/maps/
-      depth: 20
     dropbox:
       priority: 110
       path: /minecraft/dropbox
       depth: 20
   include-path:
-  - /minecraft/maps/Include
+  - /minecraft/dropbox/include
   autoreload:
     enabled: true
     reload-when-error: false
   global-includes:
-  - /minecraft/maps/Include/global.xml
+  - /minecraft/dropbox/include/global.xml
 map-ratings:
-  enabled: true
+  enabled: false
 autorestart:
   enabled: true
   time: 15
@@ -57,19 +39,19 @@ autorestart:
   memory-limit: -1
 start:
   auto: true
-  countdown: 15s
+  countdown: 20s
   huddle: 0s
 cycle:
-  countdown: 15s
+  countdown: 1m
   running-match: false
   match-empty:
     enabled: false
-    countdown: 5s
+    countdown: 30s
   match-end:
     enabled: true
-    countdown: 15s
+    countdown: 30m
 join:
-  priority-kick: true
+  priority-kick: false
   mid-match: true
   commit-players: false
   capacity:

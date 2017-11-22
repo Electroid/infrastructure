@@ -1,19 +1,19 @@
 server:
-  id: $SERVER_ID
+  id: !SERVER_ID
   role: $SERVER_ROLE
-  box: $HOSTNAME
+  box: $SERVER_BOX
   datacenter: US
   publishIp: $SERVER_PUBLISH
 api:
   http:
-    base-url: http://$SERVER_WEB_IP:3010/
+    base-url: http://$SERVER_API_IP:3010/
     threads: 10
     connect-timeout: 20000
     read-timeout: 20000
     retries: 10
 queue:
   addresses:
-  - $SERVER_BACKEND_IP
+  - $SERVER_RABBIT_IP
   username: admin
   password: admin
   virtual-host: /

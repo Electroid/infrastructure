@@ -11,7 +11,6 @@
 # Forums: http://www.spigotmc.org/
 # Bug tracker: http://www.spigotmc.org/go/bugs
 
-
 settings:
   allow-end: false
   warn-on-overload: true
@@ -31,19 +30,19 @@ settings:
   legacy-knockback: true
   isolate-plugins: true
   tick-empty-worlds: false
-  empty-server-suspend: 10m
+  empty-server-suspend: 1m
 spawn-limits:
   monsters: 70
   animals: 15
   water-animals: 5
   ambient: 15
 chunk-gc:
-  period-in-ticks: 100
-  load-threshold: 0
+  period-in-ticks: 300
+  load-threshold: 300
 ticks-per:
   animal-spawns: 400
-  monster-spawns: 1
-  autosave: 6000
+  monster-spawns: 200
+  autosave: 72000
 aliases: now-in-commands.yml
 database:
   username: bukkit

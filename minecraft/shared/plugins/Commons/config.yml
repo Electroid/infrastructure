@@ -1,12 +1,12 @@
 restart:
   interval: 1m
-  uptime: 12h
+  uptime: 18h
   kick-limit: $SERVER_KICK_LIMIT
-  defer-timeout: 12h
+  defer-timeout: 72h
   empty-timeout: $SERVER_EMPTY_TIMEOUT
   stop-signal:
     priority: $SERVER_SIGNAL
-    timeout: 24h
+    timeout: 12h
     signals:
       - INT
       - TERM
@@ -34,7 +34,19 @@ navigator:
       icon:
         id: NETHER_STAR
       to: ${ESCAPE}default
-    4,1:
+    2,1:
       icon:
         id: SPECTRAL_ARROW
-      to: '@Beta'
+      to: '@beta'
+    4,1:
+      icon:
+        id: DIAMOND
+      to: '@mapdev'
+    4,2:
+      icon:
+        id: PUMPKIN
+      to: '@halloween'
+    6,1:
+      icon:
+        id: ARROW
+      to: '@alpha'

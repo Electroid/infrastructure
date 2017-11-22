@@ -5,7 +5,7 @@ git clone -b $GIT_BRANCH $GIT_URL data
 cd data
 
 # Ensure repository is in correct state (variables may have changed)
-git reset --hard origin/$GIT_BRANCH && git pull
+git pull && git reset --hard origin/$GIT_BRANCH && git pull
 
 # Wait a bit and always run the command on start
 sleep $GIT_TIME && $GIT_CMD && echo "Listening..."

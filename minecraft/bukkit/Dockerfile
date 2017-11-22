@@ -1,4 +1,4 @@
-FROM stratusnetwork/minecraft-shared
+FROM stratusnetwork/minecraft:shared
 
 # Merge Bukkit configuration to shared
 COPY . .
@@ -17,10 +17,10 @@ ENV SERVER_BUNGEECORD=true
 ENV SERVER_FLAIRS_OVERHEAD=false
 ENV SERVER_FLAIRS_LIMIT=-1
 ENV SERVER_STATS=true
-ENV SERVER_TIMEOUT=30
+ENV SERVER_COMMAND_BLOCK=false
+ENV SERVER_TIMEOUT=0
 ENV SERVER_OP=4
 ENV SERVER_SIZE=256
-ENV JAVA_OPTS='-Xms500m -Xmx2000m'
 
 # Start the bukkit server
 CMD exec ./start-bukkit.sh

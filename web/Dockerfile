@@ -13,22 +13,21 @@ RUN bundle install
 # Break the cache and get the latest version of the repository
 ARG BRANCH=master
 ADD https://${AUTH}api.github.com/repos/StratusNetwork/OCN/git/refs/heads/${BRANCH} ocn.json
-RUN git reset --hard origin/$BRANCH && git pull
+RUN git pull && git reset --hard origin/$BRANCH && git pull
 RUN bundle install
 
 # Website role and port variables
-ENV RAILS_ENV=development
+ENV RAILS_ENV=production
+ENV OCN_BOX=production
 ENV WEB_ROLE=octc
 ENV WEB_PORT=3000
 
-# Copy mongo config (override existing repository)
+# Copy config files (override existing repository)
 COPY mongoid.yml ./config/mongoid.yml
+COPY dns.rb ./script/dns_update.rb
 
 # Default to running rails with role on build
 CMD exec rails $WEB_ROLE -b 0.0.0.0
-
-# Create health check to monitor for downtime
-HEALTHCHECK --start-period=15s CMD curl -f http://localhost:$WEB_PORT/ || exit 1
 
 # Load ocn data repository (needs to be in this directory)
 VOLUME /minecraft/repo/data
