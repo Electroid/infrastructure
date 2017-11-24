@@ -1,0 +1,4 @@
+FROM docker:dind
+
+COPY script .
+ENV DOCKER_HOST=tcp://localhost:2375
