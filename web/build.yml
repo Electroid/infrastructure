@@ -1,4 +1,9 @@
 steps:
+  - id: pull
+    name: gcr.io/cloud-builders/docker
+    args:
+      - pull
+      - gcr.io/$PROJECT_ID/web:master
   - id: build
     name: gcr.io/cloud-builders/docker
     args:
@@ -7,6 +12,8 @@ steps:
       - --cache-from=gcr.io/$PROJECT_ID/web:$BRANCH_NAME
       - --build-arg=BRANCH=$BRANCH_NAME
       - web
+    wait_for:
+      - pull
   - id: tag
     name: gcr.io/cloud-builders/docker
     args:
@@ -17,3 +24,4 @@ steps:
       - build
 images:
   - gcr.io/$PROJECT_ID/web:$BRANCH_NAME
+  - gcr.io/$PROJECT_ID/web:latest
