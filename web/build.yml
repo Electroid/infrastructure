@@ -7,8 +7,6 @@ steps:
       - --cache-from=gcr.io/$PROJECT_ID/web:$BRANCH_NAME
       - --build-arg=BRANCH=$BRANCH_NAME
       - web
-    wait_for:
-      - -
   - id: tag
     name: gcr.io/cloud-builders/docker
     args:
