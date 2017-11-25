@@ -1,4 +1,4 @@
-FROM stratusnetwork/minecraft:base
+FROM minecraft:base
 
 # Create working server directory
 WORKDIR server

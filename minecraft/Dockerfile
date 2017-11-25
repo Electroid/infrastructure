@@ -8,8 +8,9 @@ RUN ./clone.sh StratusNetwork minecraft-api master
 FROM stratusnetwork/maven as bungee
 COPY --from=libraries /root/.m2 /root/.m2
 ARG AUTH
-ADD https://${AUTH}api.github.com/repos/StratusNetwork/BungeeCord/git/refs/heads/master bungeecord.json
-RUN ./clone.sh StratusNetwork BungeeCord master
+ARG BRANCH_BASE=master
+ADD https://${AUTH}api.github.com/repos/StratusNetwork/BungeeCord/git/refs/heads/$BRANCH_BASE bungeecord.json
+RUN ./clone.sh StratusNetwork BungeeCord $BRANCH_BASE
 
 FROM stratusnetwork/maven as bukkit
 RUN apk update && apk add --no-cache ruby-rake unzip && apk add patch --update
@@ -17,8 +18,9 @@ RUN git config --global user.email $HOSTNAME@docker.com && \
     git config --global user.name $HOSTNAME
 COPY --from=bungee /root/.m2 /root/.m2
 ARG AUTH
-ADD https://${AUTH}api.github.com/repos/StratusNetwork/SportBukkit/git/refs/heads/master sportbukkit.json
-RUN ./clone.sh StratusNetwork SportBukkit master "rake compile"
+ARG BRANCH_BASE=master
+ADD https://${AUTH}api.github.com/repos/StratusNetwork/SportBukkit/git/refs/heads/$BRANCH_BASE sportbukkit.json
+RUN ./clone.sh StratusNetwork SportBukkit $BRANCH_BASE "rake compile"
 
 FROM stratusnetwork/gradle as protocol
 COPY --from=bukkit /root/.m2 /root/.m2
@@ -49,8 +51,9 @@ RUN ./clone.sh StratusNetwork Channels master
 FROM stratusnetwork/maven as plugins
 COPY --from=dependencies /root/.m2 /root/.m2
 ARG AUTH
-ADD https://${AUTH}api.github.com/repos/StratusNetwork/ProjectAres/git/refs/heads/master plugins.json
-RUN ./clone.sh StratusNetwork ProjectAres master
+ARG BRANCH_PLUGINS=master
+ADD https://${AUTH}api.github.com/repos/StratusNetwork/ProjectAres/git/refs/heads/$BRANCH_PLUGINS plugins.json
+RUN ./clone.sh StratusNetwork ProjectAres $BRANCH_PLUGINS
 
 # FROM stratusnetwork/gradle as worldedit
 # COPY --from=bukkit /root/.m2 /root/.m2

@@ -1,4 +1,4 @@
-FROM stratusnetwork/minecraft:shared
+FROM minecraft:shared
 
 # Merge Bukkit configuration to shared
 COPY . .

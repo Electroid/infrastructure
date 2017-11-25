@@ -1,0 +1,64 @@
+steps:
+  - id: base
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:base
+      - --cache-from=gcr.io/$PROJECT_ID/web:base
+      - --build-arg=AUTH=$AUTH
+      - --build-arg=BRANCH_BASE=$BRANCH_BASE
+      - --build-arg=BRANCH_PLUGINS=$BRANCH_NAME
+      - minecraft
+  - id: shared
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:shared
+      - --cache-from=gcr.io/$PROJECT_ID/web:shared
+      - --build-arg=AUTH=$AUTH
+      - minecraft/shared
+    wait_for:
+      - base
+  - id: bukkit
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:bukkit
+      - --cache-from=gcr.io/$PROJECT_ID/web:bukkit
+      - --build-arg=AUTH=$AUTH
+      - minecraft/bukkit
+    wait_for:
+      - shared
+  - id: bungee
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:bungee
+      - --cache-from=gcr.io/$PROJECT_ID/web:bungee
+      - --build-arg=AUTH=$AUTH
+      - minecraft/bungee
+    wait_for:
+      - shared
+  - id: cloudy
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:cloudy
+      - --cache-from=gcr.io/$PROJECT_ID/web:cloudy
+      - --build-arg=AUTH=$AUTH
+      - minecraft/cloudy
+    wait_for:
+      - bukkit
+
+
+  - id: tag
+    name: gcr.io/cloud-builders/docker
+    args:
+      - tag
+      - gcr.io/$PROJECT_ID/web:master
+      - gcr.io/$PROJECT_ID/web:latest
+    wait_for:
+      - build
+images:
+  - gcr.io/$PROJECT_ID/web:$BRANCH_NAME
+  - gcr.io/$PROJECT_ID/web:latest

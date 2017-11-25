@@ -1,4 +1,4 @@
-FROM stratusnetwork/minecraft:bukkit
+FROM minecraft:bukkit
 
 # Merge halloween configuration to bukkit
 COPY . .

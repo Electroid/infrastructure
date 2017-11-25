@@ -1,4 +1,4 @@
-FROM stratusnetwork/minecraft:bukkit
+FROM minecraft:bukkit
 
 # Change directory to allow persistent storage
 RUN mv /minecraft/server /minecraft/server-new
