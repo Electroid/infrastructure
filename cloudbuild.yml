@@ -4,6 +4,8 @@ steps:
       - build
       - -t
       - gcr.io/$PROJECT_ID/web
+      - --cache-from=gcr.io/$PROJECT_ID/web
+      - --build-arg=BRANCH=$BRANCH_NAME
       - web
 images:
   - gcr.io/$PROJECT_ID/web
