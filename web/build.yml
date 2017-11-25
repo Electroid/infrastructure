@@ -16,8 +16,6 @@ steps:
     wait_for:
       - build
 images:
-  - gcr.io/$PROJECT_ID/web
-tags:
   - gcr.io/$PROJECT_ID/web:latest
   - gcr.io/$PROJECT_ID/web:master
   - gcr.io/$PROJECT_ID/web:staging
