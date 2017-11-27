@@ -55,17 +55,16 @@ ARG BRANCH_PLUGINS=master
 ADD https://${AUTH}api.github.com/repos/StratusNetwork/ProjectAres/git/refs/heads/$BRANCH_PLUGINS plugins.json
 RUN ./clone.sh StratusNetwork ProjectAres $BRANCH_PLUGINS
 
-# FROM stratusnetwork/gradle as worldedit
-# COPY --from=bukkit /root/.m2 /root/.m2
-# ARG AUTH
-# ADD https://${AUTH}api.github.com/repos/sk89q/WorldEdit/git/refs/heads/master worldedit.json
-# RUN git clone -b master https://github.com/sk89q/WorldEdit && cd WorldEdit && ./gradlew clean setupDecompWorkspace && ./gradlew build
+FROM stratusnetwork/gradle as worldedit
+COPY --from=bukkit /root/.m2 /root/.m2
+ARG AUTH
+ADD https://${AUTH}api.github.com/repos/sk89q/WorldEdit/git/refs/heads/master worldedit.json
+RUN git clone -b master https://github.com/sk89q/WorldEdit && cd WorldEdit && ./gradlew clean setupDecompWorkspace && ./gradlew build
 
 FROM alpine as artifacts
 RUN mkdir -p /artifacts/bukkit && mkdir -p /artifacts/bungee 
 WORKDIR /root/.m2/repository
 COPY --from=plugins /root/.m2 /root/.m2
-# COPY --from=minecraft /Waterfall/Waterfall-Proxy/bootstrap/target/BungeeCord.jar /artifacts/bungee/bungeecord.jar
 RUN find tc/oc/bungeecord-bootstrap -name 'bungeecord-bootstrap-*.jar' -exec mv {} /artifacts/bungee/bungeecord.jar \;
 RUN find tc/oc/sportbukkit -name 'sportbukkit-*.jar' -exec mv {} /artifacts/bukkit/sportbukkit.jar \;
 RUN find tc/oc/raven-bukkit -name 'raven-bukkit-*.jar' -exec mv {} /artifacts/bukkit/raven.jar \;
@@ -82,7 +81,7 @@ RUN find com/github/rmsy -name 'Channels-*.jar' -exec mv {} /artifacts/bukkit/ch
 RUN find me/anxuiz/bukkit-settings -name 'bukkit-settings-*.jar' -exec mv {} /artifacts/bukkit/settings.jar \;
 RUN find net/anxuiz/Tourney -name 'Tourney-*.jar' -exec mv {} /artifacts/bukkit/tourney.jar \;
 COPY --from=protocol /home/gradle/ProtocolSupport/target/ProtocolSupport.jar /artifacts/bukkit/protocol.jar
-# COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
+COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
 
 FROM openjdk:8u121 as server
 RUN apt-get update
