@@ -84,12 +84,10 @@ RUN find net/anxuiz/Tourney -name 'Tourney-*.jar' -exec mv {} /artifacts/bukkit/
 COPY --from=protocol /home/gradle/ProtocolSupport/target/ProtocolSupport.jar /artifacts/bukkit/protocol.jar
 # COPY --from=worldedit /home/gradle/WorldEdit/worldedit-bukkit/build/libs/worldedit-bukkit-*-dist.jar /artifacts/bukkit/worldedit.jar
 
-# FROM anapsix/alpine-java:8_server-jre as server
 FROM openjdk:8u121 as server
 RUN apt-get update
-RUN apt-get install -y curl gettext jq
-# RUN apk update && apk add --no-cache curl py-pip gettext jq
-# RUN pip install mcstatus
+RUN apt-get install -y curl gettext jq python-pip
+RUN pip install mcstatus
 WORKDIR minecraft
 COPY --from=artifacts /artifacts/bungee /minecraft/bungee/plugins
 RUN mv bungee/plugins/bungeecord.jar bungee/server.jar
