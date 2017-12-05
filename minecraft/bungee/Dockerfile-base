@@ -1,10 +1,9 @@
 FROM openjdk:8u121-jdk-alpine
 
-RUN apk update && \
-	apk add --no-cache curl gettext jq py-pip && \
-	pip install mcstatus
+RUN apk update && apk add --no-cache curl gettext jq
 
-WORKDIR /minecraft/server
+WORKDIR minecraft
+WORKDIR server
 
 ARG PROJECT_ID=stratus-181519
 ARG BRANCH=master

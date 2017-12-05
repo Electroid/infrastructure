@@ -5,6 +5,7 @@ RUN apk update && \
 	pip install mcstatus
 
 WORKDIR minecraft
+WORKDIR server
 
 ARG PROJECT_ID=stratus-181519
 ARG BRANCH=master
