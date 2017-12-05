@@ -10,8 +10,9 @@ ARG PROJECT_ID=stratus-181519
 ARG BRANCH=master
 ARG URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2
 ARG VERSION=1.12.2-SNAPSHOT
+ARG SPORTBUKKIT_VERSION=1.12.2-R0.1-SNAPSHOT
 
-ADD $URL/tc/oc/sportbukkit/$VERSION/sportbukkit-$VERSION.jar server.jar
+ADD $URL/tc/oc/sportbukkit/$SPORTBUKKIT_VERSION/sportbukkit-$SPORTBUKKIT_VERSION.jar server.jar
 
 WORKDIR plugins
 
