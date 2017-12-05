@@ -4,14 +4,12 @@ FROM docker
 RUN apk update && apk upgrade && apk add bash git openssh curl
 
 # Setup git identity
-ARG GIT_EMAIL=resources@docker.com
-RUN git config --global user.email $GIT_EMAIL
-ARG GIT_NAME=resources
-RUN git config --global user.name $GIT_NAME
+RUN git config --global user.email null@stratus.network
+RUN git config --global user.name stratus
 
 # Setup git environment variables
-ENV GIT_URL=""
-ENV GIT_CMD=""
+ENV GIT_URL=null
+ENV GIT_CMD=uptime
 ENV GIT_BRANCH=master
 ENV GIT_TIME=15
 

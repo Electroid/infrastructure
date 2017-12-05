@@ -1,4 +1,4 @@
-FROM minecraft:shared
+FROM minecraft:bukkit-shared
 
 # Merge Bukkit configuration to shared
 COPY . .

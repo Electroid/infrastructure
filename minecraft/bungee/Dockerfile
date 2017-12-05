@@ -1,4 +1,4 @@
-FROM minecraft:shared
+FROM minecraft:bungee-shared
 
 # Merge Bungee configuration to shared
 COPY . .

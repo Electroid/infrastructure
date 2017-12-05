@@ -1,4 +1,5 @@
-FROM minecraft:base
+ARG BASE
+FROM minecraft:$BASE-base
 
 # Create working server directory
 WORKDIR server
@@ -35,6 +36,3 @@ ENV JAVA_OPTS="-Xms2G -Xmx2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemo
 
 # Potentially cause lag, must investigate later 
 ENV JAVA_EXPERIMENTAL_OPTS="-XX:+UseG1GC -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=50 -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10"
-
-# Healthcheck to ensure the server is running properly
-# HEALTHCHECK --start-period=60s --interval=15s --timeout=10s CMD mcstatus localhost:$SERVER_PORT ping

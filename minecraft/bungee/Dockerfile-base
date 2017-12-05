@@ -1,0 +1,23 @@
+FROM openjdk:8u121-jdk-alpine
+
+RUN apk update && \
+	apk add --no-cache curl gettext jq py-pip && \
+	pip install mcstatus
+
+WORKDIR minecraft
+
+ARG PROJECT_ID=stratus-181519
+ARG BRANCH=master
+ARG URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2
+ARG VERSION=1.12.2-SNAPSHOT
+
+ADD $URL/tc/oc/bungeecord-bootstrap/$VERSION/bungeecord-bootstrap-$VERSION.jar server.jar
+
+WORKDIR plugins
+
+ADD $URL/tc/oc/api-ocn/$VERSION/api-ocn-$VERSION.jar api-ocn.jar
+ADD $URL/tc/oc/api-bungee/$VERSION/api-bungee-$VERSION.jar api.jar
+ADD $URL/tc/oc/commons-bungee/$VERSION/commons-bungee-$VERSION.jar commons.jar
+ADD $URL/tc/oc/raven-bungee/1.11-SNAPSHOT/raven-bungee-1.11-SNAPSHOT.jar raven.jar
+
+WORKDIR ..
