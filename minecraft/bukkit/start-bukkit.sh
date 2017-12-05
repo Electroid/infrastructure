@@ -23,4 +23,5 @@ if [ ! -d "/minecraft/dropbox" ]; then
   mkdir -p /minecraft/dropbox
 fi
 
+chmod +x start.sh
 exec ./start.sh

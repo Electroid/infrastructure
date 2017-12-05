@@ -20,4 +20,5 @@ ENV SERVER_OP=4
 ENV SERVER_SIZE=256
 
 # Start the bukkit server
+RUN chmod +x start-bukkit.sh
 CMD exec ./start-bukkit.sh

@@ -9,4 +9,5 @@ COPY . .
 # RUN cd plugins-cloudy && cp -R * ../plugins && cd .. && rm -rf plugins-cloudy
 
 # Start the cloudy server
+RUN chmod +x start-cloudy.sh
 CMD exec ./start-cloudy.sh
