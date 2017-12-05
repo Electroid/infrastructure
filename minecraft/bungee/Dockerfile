@@ -3,9 +3,6 @@ FROM minecraft:bungee-shared
 # Merge Bungee configuration to shared
 COPY . .
 
-# Copy bungee artifacts to the server folder
-RUN cp -R /minecraft/bungee/* .
-
 # Bungee specific variables
 ENV SERVER_ROLE=BUNGEE
 ENV SERVER_PROXY=false

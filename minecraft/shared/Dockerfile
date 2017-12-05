@@ -1,9 +1,6 @@
 ARG BASE
 FROM minecraft:$BASE-base
 
-# Create working server directory
-WORKDIR server
-
 # Copy shared configurations
 COPY . .
 

@@ -6,6 +6,8 @@ RUN apk update && \
 
 WORKDIR minecraft
 
+WORKDIR server
+
 ARG PROJECT_ID=stratus-181519
 ARG BRANCH=master
 ARG URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2

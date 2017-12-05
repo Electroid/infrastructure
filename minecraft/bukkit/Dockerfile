@@ -2,11 +2,8 @@ FROM minecraft:bukkit-shared
 
 # Merge Bukkit configuration to shared
 COPY . .
-RUN cd plugins-bukkit && cp -R * ../plugins && cd .. && rm -rf plugins-bukkit
-RUN chmod +x start-bukkit.sh
-
-# Copy bukkit artifacts to the server folder
-RUN cp -R /minecraft/bukkit/* .
+# RUN cd plugins-bukkit && cp -R * ../plugins && cd .. && rm -rf plugins-bukkit
+# RUN chmod +x start-bukkit.sh
 
 # Bukkit specific variables
 ENV SERVER_ROLE=PGM
