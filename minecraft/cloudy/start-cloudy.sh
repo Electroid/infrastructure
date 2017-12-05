@@ -13,5 +13,4 @@ rm /minecraft/server/plugins/API-OCN/config.yml
 cp /minecraft/server/plugins/API/config.yml /minecraft/server/plugins/API-OCN/config.yml 
 
 # Start the cloudy server
-chmod +x start-bukkit.sh
-exec ./start-bukkit.sh
+sh start-bukkit.sh

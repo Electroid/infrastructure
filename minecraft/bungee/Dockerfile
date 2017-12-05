@@ -14,5 +14,4 @@ ENV SERVER_LOBBY_IP=lobby.stratus.network
 ENV SERVER_LOBBY_PORT=1337
 
 # Start the bungee server
-RUN chmod +x start.sh
-CMD exec ./start.sh
+CMD sh start.sh
