@@ -6,7 +6,7 @@ RUN git clone https://github.com/StratusNetwork/OCN.git
 WORKDIR OCN
 
 # Build the cached version of the repo
-ARG CACHE=a0b44e801f02cbc4b38b494518637aebe986c165
+ARG CACHE=db925a581da58df4fdb9c051620bfea2f01933a6
 RUN git reset --hard $CACHE
 RUN bundle install
 
