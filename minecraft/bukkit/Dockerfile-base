@@ -29,6 +29,7 @@ ADD $URL/com/github/rmsy/Channels/Channels/1.9-SNAPSHOT/Channels-1.9-SNAPSHOT.ja
 ADD $URL/me/anxuiz/bukkit-settings/1.9-SNAPSHOT/bukkit-settings-1.9-SNAPSHOT.jar settings.jar
 ADD $URL/tc/oc/raven-bukkit/1.11-SNAPSHOT/raven-bukkit-1.11-SNAPSHOT.jar raven.jar
 ADD $URL/other/protocolsupport.jar protocol.jar
+ADD $URL/other/commandbook.jar commandbook.jar
 ADD $URL/other/buycraft.jar buycraft.jar
 # TODO: CommandBook, ChatModerator, ...
 ADD https://dev.bukkit.org/projects/worldedit/files/latest worldedit.jar
