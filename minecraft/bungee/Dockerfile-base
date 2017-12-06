@@ -2,7 +2,7 @@ FROM openjdk:8u121-jdk-alpine
 
 USER root
 
-RUN apk update && apk add --no-cache curl gettext jq
+RUN apk update && apk add --no-cache bash curl gettext jq
 
 WORKDIR minecraft
 WORKDIR server

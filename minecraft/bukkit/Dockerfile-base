@@ -3,7 +3,7 @@ FROM openjdk:8u121-jdk-alpine
 USER root
 
 RUN apk update && \
-	apk add --no-cache curl gettext jq py-pip && \
+	apk add --no-cache bash curl gettext jq py-pip && \
 	pip install mcstatus
 
 WORKDIR minecraft

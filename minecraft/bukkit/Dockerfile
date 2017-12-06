@@ -2,8 +2,6 @@ FROM minecraft:bukkit-shared
 
 # Merge Bukkit configuration to shared
 COPY . .
-# RUN cd plugins-bukkit && cp -R * ../plugins && cd .. && rm -rf plugins-bukkit
-# RUN chmod +x start-bukkit.sh
 
 # Bukkit specific variables
 ENV SERVER_ROLE=PGM
@@ -20,4 +18,4 @@ ENV SERVER_OP=4
 ENV SERVER_SIZE=256
 
 # Start the bukkit server
-CMD sh start-bukkit.sh
+CMD exec ./start-bukkit.sh
