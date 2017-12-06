@@ -1,4 +1,4 @@
-FROM openjdk:8u121-jre-slim
+FROM openjdk:8u151-jre-slim
 
 USER root
 
