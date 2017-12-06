@@ -29,7 +29,7 @@ ENV SERVER_LOCAL=false
 ENV ESCAPE=$
 
 # Generic and special optimizing java arguments
-ENV JAVA_OPTS="-Xms2G -Xmx2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:LargePageSizeInBytes=2M -XX:+UseLargePages -XX:+UseLargePagesInMetaspace -XX:+AggressiveHeap -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -Xnoclassgc -Dsqlite.purejava=true"
+ENV JAVA_OPTS="-Xms2G -Xmx2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:LargePageSizeInBytes=2M -XX:+UseLargePages -XX:+UseLargePagesInMetaspace -XX:+AggressiveHeap -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -Xnoclassgc"
 
 # Potentially cause lag, must investigate later 
 ENV JAVA_EXPERIMENTAL_OPTS="-XX:+UseG1GC -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=50 -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10"

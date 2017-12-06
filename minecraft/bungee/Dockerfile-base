@@ -1,8 +1,8 @@
-FROM openjdk:8u121-jre-alpine
+FROM openjdk:8u121-jre-slim
 
 USER root
 
-RUN apk update && apk add --no-cache bash curl gettext jq
+RUN apt-get update && apt-get install -y curl gettext jq
 
 WORKDIR minecraft
 WORKDIR server
