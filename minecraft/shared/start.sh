@@ -35,7 +35,7 @@ if [ -z "$SERVER_IDS" ]; then
 		echo "Selected single server id... $SERVER_ID"
 	fi
 else
-	IFS="," read -r -a SERVER_IDS_ARRAY <<< "$SERVER_IDS"
+	SERVER_IDS_ARRAY=(`echo $SERVER_IDS | sed 's/,/\n/g'`)
 	SERVER_INDEX="${HOSTNAME: -1}"
 	if [[ "$SERVER_INDEX" =~ ^-?[0-9]+$ ]]; then
 		export SERVER_ID="${SERVER_IDS_ARRAY[${SERVER_INDEX}]}"
