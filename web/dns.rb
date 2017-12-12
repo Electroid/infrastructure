@@ -1,18 +1,23 @@
-# Script to sync web ip to cloudflare dns
+# Script to sync a service ip to cloudflare dns
 
+domain = "stratus.network"
 public_ip = open('http://whatismyip.akamai.com').read
 puts "Detected public ip as #{public_ip}"
 
-zone = Zone.cached("stratus.network")
+zone = Zone.cached(domain)
 records = zone.refresh
 puts "Found #{records.size} records for dns zone"
 
-unless record = records.select{|r| r.name == "stratus.network"}.first
-	record = zone.build_record(content: public_ip, name: "stratus.network", type: "A", ttl: 1, service_mode: 1)
-	puts "Creating new record for website"
+if extension = ENV["WEB_RECORD"]
+	query = "#{extension}.#{domain}"
 end
+puts "Searching for record #{query}"
 
-record.content = public_ip
-record.save
-
-puts "Saved!"
+if record = records.select{|r| r.name == query}.first
+	record.content = public_ip
+	record.save
+	puts "Saved!"
+else
+	puts "Unable to find record #{query}"
+	exit 1
+end
