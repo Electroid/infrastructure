@@ -9,15 +9,15 @@ records = zone.refresh
 puts "Found #{records.size} records for dns zone"
 
 if extension = ENV["WEB_RECORD"]
-	query = "#{extension}.#{domain}"
+	domain = "#{extension}.#{domain}"
 end
-puts "Searching for record #{query}"
+puts "Searching for record #{domain}"
 
-if record = records.select{|r| r.name == query}.first
+if record = records.select{|r| r.name == domain}.first
 	record.content = public_ip
 	record.save
 	puts "Saved!"
 else
-	puts "Unable to find record #{query}"
+	puts "Unable to find record #{domain}"
 	exit 1
 end
