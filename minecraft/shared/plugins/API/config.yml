@@ -6,7 +6,7 @@ server:
   publishIp: $SERVER_PUBLISH
 api:
   http:
-    base-url: http://$SERVER_API_IP
+    base-url: http://$SERVER_API_IP/
     threads: 10
     connect-timeout: 20000
     read-timeout: 20000
