@@ -27,7 +27,7 @@ COPY mongoid.yml ./config/mongoid.yml
 COPY dns.rb ./script/dns_update.rb
 
 # Default to running rails with role on build
-CMD exec rails $WEB_ROLE -b 0.0.0.0
+CMD exec rails $WEB_ROLE -b 0.0.0.0 -p $WEB_PORT
 
 # Load ocn data repository (needs to be in this directory)
 VOLUME /minecraft/repo/data
