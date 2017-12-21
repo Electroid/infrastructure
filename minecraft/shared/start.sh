@@ -42,7 +42,7 @@ else
 		echo "Selected list server id at index $SERVER_INDEX... $SERVER_ID"
 	else
 		for id in "${SERVER_IDS_ARRAY[@]}"; do
-			if [[ $(curl -s http://$SERVER_API_IP:3010/servers/$id | jq .online) != "true" ]]; then
+			if [[ $(curl -s http://$SERVER_API_IP/servers/$id | jq .online) != "true" ]]; then
 				export SERVER_ID="$id"
 				echo "Selected set server id... $SERVER_ID"
 				break
