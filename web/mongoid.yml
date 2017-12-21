@@ -3,7 +3,18 @@ production:
     default:
       database: pgm-prod
       hosts:
-        - mongo:27017
+        - mongo-0.mongo.default.svc.cluster.local:27017
+        - mongo-1.mongo.default.svc.cluster.local:27017
+        - mongo-2.mongo.default.svc.cluster.local:27017
+      options:
+        write:
+          w: 1
+        read:
+          mode: :primary_preferred
+        connect: :replica_set
+        replica_set: rs0
+        heartbeat_frequency: 3
+        server_selection_timeout: 10
   options:
     raise_not_found_error: false
 
@@ -12,7 +23,18 @@ staging:
     default:
       database: pgm-prod
       hosts:
-        - mongo:27017
+        - mongo-0.mongo.default.svc.cluster.local:27017
+        - mongo-1.mongo.default.svc.cluster.local:27017
+        - mongo-2.mongo.default.svc.cluster.local:27017
+      options:
+        write:
+          w: 1
+        read:
+          mode: :primary_preferred
+        connect: :replica_set
+        replica_set: rs0
+        heartbeat_frequency: 3
+        server_selection_timeout: 10
   options:
     raise_not_found_error: false
 
