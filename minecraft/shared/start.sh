@@ -66,7 +66,7 @@ if [[ "$SERVER_ROLE" == "PGM" ]]; then
 elif [[ "$SERVER_ROLE" == "LOBBY" ]]; then
 	rm plugins/pgm.jar
 	rm plugins/tourney.jar
-	if [ -d "/minecraft/maps/Lobby" ]; then
+	if [ -d "/minecraft/maps/lobby" ]; then
 		rm -rf world
 		cp -R /minecraft/maps/lobby world
 	fi
