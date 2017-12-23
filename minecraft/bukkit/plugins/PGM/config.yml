@@ -7,12 +7,12 @@ environment:
   ranked: false
 rotation:
   dynamic: true
-  default-name: mini
+  default-name: default
   initial-wait: 20000
   providers:
     file:
-      micro:
-        path: /minecraft/rotations/!SERVER_ROTATION/micro
+      default:
+        path: /minecraft/rotations/!SERVER_ROTATION/default
         count: 0
         priority: 1
       mini:
@@ -38,12 +38,12 @@ map:
       url: https://stratus.nyc3.digitaloceanspaces.com/maps/
       depth: 20
   include-path:
-    - /minecraft/maps/Include
+    - /minecraft/maps/include
   autoreload:
     enabled: true
     reload-when-error: false
   global-includes:
-    - /minecraft/maps/Include/global.xml
+    - /minecraft/maps/include/global.xml
 map-ratings:
   enabled: true
 autorestart:
