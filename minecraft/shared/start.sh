@@ -42,7 +42,7 @@ if [ -e plugins/api-ocn.jar ]; then
 		fi
 		echo "Unable to fetch server document with id... $SERVER_ID" && exit 1
 	done
-	export SERVER_NAME=$(echo $SERVER_DOCUMENT | jq .name)
+	export SERVER_NAME=$(echo $SERVER_DOCUMENT | jq .bungee_name | sed 's/\"//g')
 	echo "Received server identity as $SERVER_NAME..."
 else
 	export SERVER_NAME="default"
@@ -68,7 +68,7 @@ elif [[ "$SERVER_ROLE" == "LOBBY" ]]; then
 	rm plugins/tourney.jar
 	if [ -d "/minecraft/maps/Lobby" ]; then
 		rm -rf world
-		cp -R /minecraft/maps/Lobby world
+		cp -R /minecraft/maps/lobby world
 	fi
 elif [[ "$SERVER_ROLE" == "MAPDEV" ]]; then
 	rm plugins/lobby.jar
