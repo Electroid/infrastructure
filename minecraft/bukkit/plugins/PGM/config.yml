@@ -12,19 +12,19 @@ rotation:
   providers:
     file:
       micro:
-        path: /minecraft/rotations/Beta/micro
+        path: /minecraft/rotations/!SERVER_ROTATION/micro
         count: 0
         priority: 1
       mini:
-        path: /minecraft/rotations/Beta/mini
+        path: /minecraft/rotations/!SERVER_ROTATION/mini
         count: 26
         priority: 2
       medium:
-        path: /minecraft/rotations/Beta/medium
+        path: /minecraft/rotations/!SERVER_ROTATION/medium
         count: 40
         priority: 3		
       mega:
-        path: /minecraft/rotations/Beta/mega
+        path: /minecraft/rotations/!SERVER_ROTATION/mega
         count: 60
         priority: 4
 poll:
@@ -37,23 +37,19 @@ map:
       path: /minecraft/maps
       url: https://stratus.nyc3.digitaloceanspaces.com/maps/
       depth: 20
-    dropbox:
-      priority: 110
-      path: /minecraft/dropbox
-      depth: 20
   include-path:
-  - /minecraft/maps/Include
+    - /minecraft/maps/Include
   autoreload:
     enabled: true
     reload-when-error: false
   global-includes:
-  - /minecraft/maps/Include/global.xml
+    - /minecraft/maps/Include/global.xml
 map-ratings:
   enabled: true
 autorestart:
   enabled: true
   time: 15
-  match-limit: 30
+  match-limit: 20
   memory-limit: -1
 start:
   auto: true
@@ -110,7 +106,7 @@ antigrief:
     enabled: true
 arrowremoval:
   enabled: true
-  delay: 10
+  delay: 5
 fishing:
   disable-treasure: false
 scoreboard:

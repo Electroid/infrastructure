@@ -7,6 +7,15 @@ COPY . .
 # Give run access to the start script
 RUN chmod +x start.sh
 
+# Required variables for each container
+ENV SERVER_ID=null
+
+# Optional variables that can be left nullable
+ENV SERVER_SENTRY_DSN=null
+ENV SERVER_BUYCRAFT=null
+ENV SERVER_TOURNAMENT_ID=null
+ENV SERVER_ROTATION=null
+
 # Shared variables
 ENV SERVER_STAGE=PRODUCTION
 ENV SERVER_BOX=production
@@ -18,11 +27,7 @@ ENV SERVER_PUBLISH=true
 ENV SERVER_SIGNAL=0
 ENV SERVER_REPORTS="['pgm', 'lobby']"
 ENV SERVER_CROSS=true
-ENV SENTRY_ENABLED=true
-
-# Required variables for each container
-ENV SERVER_ID=null
-ENV SENTRY_DSN_PLUGINS=null
+ENV SERVER_SENTRY=true
 ENV SERVER_LOCAL=false
 
 # Escape variable to avoid being substituted
