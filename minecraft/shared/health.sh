@@ -17,6 +17,10 @@ else
 	if [[ "$(echo $document | jq .port)" == "25555" ]]; then
 		echo "ok" && exit 0
 	else
-		mcstatus localhost:$SERVER_PORT ping
+		if [ -z "$(mcstatus localhost:$SERVER_PORT ping)" ]; then
+			echo "nok" && exit 1
+		else
+			echo "ok" && exit 0
+		fi
 	fi
 fi
