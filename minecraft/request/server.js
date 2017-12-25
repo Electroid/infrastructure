@@ -67,9 +67,10 @@ function server_listen(iterations=0) {
 }
 
 function server_transfer() {
-  update = server_update(id, {port: 0, current_port: 0});
+  update = server_update(id, {port: 0});
   routed = true;
   console.log('+ Routing traffic back to the origin server');
+  sleep(30000);
 }
 
 function server_ping(retries=3) {
