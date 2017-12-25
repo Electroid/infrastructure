@@ -56,7 +56,12 @@ function server_listen(iterations=0) {
       }
     }
   } else {
-    server_wait();
+    if(ping) {
+      server_update(id, {online: true});
+      server_transfer();
+    } else {
+      server_wait();
+    }
   }
   cache = server;
   setTimeout(function() {
