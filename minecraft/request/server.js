@@ -8,6 +8,7 @@ var cache = server_doc(id);
 var routed = false;
 
 const port = 25555;
+const origin_port = parseInt(process.env.SERVER_PORT, 10);
 const server = mc.createServer({
   host: '0.0.0.0',
   port: port,
@@ -18,7 +19,7 @@ server.on('login', function(client) {
   let start = new Date();
   let username = client.username
   let response = server_request(username);
-  client.write('kick_disconnect', {
+  client.write('disconnect', {
     reason: JSON.stringify({text: response.message})
   });
   let end = new Date();
@@ -42,7 +43,7 @@ function server_listen(iterations=0) {
   let server = server_doc(id) || cache;
   let ping = server_ping();
   if(server.online) {
-    if(server.port != port && !ping) {
+    if(server.current_port != port && !ping) {
       server_update(id, {online: false});
       routed = false;
       console.log('+ Restoring server to be offline since it is unreachable')
@@ -59,7 +60,7 @@ function server_listen(iterations=0) {
       }
     }
   } else {
-    server_update(id, {online: true, port: port});
+    server_update(id, {online: true, current_port: port});
     console.log('+ Enabling requests and routing traffic away from the origin server');
   }
   cache = server;
@@ -69,9 +70,9 @@ function server_listen(iterations=0) {
 }
 
 function server_transfer() {
-  update = server_update(id, {port: 0});
+  update = server_update(id, {current_port: origin_port});
   routed = true;
-  console.log('+ Routing traffic from port ' + port + ' to ' + update.current_port);
+  console.log('+ Routing traffic from port ' + port + ' to ' + origin_port);
 }
 
 function server_ping(retries=3) {
@@ -80,7 +81,7 @@ function server_ping(retries=3) {
   }
   var success = null;
   mc.ping({
-    port: process.env.SERVER_PORT
+    port: origin_port
   }, function(err, results) {
     success = !err;
   });
