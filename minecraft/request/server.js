@@ -57,7 +57,6 @@ function server_listen(iterations=0) {
     }
   } else {
     if(ping) {
-      server_update(id, {online: true});
       server_transfer();
     } else {
       server_wait();
@@ -81,7 +80,7 @@ function server_restore() {
 }
 
 function server_transfer() {
-  update = server_update(id, {port: 0, restart_queued_at: null});
+  update = server_update(id, {online: true, port: 0, restart_queued_at: null});
   console.log('+ Routing traffic back to the origin server');
   server_ping(3 * 60);
 }
