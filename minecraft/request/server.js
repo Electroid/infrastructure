@@ -79,9 +79,7 @@ function server_ping(retries=3) {
     return false;
   }
   var success = null;
-  mc.ping({
-    port: process.env.SERVER_PORT
-  }, function(err, results) {
+  mc.ping({}, function(err, results) {
     success = !err;
   });
   sleep(1000);
