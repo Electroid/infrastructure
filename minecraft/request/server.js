@@ -39,9 +39,12 @@ function server_listen(iterations=0) {
   let server = server_doc(id) || cache;
   let ping = server_ping();
   if(server.online) {
-    if(ping && server.current_port == port) {
+    if(!ping) {
+      server_wait();
+    } else if(server.current_port == port) {
       server_transfer();
-    } else if(server.dynamics.enabled && iterations % 10 == 0) {
+    }
+    if(server.dynamics.enabled && iterations % 10 == 0) {
       let required = server.dynamics.size;
       let online = session_doc().documents.size;
       if(online > required && !ping) {
