@@ -33,6 +33,7 @@ server.on('error', function(error) {
 
 server.on('listening', function() {
   console.log('+ Server listening on port', server.socketServer.address().port);
+  server_wait();
   server_listen();
 });
 
@@ -43,7 +44,7 @@ function server_listen(iterations=0) {
   let ping = server_ping();
   if(ping && !routed) {
     server_transfer();
-  } else if(!ping && !routed) {
+  } else if(!ping && routed) {
     server_wait();
   } else if(server.dynamics.enabled && iterations % 10 == 0) {
     let required = server.dynamics.size;
@@ -63,7 +64,7 @@ function server_listen(iterations=0) {
 }
 
 function server_wait() {
-  server_update(id, {online: true, port: port, current_port: port});
+  server_update(id, {online: true, port: port, current_port: port, restart_queued_at: null});
   server_update(id, {visibility: 'UNLISTED'});
   console.log('+ Enabling requests and routing traffic away from the origin server');
 }
