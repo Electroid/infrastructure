@@ -70,7 +70,7 @@ function server_transfer() {
   update = server_update(id, {port: 0});
   routed = true;
   console.log('+ Routing traffic back to the origin server');
-  sleep(100000);
+  sleep(180000);
 }
 
 function server_ping(retries=3) {
