@@ -40,10 +40,10 @@ function server_listen(iterations=0) {
   let server = server_doc(id) || cache;
   let ping = server_ping();
   if(server.online) {
-    if(server.current_port != port && !ping) {
-      server_update(id, {online: false});
-      routed = false;
-      console.log('+ Restoring server to be offline since it is unreachable')
+    if(ping) {
+      server_route();
+    } else if(server.current_port != port) {
+      server_fallback();
     }
     if(server.dynamics.enabled && iterations % 300 == 0) {
       let required = server.dynamics.size;
@@ -57,13 +57,24 @@ function server_listen(iterations=0) {
       }
     }
   } else {
-    server_update(id, {online: true, port: port, current_port: port, visibility: 'UNLISTED'});
-    console.log('+ Enabling requests and routing traffic away from the origin server');
+    server_route();
   }
   cache = server;
   setTimeout(function() {
     server_listen(iterations + 1);
   }, 10 * 1000);
+}
+
+function server_route() {
+  server_update(id, {online: true, port: port, current_port: port});
+  server_update(id, {visibility: 'UNLISTED'});
+  console.log('+ Enabling requests and routing traffic away from the origin server');
+}
+
+function server_fallback() {
+  server_update(id, {online: false});
+  routed = false;
+  console.log('+ Restoring server to be offline since it is unreachable')
 }
 
 function server_transfer() {
