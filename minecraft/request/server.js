@@ -6,6 +6,7 @@ const mc = require('minecraft-protocol');
 const id = server_id();
 var cache = server_doc(id);
 
+const origin_port = parseInt(process.env.SERVER_PORT.toString());
 const port = 25555;
 const server = mc.createServer({
   host: '0.0.0.0',
@@ -37,29 +38,22 @@ server.on('listening', function() {
 
 function server_listen(iterations=0) {
   let server = server_doc(id) || cache;
+  let online = server.online;
+  let routed = server.current_port == origin_port;
   let ping = server_ping();
-  if(server.online) {
-    if(!ping) {
-      server_wait();
-    } else if(server.current_port == port) {
+  if(ping && !routed) {
+    server_transfer();
+  } else if(!ping && !routed) {
+    server_wait();
+  } else if(server.dynamics.enabled && iterations % 10 == 0) {
+    let required = server.dynamics.size;
+    let online = session_doc().documents.size;
+    if(online > required && !ping) {
+      console.log('- Dynamic was accepted with ' + online + ' online out of ' + required + ' required');
       server_transfer();
-    }
-    if(server.dynamics.enabled && iterations % 10 == 0) {
-      let required = server.dynamics.size;
-      let online = session_doc().documents.size;
-      if(online > required && !ping) {
-        console.log('- Dynamic was accepted with ' + online + ' online out of ' + required + ' required');
-        server_transfer();
-      } else if(required / 2 < online && server.restart_queued_at == null && ping) {
-        console.log('- Dynamic was rejected with ' + online + ' online out of ' + required + ' required');
-        server_update(id, {restart_queued_at: new Date(), restart_reason: 'Not enough players online for dynamic server', restart_priority: 0}); 
-      }
-    }
-  } else {
-    if(ping) {
-      server_transfer();
-    } else {
-      server_wait();
+    } else if(required / 2 < online && server.restart_queued_at == null && ping) {
+      console.log('- Dynamic was rejected with ' + online + ' online out of ' + required + ' required');
+      server_update(id, {restart_queued_at: new Date(), restart_reason: 'Not enough players online for dynamic server', restart_priority: 0}); 
     }
   }
   cache = server;
@@ -74,13 +68,8 @@ function server_wait() {
   console.log('+ Enabling requests and routing traffic away from the origin server');
 }
 
-function server_restore() {
-  server_update(id, {online: false});
-  console.log('+ Restoring server to be offline since it is unreachable')
-}
-
 function server_transfer() {
-  update = server_update(id, {online: true, port: 0, restart_queued_at: null});
+  update = server_update(id, {online: true, port: 0, current_port: origin_port, restart_queued_at: null});
   console.log('+ Routing traffic back to the origin server');
   server_ping(3 * 60);
 }
