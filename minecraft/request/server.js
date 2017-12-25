@@ -63,14 +63,14 @@ function server_listen(iterations=0) {
   cache = server;
   setTimeout(function() {
     server_listen(iterations + 1);
-  }, 10000);
+  }, 10 * 1000);
 }
 
 function server_transfer() {
   update = server_update(id, {port: 0});
   routed = true;
   console.log('+ Routing traffic back to the origin server');
-  sleep(180000);
+  server_ping(3 * 60);
 }
 
 function server_ping(retries=3) {
