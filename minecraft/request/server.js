@@ -5,7 +5,6 @@ const mc = require('minecraft-protocol');
 
 const id = server_id();
 var cache = server_doc(id);
-var routed = false;
 
 const port = 25555;
 const server = mc.createServer({
@@ -40,12 +39,9 @@ function server_listen(iterations=0) {
   let server = server_doc(id) || cache;
   let ping = server_ping();
   if(server.online) {
-    if(ping) {
-      server_route();
-    } else if(server.current_port != port) {
-      server_fallback();
-    }
-    if(server.dynamics.enabled && iterations % 300 == 0) {
+    if(ping && server.current_port == port) {
+      server_transfer();
+    } else if(server.dynamics.enabled && iterations % 10 == 0) {
       let required = server.dynamics.size;
       let online = session_doc().documents.size;
       if(online > required && !ping) {
@@ -57,7 +53,7 @@ function server_listen(iterations=0) {
       }
     }
   } else {
-    server_route();
+    server_wait();
   }
   cache = server;
   setTimeout(function() {
@@ -65,21 +61,19 @@ function server_listen(iterations=0) {
   }, 10 * 1000);
 }
 
-function server_route() {
+function server_wait() {
   server_update(id, {online: true, port: port, current_port: port});
   server_update(id, {visibility: 'UNLISTED'});
   console.log('+ Enabling requests and routing traffic away from the origin server');
 }
 
-function server_fallback() {
+function server_restore() {
   server_update(id, {online: false});
-  routed = false;
   console.log('+ Restoring server to be offline since it is unreachable')
 }
 
 function server_transfer() {
-  update = server_update(id, {port: 0});
-  routed = true;
+  update = server_update(id, {port: 0, restart_queued_at: null});
   console.log('+ Routing traffic back to the origin server');
   server_ping(3 * 60);
 }
@@ -121,7 +115,7 @@ function server_request(username) {
 
 function server_id() {
   var id = process.env.SERVER_ID;
-  if(id == "null") {
+  if(!id || id == "null") {
     var ids = process.env.SERVER_IDS;
     if(ids) {
       return ids.split(',')[parseInt(process.env.HOSTNAME.replace(/^\D+/g, ''), 10)];
