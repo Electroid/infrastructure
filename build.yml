@@ -76,7 +76,16 @@ steps:
       - docker/minecraft/bungee
     wait_for:
       - bungee-shared
+  - id: request
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=gcr.io/$PROJECT_ID/minecraft:request
+      - docker/minecraft/request
+    wait_for:
+      - clone
 images:
   - gcr.io/$PROJECT_ID/minecraft:bukkit-$_BRANCH
   - gcr.io/$PROJECT_ID/minecraft:bungee-$_BRANCH
   - gcr.io/$PROJECT_ID/minecraft:cloudy-$_BRANCH
+  - gcr.io/$PROJECT_ID/minecraft:request
