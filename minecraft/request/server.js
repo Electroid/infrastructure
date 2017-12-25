@@ -66,7 +66,7 @@ function server_listen(iterations=0) {
   cache = server;
   setTimeout(function() {
     server_listen(iterations + 1);
-  }, 60000);
+  }, 10000);
 }
 
 function server_transfer() {

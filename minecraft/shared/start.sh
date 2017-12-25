@@ -94,6 +94,7 @@ done
 
 if [[ "$SERVER_REQUEST" == "true" ]]; then
 	echo "Waiting for request sidecar to route traffic to $SERVER_PORT..."
+	sleep 30
 	while [[ $(curl -m 5 -s http://$SERVER_API_IP/servers/$SERVER_ID | jq .port) == "25555" ]]; do
 		sleep 10
 	done
