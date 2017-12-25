@@ -6,7 +6,7 @@ const mc = require('minecraft-protocol');
 const id = server_id();
 var cache = server_doc(id);
 
-const origin_port = parseInt(process.env.SERVER_PORT.toString());
+const origin_port = 25565;
 const port = 25555;
 const server = mc.createServer({
   host: '0.0.0.0',
