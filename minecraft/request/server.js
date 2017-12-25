@@ -18,9 +18,7 @@ server.on('login', function(client) {
   let start = new Date();
   let username = client.username
   let response = server_request(username);
-  client.write('disconnect', {
-    reason: JSON.stringify({text: response.message})
-  });
+  client.end(response.message);
   let end = new Date();
   let success = response.success;
   console.log('- ' + username + ' was ' + (success ? 'accepted' : (success == null ? 'deferred' : 'rejected')) + ' after ' + ((end - start) / 1000) + ' seconds');
