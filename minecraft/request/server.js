@@ -57,7 +57,7 @@ function server_listen(iterations=0) {
       }
     }
   } else {
-    server_update(id, {online: true, port: port, current_port: port});
+    server_update(id, {online: true, port: port, current_port: port, visibility: 'UNLISTED'});
     console.log('+ Enabling requests and routing traffic away from the origin server');
   }
   cache = server;
