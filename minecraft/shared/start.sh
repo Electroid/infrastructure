@@ -92,5 +92,13 @@ for query in '*.yml' '*.yaml' '*.json' '*.properties'; do
 	find . -name $query -type f -exec sh -c "echo ' > {}' && envsubst < {} > env && rm {} && mv env {}" \;
 done
 
+if [[ "$SERVER_REQUEST" == "true" ]]; then
+	echo "Waiting for request sidecar to route traffic to $SERVER_PORT..."
+	while [[ $(curl -m 5 -s http://$SERVER_API_IP/servers/$SERVER_ID | jq .port) == "25555" ]]; do
+		sleep 10
+	done
+	echo "Received signal to start server from requester..."
+fi
+
 echo "Starting the server daemon with $JAVA_OPTS..."
 exec java -d64 -jar server.jar nogui -stage $SERVER_STAGE
