@@ -8,7 +8,6 @@ var cache = server_doc(id);
 var routed = false;
 
 const port = 25555;
-const origin_port = parseInt(process.env.SERVER_PORT, 10);
 const server = mc.createServer({
   host: '0.0.0.0',
   port: port,
@@ -70,9 +69,9 @@ function server_listen(iterations=0) {
 }
 
 function server_transfer() {
-  update = server_update(id, {port: 0, current_port: origin_port});
+  update = server_update(id, {port: 0, current_port: 0});
   routed = true;
-  console.log('+ Routing traffic from port ' + port + ' to ' + origin_port);
+  console.log('+ Routing traffic back to the origin server');
 }
 
 function server_ping(retries=3) {
@@ -81,7 +80,7 @@ function server_ping(retries=3) {
   }
   var success = null;
   mc.ping({
-    port: origin_port
+    port: process.env.SERVER_PORT
   }, function(err, results) {
     success = !err;
   });
