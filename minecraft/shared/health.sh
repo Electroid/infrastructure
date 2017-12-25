@@ -14,7 +14,7 @@ if [[ "$SERVER_ROLE" == "BUNGEE" ]]; then
 		echo "nok" && exit 1
 	fi
 else
-	if [[ "$(echo $document | jq .current_port)" == "25555" ]]; then
+	if [[ "$(echo $document | jq .port)" == "25555" ]]; then
 		echo "ok" && exit 0
 	else
 		mcstatus localhost:$SERVER_PORT ping
