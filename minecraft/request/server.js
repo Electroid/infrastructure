@@ -70,9 +70,10 @@ function server_wait() {
 }
 
 function server_transfer() {
-  update = server_update(id, {online: true, port: 0, current_port: origin_port, restart_queued_at: null});
   console.log('+ Routing traffic back to the origin server');
-  server_ping(3 * 60);
+  server_update(id, {online: true, port: 0, restart_queued_at: null});
+  server_ping(2 * 60);
+  server_update(id, {online: true, port: 0, current_port: origin_port});
 }
 
 function server_ping(retries=3) {
@@ -94,7 +95,7 @@ function server_request(username) {
   let server = cache;
   let user = user_doc(username);
   if(user) {
-    if(routed) {
+    if(!cache.port) {
       return {success: null, message: '§eStarting up... please wait a minute before reconnecting'};
     }
     for(var i in server.realms) {
