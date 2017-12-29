@@ -30,7 +30,7 @@ prevent_proxy_connections: false
 timeout: 30000
 servers:
   default:
-    motd: Lobby
-    address: $SERVER_LOBBY_IP:$SERVER_LOBBY_PORT
+    motd: default
+    address: $SERVER_DEFAULT_ROUTE
     restricted: false
 player_limit: -1
