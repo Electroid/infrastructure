@@ -52,7 +52,7 @@ navigator:
       to: '@payload-1'
     3,2:
       icon:
-        id: WORKBENCH
+        id: DIAMOND_PICKAXE
       to: '@mapdev'
     5,2:
       icon:
