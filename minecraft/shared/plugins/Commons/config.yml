@@ -34,19 +34,28 @@ navigator:
       icon:
         id: NETHER_STAR
       to: ${ESCAPE}default
-    2,1:
+    4,1:
       icon:
         id: SPECTRAL_ARROW
       to: '@beta'
-    4,1:
-      icon:
-        id: DIAMOND
-      to: '@mapdev'
-    4,2:
-      icon:
-        id: PUMPKIN
-      to: '@halloween'
-    6,1:
+    2,1:
       icon:
         id: ARROW
       to: '@alpha'
+    6,1:
+      icon:
+        id: MINECART
+      to: '@payload-0'
+    7,1:
+      icon:
+        id: MINECART
+      to: '@payload-1'
+    3,2:
+      icon:
+        id: WORKBENCH
+      to: '@mapdev'
+    5,2:
+      icon:
+        id: END_CRYSTAL
+      to: '@special'
+
