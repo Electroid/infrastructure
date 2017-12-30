@@ -50,6 +50,10 @@ navigator:
       icon:
         id: MINECART
       to: '@payload-1'
+    6,0:
+      icon:
+        id: MINECART
+      to: '@payload-2'
     3,2:
       icon:
         id: DIAMOND_PICKAXE
