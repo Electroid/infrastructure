@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  minReadySeconds: 10
+  revisionHistoryLimit: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      role: web
+  template:
+    metadata:
+      labels:
+        role: web
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
+    spec:
+      nodeSelector:
+        backend: 'true'
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  role: mongo
+      containers:
+        - name: site
+          image: gcr.io/stratus-181519/web:master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 15
+            periodSeconds: 3
+            httpGet:
+              path: /
+              port: 80
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 15
+            periodSeconds: 10
+            httpGet:
+              path: /
+              port: 80
+          envFrom:
+            - secretRef:
+                name: web-secret
+            - configMapRef:
+                name: web-config
+          env:
+            - name: WEB_ROLE
+              value: octc
+          volumeMounts:
+            - name: data
+              mountPath: /minecraft/repo/data:ro
+          resources:
+            requests:
+              memory: 400Mi
+              cpu: 500m
+            limits:
+              memory: 400Mi
+              cpu: 500m
+        - name: smtp
+          image: gcr.io/stratus-181519/smtp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 25
+              name: smtp
+          envFrom:
+            - secretRef:
+                name: web-secret
+      volumes:
+        - name: data
+          hostPath:
+            path: /storage/data

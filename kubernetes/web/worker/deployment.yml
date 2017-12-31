@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  minReadySeconds: 30
+  revisionHistoryLimit: 2
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      role: worker
+  template:
+    metadata:
+      labels:
+        role: worker
+    spec:
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: worker
+          image: gcr.io/stratus-181519/web:master
+          imagePullPolicy: Always
+          command:
+            - config/worker.rb
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 15
+            periodSeconds: 15
+            exec:
+              command:
+                - curl
+                - api/users/by_username/Notch
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 100m
+            limits:
+              memory: 1Gi
+              cpu: 100m
+          envFrom:
+            - secretRef:
+                name: web-secret
+            - configMapRef:
+                name: web-config

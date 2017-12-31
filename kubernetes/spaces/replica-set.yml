@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: spaces
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        role: spaces
+    spec:
+      containers:
+        - name: maps
+          image: stratusnetwork/spaces
+          envFrom:
+            - secretRef:
+                name: spaces-secret
+            - configMapRef:
+                name: spaces-config
+            - configMapRef:
+                name: spaces-maps-config
+            - secretRef:
+                name: maps-secret
+          volumeMounts:
+            - name: maps
+              mountPath: /data
+        - name: web
+          image: stratusnetwork/spaces
+          envFrom:
+            - secretRef:
+                name: spaces-secret
+            - configMapRef:
+                name: spaces-config
+            - configMapRef:
+                name: spaces-web-config
+          volumeMounts:
+            - name: web
+              mountPath: /data
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps
+        - name: web
+          gitRepo:
+            repository: https://github.com/StratusNetwork/OCN.git
+            directory: "."

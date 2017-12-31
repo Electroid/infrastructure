@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      role: api
+  template:
+    metadata:
+      labels:
+        role: api
+    spec:
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: api
+          image: gcr.io/stratus-181519/web:master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 3
+            httpGet:
+              path: /users/by_username/Notch
+              port: 80
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+            periodSeconds: 10
+            httpGet:
+              path: /users/by_username/Notch
+              port: 80
+          envFrom:
+            - secretRef:
+                name: web-secret
+            - configMapRef:
+                name: web-config
+          env:
+            - name: WEB_ROLE
+              value: api
+          resources:
+            requests:
+              memory: 400Mi
+              cpu: 300m
+            limits:
+              memory: 400Mi
+              cpu: 300m

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: storage
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        role: storage
+    spec:
+      containers:
+        - name: maps
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: tournament
+          volumeMounts:
+            - name: maps
+              mountPath: /data
+      volumes:
+        - name: maps
+          hostPath:
+            path: maps

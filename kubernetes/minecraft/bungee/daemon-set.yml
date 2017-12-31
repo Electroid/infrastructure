@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: proxy
+spec:
+  template:
+    metadata:
+      labels:
+        role: proxy
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      nodeSelector:
+        bungee: 'true'
+      containers:
+        - name: proxy
+          image: stratusnetwork/proxy
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              hostPort: 25565
+              name: mc
+          envFrom:
+            - configMapRef:
+                name: proxy-config
+          env:
+            - name: PROXY_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          resources:
+            requests:
+              cpu: 10m
+              memory: 50Mi

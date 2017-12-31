@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: private
+spec:
+  serviceName: private
+  selector:
+    matchLabels:
+      role: private
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        role: private
+    spec:
+      nodeSelector:
+        minecraft: 'true'
+      containers:
+        - name: minecraft
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          readinessProbe:
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 15
+            exec:
+              command:
+                - ./health.sh
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 30
+            exec:
+              command:
+                - ./health.sh
+          resources:
+            requests:
+              cpu: 250m
+              memory: 2Gi
+            limits:
+              cpu: 1250m
+              memory: 2Gi
+          envFrom:
+            - configMapRef:
+                name: private-pro-config
+            - configMapRef:
+                name: private-config
+            - configMapRef:
+                name: minecraft-config
+          volumeMounts:
+            - name: maps
+              mountPath: /minecraft/maps:rw
+        - name: request
+          image: gcr.io/stratus-181519/minecraft:request
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25555
+              name: minecraft
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 250m
+              memory: 100Mi
+          envFrom:
+            - configMapRef:
+                name: private-pro-config
+            - configMapRef:
+                name: private-config
+            - configMapRef:
+                name: minecraft-config
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps-private-pro

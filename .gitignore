@@ -1,5 +1,6 @@
-# Secret docker files
-secrets.env
+# Secret files
+secret.yml
+*.secret
 
 # Maven generated files
 target

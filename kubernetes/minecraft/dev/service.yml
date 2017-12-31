@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev
+  labels:
+    role: dev
+spec:
+  clusterIP: 10.96.0.67
+  ports:
+    - port: 25565
+      name: minecraft
+    - port: 25555
+      name: requests
+  selector:
+    role: dev

@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+spec:
+  rules:
+    - host: stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+    - host: www.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+    - host: web.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+    - host: confirm.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+    - host: avatar.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: avatar
+              servicePort: 80
+    - host: shop.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: shop
+              servicePort: 80
+    - host: maps.stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: maps
+              servicePort: 80

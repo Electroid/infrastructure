@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: official
+  namespace: tm
+spec:
+  serviceName: official
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        role: official
+    spec:
+      containers:
+        - name: official
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: mc
+          envFrom:
+            - configMapRef:
+                name: minecraft-config
+            - configMapRef:
+                name: official-config
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          volumeMounts:
+            - name: maps
+              mountPath: /minecraft/maps:ro
+      volumes:
+        - name: maps
+          hostPath:
+            path: maps

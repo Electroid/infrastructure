@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mapdev-config
+data:
+  SERVER_ID: 593c436bf6e8a857eb000002
+  SERVER_COMMAND_BLOCK: 'true'
+  SERVER_REQUEST: 'false'
+  SERVER_RESTART: 6h

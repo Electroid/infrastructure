@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minecraft-config
+  namespace: tm
+data:
+  SERVER_BOX: production
+  SERVER_PUBLISH: "false"
+  SERVER_SIGNAL: "10"
+  SERVER_RABBIT_IP: 10.0.0.2 # Google only
+  SERVER_API_IP: 10.0.0.2 # Google only
+  SERVER_LOBBY_IP: lobby
+  SERVER_BUYCRAFT: a13a52df72ac4e570089902994387b6019cbbe10
+  SERVER_LOCAL: "false"
+  SERVER_TOURNAMENT_ID: 5a25f1aadf89ca000100003c

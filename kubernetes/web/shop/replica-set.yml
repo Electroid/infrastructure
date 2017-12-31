@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: shop
+spec:
+  template:
+    metadata:
+      labels:
+        role: shop
+    spec:
+      nodeSelector:
+        web: 'true'
+      containers:
+        - name: shop
+          image: stratusnetwork/redirect
+          ports:
+            - containerPort: 80
+              name: shop
+          env:
+            - name: REDIRECT_TARGET
+              value: https://stratusnetwork.buycraft.net

@@ -1,2 +1,2 @@
-# Docker
-Dockerfiles for maintaining Stratus services
+# Infrastructure
+Kubernetes and Docker infrastructure files for @StratusNetwork

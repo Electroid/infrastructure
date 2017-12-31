@@ -1,0 +1,37 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: stats
+spec:
+  schedule: '*/5 * * * *'
+  startingDeadlineSeconds: 60
+  failedJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 0
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        role: stats  
+    spec:
+      template:
+        metadata:
+          labels:
+            role: stats
+        spec:
+          nodeSelector:
+            backend: 'true'
+          restartPolicy: Never
+          containers:
+            - name: stats
+              image: mongo:3.4.6
+              command:
+                - mongo
+                - --host=mongo:27017
+                - /web/stats.js
+              volumeMounts:
+                - name: script
+                  mountPath: /web
+          volumes:
+            - name: script
+              configMap:
+                name: stats-script

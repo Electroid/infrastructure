@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: beta
+spec:
+  serviceName: beta
+  selector:
+    matchLabels:
+      role: beta
+  template:
+    metadata:
+      labels:
+        role: beta
+    spec:
+      nodeSelector:
+        minecraft: 'true'
+      containers:
+        - name: beta
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          resources:
+            requests:
+              cpu: 3000m
+              memory: 6Gi
+            limits:
+              cpu: 3000m
+              memory: 6Gi
+          envFrom:
+            - configMapRef:
+                name: beta-config
+            - configMapRef:
+                name: minecraft-config
+          volumeMounts:
+            - name: maps
+              mountPath: /minecraft/maps:ro
+            - name: rotations
+              mountPath: /minecraft/rotations:ro
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps
+        - name: rotations
+          hostPath:
+            path: /storage/rotations

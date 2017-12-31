@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alpha-config
+data:
+  SERVER_ID: 59a3298366bbaa0001000002
+  SERVER_REQUEST: 'true'
+  SERVER_RESTART: 12h

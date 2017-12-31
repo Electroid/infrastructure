@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+data:
+  WEB_PORT: '80'
+  OCN_BOX: production
+  RAILS_ENV: production
+  RABBIT_HOST: rabbit
+  COUCH_HOST: couch
+  REDIS_HOST: redis
+  DEVISE_HOST: stratus.network

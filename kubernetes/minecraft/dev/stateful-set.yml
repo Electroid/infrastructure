@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dev
+spec:
+  serviceName: dev
+  selector:
+    matchLabels:
+      role: dev
+  template:
+    metadata:
+      labels:
+        role: dev
+    spec:
+      nodeSelector:
+        minecraft: 'true'
+      containers:
+        - name: minecraft
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          readinessProbe:
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 15
+            exec:
+              command:
+                - ./health.sh
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 30
+            exec:
+              command:
+                - ./health.sh
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          envFrom:
+            - configMapRef:
+                name: dev-config
+            - configMapRef:
+                name: minecraft-config
+          volumeMounts:
+            - name: dropbox
+              mountPath: /minecraft/maps:rw
+        - name: request
+          image: gcr.io/stratus-181519/minecraft:request
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25555
+              name: minecraft
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              memory: 100Mi
+          envFrom:
+            - configMapRef:
+                name: dev-config
+            - configMapRef:
+                name: minecraft-config
+        - name: dropbox
+          image: stratusnetwork/dropbox
+          envFrom:
+            - secretRef:
+                name: dropbox-secret
+          env:
+            - name: DROPBOX_FOLDER_REMOTE
+              value: /dev
+          volumeMounts:
+            - name: dropbox
+              mountPath: /dropbox:rw
+      volumes:
+        - name: dropbox
+          hostPath:
+            path: /storage/dropbox/dev

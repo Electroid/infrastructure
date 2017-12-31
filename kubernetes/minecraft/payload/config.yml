@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payload-config
+data:
+  SERVER_IDS: 5a46ce461daf2d000100002a,5a46ce9f1daf2d000100002c,5a47cdd71daf2d000100005b
+  JAVA_OPTS: ""

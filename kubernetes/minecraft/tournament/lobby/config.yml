@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lobby-config
+  namespace: tm
+data:
+  JAVA_OPTS: -Xms1G -Xmx4G
+  SERVER_ID: 59de7cffb6cda90001000024
+  SERVER_ROLE: LOBBY
+  SERVER_PORT: "1337"
+  SERVER_FLAIRS_OVERHEAD: "true"
+  SERVER_FLAIRS_LIMIT: "-1"

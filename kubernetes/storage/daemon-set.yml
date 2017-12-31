@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: storage
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        role: storage
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                 - key: no-storage
+                   operator: DoesNotExist
+                   values: []
+      containers:
+        - name: maps
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          volumeMounts:
+            - name: maps
+              mountPath: /data
+        - name: maps-private-basic
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: private-basic
+          volumeMounts:
+            - name: maps-private-basic
+              mountPath: /data
+        - name: maps-private-pro
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: private-pro
+          volumeMounts:
+            - name: maps-private-pro
+              mountPath: /data
+        - name: maps-tournament
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: tournament
+          volumeMounts:
+            - name: maps-tournament
+              mountPath: /data
+        - name: rotations
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: rotations-secret
+          volumeMounts:
+            - name: rotations
+              mountPath: /data
+        - name: data
+          image: stratusnetwork/git
+          env:
+            - name: GIT_CMD
+              value: curl http://stratus.network/load_models
+            - name: GIT_URL
+              value: https://github.com/StratusNetwork/Data.git
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps
+        - name: maps-private-basic
+          hostPath:
+            path: /storage/maps-private-basic
+        - name: maps-private-pro
+          hostPath:
+            path: /storage/maps-private-pro
+        - name: maps-tournament
+          hostPath:
+            path: /storage/maps-tournament
+        - name: rotations
+          hostPath:
+            path: /storage/rotations
+        - name: data
+          hostPath:
+            path: /storage/data

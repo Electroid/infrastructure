@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: maps
+spec:
+  template:
+    metadata:
+      labels:
+        role: maps
+    spec:
+      nodeSelector:
+        web: 'true'
+      containers:
+        - name: maps
+          image: stratusnetwork/redirect
+          ports:
+            - containerPort: 80
+              name: maps
+          env:
+            - name: REDIRECT_TARGET
+              value: https://stratus.nyc3.digitaloceanspaces.com

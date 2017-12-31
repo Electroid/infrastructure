@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: couch
+spec:
+  serviceName: couch
+  selector:
+    matchLabels:
+      role: couch
+  template:
+    metadata:
+      labels:
+        role: couch
+    spec:
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: couch
+          image: couchdb:1.7
+          ports:
+            - containerPort: 5984
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /opt/couchdb/data:rw
+            - name: config
+              mountPath: /opt/couchdb/etc:rw
+      volumes:
+        - name: data
+          hostPath:
+            path: /persistent/couch/data
+        - name: config
+          hostPath:
+            path: /persistent/couch/config

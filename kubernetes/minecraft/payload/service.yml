@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: payload
+  labels:
+    role: payload
+spec:
+  clusterIP: None
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    role: payload

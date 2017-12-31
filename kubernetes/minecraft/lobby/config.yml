@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lobby-config  
+data:
+  SERVER_IDS: 58e3b3bcf6e8a83410000066,59bdae2866bbaa0001000021,59bdae3cc714330001000034
+  SERVER_ROLE: LOBBY
+  SERVER_PORT: "1337"
+  SERVER_FLAIRS_OVERHEAD: "true"
+  SERVER_FLAIRS_LIMIT: "-1"

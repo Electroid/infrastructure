@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: mongo
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
+    spec:
+      terminationGracePeriodSeconds: 15
+      nodeSelector:
+        backend: 'true'
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  role: mongo
+      containers:
+        - name: mongo
+          image: mongo:3.4.6
+          imagePullPolicy: IfNotPresent
+          command:
+            - mongod
+            - --smallfiles
+            - --noprealloc
+            - --wiredTigerCacheSizeGB=1
+            - --replSet=rs0
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo
+              mountPath: /data/db:rw
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - echo 'db.stats().ok' | mongo --quiet || exit 1
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 125m
+            limits:
+              memory: 1Gi
+              cpu: 125m
+      volumes:
+        - name: mongo
+          hostPath:
+            path: /persistent/mongo

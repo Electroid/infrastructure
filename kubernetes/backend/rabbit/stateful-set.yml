@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbit
+spec:
+  serviceName: rabbit
+  template:
+    metadata:
+      labels:
+        role: rabbit
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
+    spec:
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: rabbit
+          image: rabbitmq:3.6-management-alpine
+          envFrom:
+            - configMapRef:
+                name: rabbit-config
+          ports:
+            - name: queue
+              containerPort: 5672
+            - name: management
+              containerPort: 15672
+            - name: cluster
+              containerPort: 4369
+            - name: dist
+              containerPort: 25672
+          livenessProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+          readinessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+          resources:
+            requests:
+              memory: 200Mi
+              cpu: 250m
+            limits:
+              memory: 200Mi
+              cpu: 250m
+          volumeMounts:
+            - name: rabbit
+              mountPath: /var/lib/rabbitmq:rw
+      volumes:
+        - name: rabbit
+          hostPath:
+            path: /persistent/rabbit

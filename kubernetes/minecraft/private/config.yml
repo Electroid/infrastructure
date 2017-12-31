@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-config
+data:
+  SERVER_OP: '3'
+  SERVER_SIGNAL: '10'
+  SERVER_TIMEOUT: '15'
+  SERVER_REPORTS: "['private']"
+  SERVER_CROSS: 'false'
+  SERVER_STATS: 'false'
+  SERVER_RESTART: 2h
+  SERVER_REQUEST: 'true'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-basic-config
+data:
+  SERVER_SIZE: '10'
+  SERVER_IDS: 5993c47a6669430001000005
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-pro-config
+data:
+  SERVER_SIZE: '20'
+  SERVER_IDS: 5993ea77452b360001000002,5993ea95452b360001000004,5993c47a6669430001000005

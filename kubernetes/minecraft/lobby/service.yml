@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lobby
+  labels:
+    role: lobby
+spec:
+  clusterIP: 10.96.0.51
+  ports:
+    - port: 1337
+      name: mc
+  selector:
+    role: lobby

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: data
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        role: data
+    spec:
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: data
+          image: stratusnetwork/git
+          env:
+            - name: GIT_CMD
+              value: curl http://stratus.network/load_models
+            - name: GIT_URL
+              value: https://github.com/StratusNetwork/Data.git
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          hostPath:
+            path: /storage/data

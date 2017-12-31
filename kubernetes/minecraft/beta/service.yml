@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: beta
+  labels:
+    role: beta
+spec:
+  clusterIP: None
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    role: beta

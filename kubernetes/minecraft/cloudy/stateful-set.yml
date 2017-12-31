@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cloudy
+spec:
+  serviceName: cloudy
+  template:
+    metadata:
+      labels:
+        role: cloudy
+    spec:
+      nodeName: ovh-primary
+      containers:
+        - name: cloudy
+          image: gcr.io/stratus-181519/minecraft:cloudy-master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              name: mc
+          envFrom:
+            - configMapRef:
+                name: cloudy-config
+            - configMapRef:
+                name: minecraft-config
+          env:
+            - name: SERVER_ID
+              value: 5927504cf6e8a8300c00003a
+          volumeMounts:
+            - name: cloudy
+              mountPath: /minecraft/server
+          resources:
+            requests:
+              cpu: 500m
+              memory: 3Gi
+            limits:
+              cpu: 750m
+              memory: 3Gi
+      volumes:
+        - name: cloudy
+          hostPath:
+            path: /storage/cloudy
