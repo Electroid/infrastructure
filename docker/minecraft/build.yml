@@ -4,12 +4,12 @@ steps:
     args:
       - build
       - --tag=minecraft:bukkit-base
-      - --file=bukkit/Dockerfile-base
+      - --file=docker/minecraft/bukkit/Dockerfile-base
       - --build-arg=PROJECT_ID=$PROJECT_ID
       - --build-arg=BRANCH=$_BRANCH
       - --build-arg=VERSION=$_VERSION
       - --build-arg=SPORTBUKKIT_VERSION=$_SPORTBUKKIT_VERSION
-      - bukkit
+      - docker/minecraft/bukkit
     wait_for:
       - '-'
   - id: bukkit-shared
@@ -18,7 +18,7 @@ steps:
       - build
       - --tag=minecraft:bukkit-shared
       - --build-arg=BASE=bukkit
-      - shared
+      - docker/minecraft/shared
     wait_for:
       - bukkit-base 
   - id: bukkit
@@ -27,7 +27,7 @@ steps:
       - build
       - --tag=minecraft:bukkit
       - --tag=gcr.io/$PROJECT_ID/minecraft:bukkit-$_BRANCH
-      - bukkit
+      - docker/minecraft/bukkit
     wait_for:
       - bukkit-shared
   - id: bungee-base
@@ -35,12 +35,12 @@ steps:
     args:
       - build
       - --tag=minecraft:bungee-base
-      - --file=bungee/Dockerfile-base
+      - --file=docker/minecraft/bungee/Dockerfile-base
       - --build-arg=PROJECT_ID=$PROJECT_ID
       - --build-arg=BRANCH=$_BRANCH
       - --build-arg=VERSION=$_VERSION
       - --build-arg=BUNGEECORD_VERSION=$_BUNGEECORD_VERSION
-      - bungee
+      - docker/minecraft/bungee
     wait_for:
       - '-'
   - id: bungee-shared
@@ -49,7 +49,7 @@ steps:
       - build
       - --tag=minecraft:bungee-shared
       - --build-arg=BASE=bungee
-      - shared
+      - docker/minecraft/shared
     wait_for:
       - bungee-base
   - id: bungee
@@ -58,7 +58,7 @@ steps:
       - build
       - --tag=minecraft:bungee
       - --tag=gcr.io/$PROJECT_ID/minecraft:bungee-$_BRANCH
-      - bungee
+      - docker/minecraft/bungee
     wait_for:
       - bungee-shared
 images:
