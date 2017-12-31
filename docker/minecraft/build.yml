@@ -1,10 +1,4 @@
 steps:
-  - id: clone
-    name: gcr.io/cloud-builders/git
-    args:
-      - clone
-      - --depth=1
-      - https://github.com/StratusNetwork/docker.git
   - id: bukkit-base
     name: gcr.io/cloud-builders/docker
     args:
