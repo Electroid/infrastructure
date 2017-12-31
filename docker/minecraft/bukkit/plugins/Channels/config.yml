@@ -1,7 +1,7 @@
 global-chat:
   ## See http://rmsy.github.io/Channels
   ## for detailed formatting information.
-  format: '§r§f{1}§r§f: {3}'
+  format: ' » §r§f{1}§r§f: {3}'
   switch:
     success-msg: Changed default channel to global chat.
     no-change-msg: Global chat is already your default channel.
