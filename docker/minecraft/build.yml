@@ -11,7 +11,7 @@ steps:
       - --build-arg=SPORTBUKKIT_VERSION=$_SPORTBUKKIT_VERSION
       - docker/minecraft/bukkit
     wait_for:
-      - clone
+      - '-'
   - id: bukkit-shared
     name: gcr.io/cloud-builders/docker
     args:
@@ -42,7 +42,7 @@ steps:
       - --build-arg=BUNGEECORD_VERSION=$_BUNGEECORD_VERSION
       - docker/minecraft/bungee
     wait_for:
-      - clone
+      - '-'
   - id: bungee-shared
     name: gcr.io/cloud-builders/docker
     args:
