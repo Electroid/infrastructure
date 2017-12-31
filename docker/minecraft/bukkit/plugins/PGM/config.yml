@@ -34,8 +34,8 @@ map:
   sources:
     public:
       priority: 100
-      path: /minecraft/maps
-      url: https://stratus.nyc3.digitaloceanspaces.com/maps/
+      path: /minecraft/maps/$SERVER_MAP_PATH
+      url: https://stratus.nyc3.digitaloceanspaces.com/maps/$SERVER_MAP_PATH
       depth: 20
   include-path:
     - /minecraft/maps/include
@@ -45,11 +45,11 @@ map:
   global-includes:
     - /minecraft/maps/include/global.xml
 map-ratings:
-  enabled: true
+  enabled: $SERVER_RATINGS
 autorestart:
   enabled: true
   time: 15
-  match-limit: 20
+  match-limit: 30
   memory-limit: -1
 start:
   auto: true
@@ -110,8 +110,8 @@ arrowremoval:
 fishing:
   disable-treasure: false
 scoreboard:
-  show-proximity: false
-  precise-progress: false
+  show-proximity: $SERVER_PROXIMITY
+  precise-progress: $SERVER_PROXIMITY
 wool:
   auto-refill: true
 stats:
@@ -123,7 +123,7 @@ stats:
     max-cumulative-absence: oo
     min-participation-percent: 0
 mutations:
-  enabled: true
+  enabled: $SERVER_MUTATIONS
 license:
   control-access: false
   auto-grant: false
