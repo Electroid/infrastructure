@@ -20,6 +20,7 @@ ENV SERVER_MAP_PATH=''
 ENV SERVER_PROXIMITY=false
 ENV SERVER_MUTATIONS=true
 ENV SERVER_RATINGS=true
+ENV SERVER_CHAT_FORMAT='§f<{1}§r§f>: {3}'
 
 # Start the bukkit server
 CMD exec ./start-bukkit.sh

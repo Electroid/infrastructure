@@ -12,3 +12,4 @@ data:
   SERVER_BUYCRAFT: a13a52df72ac4e570089902994387b6019cbbe10
   SERVER_LOCAL: 'false'
   SERVER_FLAIRS_LIMIT: '1'
+  SERVER_CHAT_FORMAT: '§r§7(§r§6Global§r§7) §r§f{1}§r§f: {3}'
