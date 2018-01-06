@@ -1,13 +1,5 @@
 boundaries:
   use-world-border: false
-  min:
-  - -100
-  - -100
-  - -100
-  max:
-  - 100
-  - 200
-  - 100
 exempt: []
 disabled-permissions: []
 portals:
