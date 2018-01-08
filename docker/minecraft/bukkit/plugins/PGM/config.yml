@@ -28,6 +28,7 @@ rotation:
         count: 60
         priority: 4
 poll:
+  enabled: $SERVER_POLL
   maps:
     path: /minecraft/maps/bannedmaps.txt
 map:
