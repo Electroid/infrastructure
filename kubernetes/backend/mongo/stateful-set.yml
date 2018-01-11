@@ -5,6 +5,9 @@ metadata:
 spec:
   serviceName: mongo
   replicas: 1
+  selector:
+    matchLabels:
+      role: mongo
   template:
     metadata:
       labels:
