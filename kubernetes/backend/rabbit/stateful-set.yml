@@ -4,6 +4,9 @@ metadata:
   name: rabbit
 spec:
   serviceName: rabbit
+  selector:
+    matchLabels:
+      role: rabbit
   template:
     metadata:
       labels:
@@ -44,10 +47,10 @@ spec:
                 - status
           resources:
             requests:
-              memory: 200Mi
+              memory: 300Mi
               cpu: 250m
             limits:
-              memory: 200Mi
+              memory: 300Mi
               cpu: 250m
           volumeMounts:
             - name: rabbit

@@ -4,6 +4,9 @@ metadata:
   name: redis
 spec:
   serviceName: redis
+  selector:
+    matchLabels:
+      role: redis
   template:
     metadata:
       labels:
