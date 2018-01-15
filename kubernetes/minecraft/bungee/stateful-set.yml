@@ -31,6 +31,8 @@ spec:
         - name: bungee
           image: gcr.io/stratus-181519/minecraft:bungee-master
           imagePullPolicy: Always
+          stdin: true
+          tty: true
           readinessProbe:
             exec:
               command:
