@@ -53,7 +53,7 @@ autorestart:
   match-limit: 30
   memory-limit: -1
 start:
-  auto: true
+  auto: $SERVER_AUTO_START
   countdown: 15s
   huddle: 0s
 cycle:
@@ -63,7 +63,7 @@ cycle:
     enabled: false
     countdown: 5s
   match-end:
-    enabled: true
+    enabled: $SERVER_CYCLE_MATCH_END
     countdown: 15s
 join:
   priority-kick: true
@@ -78,7 +78,7 @@ join:
 minimum-players: 1
 teams:
   minimum-players: 1
-  autobalance: true
+  autobalance: $SERVER_AUTO_BALANCE
   allow-choose: true
   allow-switch: true
   even: false
