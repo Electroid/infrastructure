@@ -19,6 +19,8 @@ spec:
         - name: minecraft
           image: gcr.io/stratus-181519/minecraft:bukkit-master
           imagePullPolicy: Always
+          stdin: true
+          tty: true
           ports:
             - containerPort: 25565
               name: minecraft
