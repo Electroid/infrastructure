@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'kubeclient'
+gem 'rest-client'
+gem 'json'
+gem 'recursive-open-struct'
+gem 'async-dns'
+gem 'mongoid'
+gem 'lru_redux'
+gem 'droplet_kit'
+gem 'net-ssh-simple'
+gem 'celluloid-io'
+gem 'whenever'
