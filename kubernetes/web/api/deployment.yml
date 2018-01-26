@@ -27,13 +27,13 @@ spec:
           ports:
             - containerPort: 80
               name: http
-          readinessProbe:
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 3
-            httpGet:
-              path: /users/by_username/Notch
-              port: 80
+          #readinessProbe:
+          #  initialDelaySeconds: 30
+          #  timeoutSeconds: 10
+          #  periodSeconds: 3
+          #  httpGet:
+          #    path: /users/by_username/Notch
+          #    port: 80
           livenessProbe:
             initialDelaySeconds: 60
             timeoutSeconds: 10
