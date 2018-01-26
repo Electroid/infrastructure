@@ -9,6 +9,8 @@ spec:
       labels:
         role: spaces
     spec:
+      nodeSelector:
+        backend: 'true'
       containers:
         - name: maps
           image: stratusnetwork/spaces
@@ -24,23 +26,19 @@ spec:
           volumeMounts:
             - name: maps
               mountPath: /data
-        - name: web
-          image: stratusnetwork/spaces
-          envFrom:
-            - secretRef:
-                name: spaces-secret
-            - configMapRef:
-                name: spaces-config
-            - configMapRef:
-                name: spaces-web-config
-          volumeMounts:
-            - name: web
-              mountPath: /data
+        #- name: web
+        #  image: stratusnetwork/spaces
+        #  envFrom:
+        #    - secretRef:
+        #        name: spaces-secret
+        #    - configMapRef:
+        #        name: spaces-config
+        #    - configMapRef:
+        #        name: spaces-web-config
+        #  volumeMounts:
+        #    - name: web
+        #      mountPath: /data
       volumes:
         - name: maps
           hostPath:
             path: /storage/maps
-        - name: web
-          gitRepo:
-            repository: https://github.com/StratusNetwork/OCN.git
-            directory: "."
