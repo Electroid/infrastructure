@@ -29,16 +29,16 @@ spec:
             - containerPort: 80
               name: http
           readinessProbe:
-            initialDelaySeconds: 30
-            timeoutSeconds: 15
-            periodSeconds: 3
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+            periodSeconds: 30
             httpGet:
               path: /069a79f4-44e9-4726-a5be-fca90e38aaf5/8@2x.png
               port: 80
           livenessProbe:
-            initialDelaySeconds: 60
-            timeoutSeconds: 15
-            periodSeconds: 10
+            initialDelaySeconds: 120
+            timeoutSeconds: 60
+            periodSeconds: 60
             httpGet:
               path: /069a79f4-44e9-4726-a5be-fca90e38aaf5/8@2x.png
               port: 80

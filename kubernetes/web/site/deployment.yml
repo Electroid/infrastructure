@@ -38,16 +38,16 @@ spec:
             - containerPort: 80
               name: http
           readinessProbe:
-            initialDelaySeconds: 30
-            timeoutSeconds: 15
-            periodSeconds: 3
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+            periodSeconds: 30
             httpGet:
               path: /
               port: 80
           livenessProbe:
-            initialDelaySeconds: 60
-            timeoutSeconds: 15
-            periodSeconds: 10
+            initialDelaySeconds: 120
+            timeoutSeconds: 60
+            periodSeconds: 60
             httpGet:
               path: /
               port: 80

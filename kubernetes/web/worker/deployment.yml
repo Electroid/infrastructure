@@ -26,8 +26,8 @@ spec:
             - config/worker.rb
           livenessProbe:
             initialDelaySeconds: 60
-            timeoutSeconds: 15
-            periodSeconds: 15
+            timeoutSeconds: 30
+            periodSeconds: 30
             exec:
               command:
                 - curl
