@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: beta
+  name: mixed
 spec:
-  serviceName: beta
+  serviceName: mixed
   selector:
     matchLabels:
-      role: beta
+      role: mixed
   template:
     metadata:
       labels:
-        role: beta
+        role: mixed
     spec:
       nodeSelector:
-        minecraft: 'true'
+        mixed: 'true'
       containers:
-        - name: beta
+        - name: mixed
           image: gcr.io/stratus-181519/minecraft:bukkit-master
           imagePullPolicy: Always
           stdin: true
@@ -25,14 +25,14 @@ spec:
               name: minecraft
           resources:
             requests:
-              cpu: 3000m
-              memory: 6Gi
+              cpu: 2000m
+              memory: 4Gi
             limits:
               cpu: 3000m
-              memory: 6Gi
+              memory: 4Gi
           envFrom:
             - configMapRef:
-                name: beta-config
+                name: mixed-config
             - configMapRef:
                 name: minecraft-config
           volumeMounts:

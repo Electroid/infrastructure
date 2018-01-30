@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: beta
+  name: mixed
   labels:
-    role: beta
+    role: mixed
 spec:
   clusterIP: None
   ports:
     - port: 25565
       name: minecraft
   selector:
-    role: beta
+    role: mixed
