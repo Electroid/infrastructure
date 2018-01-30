@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: avatar
+spec:
+  schedule: '0 10 * * *' # 2am pst
+  startingDeadlineSeconds: 60
+  failedJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 0
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        role: avatar  
+    spec:
+      template:
+        metadata:
+          labels:
+            role: avatar
+        spec:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          restartPolicy: Never
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+          containers:
+            - name: avatar
+              image: stratusnetwork/kubectl:latest
+              args:
+                - patch
+                - deployment
+                - avatar
+                - -p
+                - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+              volumeMounts:
+                - name: kube
+                  mountPath: /config/.kube
+          volumes:
+            - name: kube
+              hostPath:
+                path: /root/.kube

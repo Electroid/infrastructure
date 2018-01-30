@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: api
+spec:
+  schedule: '0 9 * * *' # 1am pst
+  startingDeadlineSeconds: 60
+  failedJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 0
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        role: api  
+    spec:
+      template:
+        metadata:
+          labels:
+            role: api
+        spec:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          restartPolicy: Never
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+          containers:
+            - name: api
+              image: stratusnetwork/kubectl:latest
+              args:
+                - patch
+                - deployment
+                - api
+                - -p
+                - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+              volumeMounts:
+                - name: kube
+                  mountPath: /config/.kube
+          volumes:
+            - name: kube
+              hostPath:
+                path: /root/.kube

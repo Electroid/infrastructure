@@ -1,0 +1,172 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stats-script
+data:
+  stats.js: "// -----------------------\n// ---- Configuration ----\n// -----------------------\n\nvar
+    second_duration   = 1000;\nvar minute_duration   = 60 * second_duration;\nvar
+    hour_duration     = 60 * minute_duration;\nvar day_duration      = 24 * hour_duration;\nvar
+    week_duration     = 7  * day_duration;\nvar eternity_duration = new Date().getTime();\n\nvar
+    profiles = {\n\t\"day\": day_duration,\n\t\"week\": week_duration,\n\t\"eternity\":
+    eternity_duration,\n};\n\n// ---------------------------\n// ---- Utility Functions
+    ----\n// ---------------------------\n\n_ = {\n// merge the given arguments into
+    an array\nmerge: function(vargs) {\n\tvar result = {};\n\tfor (var i = 0; i <
+    arguments.length; i++) {\n\t\tvar obj = arguments[i];\n\t\tfor (var key in obj)
+    {\n\t\t\tresult[key] = obj[key];\n\t\t}\n\t}\n\treturn result;\n},\n// identity
+    function - used in identity transformation example\nid: function(obj) {\n\treturn
+    obj;\n},\n// invert numbers, arrays, or objects\ninverse: function(obj) {\n\tswitch
+    (Object.prototype.toString.call(obj)) {\n\tcase \"[object Number]\":\n\t\treturn
+    -obj;\n\n\tcase \"[object Array]\":\n\t\treturn obj.map(_.inverse);\n\n\tcase
+    \"[object Object]\":\n\t\tvar result = {};\n\t\tfor (var key in obj) {\n\t\t\tresult[key]
+    = _.inverse(obj[key]);\n\t\t}\n\t\treturn result;\n\n\tdefault:\n\t\treturn obj;\n\t}\n},\nsum:
+    function(field, base, vargs) {\n\tvar result = base[field] || 0;\n\tfor(var i
+    = 2; i < arguments.length; i++) {\n\t\tresult += arguments[i][field] || 0;\n\t}\n\tbase[field]
+    = result;\n},\ngreatest: function(field, def, base, vargs) {\n\tvar result = base[field]
+    || def;\n\tfor(var i = 3; i < arguments.length; i++) {\n\t\tvar x = arguments[i][field];\n\t\tif(x
+    && x > result) {\n\t\t\tresult = x;\n\t\t}\n\t}\n\tbase[field] = result;\n},\n//
+    determine the unique elements of an array\nuniq: function(array) {\n\tvar hash
+    = {};\n\tvar result = [];\n\tvar array = array || result;\n\tfor (var i = 0, l
+    = array.length; i < l; ++i){\n\t\tif(hash.hasOwnProperty(array[i])) continue;\n\t\tresult.push(array[i]);\n\t\thash[array[i]]
+    = 1;\n\t}\n\treturn result;\n},\n// concat several objects\nconcat: function(field,
+    vargs) {\n\tvar result = [];\n\tfor (var i = 1; i < arguments.length; i++) {\n\t\tvar
+    x = arguments[i][field];\n\t\tresult.concat(x);\n\t}\n\treturn result;\n},\n//
+    determine if a value is meaningless (empty, null, 0, infinite date)\nmeaningless:
+    function(obj) {\n\tif (obj == null) return true;\n\tif (obj == 0) return true;\n\tif
+    (isNaN(obj)) return true;\n\tif (obj instanceof Date) return obj.getTime() ==
+    0;\n\tif (obj instanceof Object && Object.keys(obj).length == 0) return true;\n\n\treturn
+    false;\n},\n// calculate kd, kk, and tk ratios given a stats object\ncalculate_kd:
+    function(obj) {\n\tobj.kd     = (obj.kills      || 0) / (obj.deaths        ||
+    1);\n\tobj.kk     = (obj.kills      || 0) / (obj.deaths_player || 1);\n\tobj.tkrate
+    = (obj.kills_team || 0) / (obj.kills         || 1);\n},\n};\n\n// --------------------------------\n//
+    ---- Generic Implementation ----\n// --------------------------------\n//\n\n/*\n
+    * Map, Reduce, and Finalize can all use variables defined in the map reduce scope.\n
+    *\n * The variables included in the scope and their descriptions are listed below.\n
+    *\n * _        - collection of utility functions\n * profile  - time period being
+    map reduced\n * map      - map function for the specific collection\n * reduce
+    \  - reduce function for the specific collection\n * finalize - finalize function
+    for the specific collection, can be null\n * key      - string that specifies
+    which field has the date object\n *\n */\n\nstats_map = function() {\n\t// get
+    the implementation object\n\tvar map_result = map.call(this);\n\n\t// store the
+    date and family\n\tvar date = map_result.date;\n\tvar family = map_result.family;\n\n\tfor
+    (var emit_key in map_result.emit) {\n\t\tvar emit_obj = map_result.emit[emit_key];\n\n\t\ttransformations.forEach(function(transform)
+    {\n\t\t\tif (transform.start <= date && date < transform.end) {\n\t\t\t\temit_obj
+    = transform.fn(emit_obj);\n\t\t\t}\n\t\t});\n\n\t\tvar emit_result = {};\n\t\temit_result[profile]
+    = {};\n\t\temit_result[profile][\"global\"] = {};\n\t\temit_result[profile][family]
+    = emit_obj;\n\n\t\temit(emit_key, emit_result);\n\t}\n}\n\nstats_reduce = function(key,
+    values) {\n\tvar result = {};\n\n\tvalues.forEach(function(value) {\n\t\tfor(var
+    profile in value) {\n\t\t\tresult[profile] = result[profile] || {};\n\t\t\tresult[profile][\"global\"]
+    = {};\n\n\t\t\tfor(var family in value[profile]) {\n\t\t\t\tvar family_result
+    = result[profile][family] || {};\n\t\t\t\tvar obj = value[profile][family];\n\n\t\t\t\treduce(key,
+    family_result, obj);\n\n\t\t\t\tfor (var key in obj) {\n\t\t\t\t\tif (family_result[key]
+    === undefined && obj[key] !== undefined) {\n\t\t\t\t\t\tfamily_result[key] = obj[key];\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tresult[profile][family]
+    = family_result;\n\t\t\t}\n\t\t}\n\t});\n\n\treturn result;\n}\n\nstats_finalize
+    = function(key, value) {\n\tvar totals = {\n\t\tplaying_time               : {result:
+    0, type: \"total\"},\n\t\tdeaths                     : {result: 0, type: \"total\"},\n\t\tdeaths_player
+    \             : {result: 0, type: \"total\"},\n\t\tdeaths_team                :
+    {result: 0, type: \"total\"},\n\t\tkills                      : {result: 0, type:
+    \"total\"},\n\t\tkills_team                 : {result: 0, type: \"total\"},\n\t\twool_placed
+    \               : {result: 0, type: \"total\"},\n\t\tcores_leaked               :
+    {result: 0, type: \"total\"},\n\t\tdestroyables_destroyed     : {result: 0, type:
+    \"total\"},\n\t\tlast_death                 : {result: new Date(0), type: \"recent\"},\n\t\tlast_kill
+    \                 : {result: new Date(0), type: \"recent\"},\n\t\tlast_wool_placed
+    \          : {result: new Date(0), type: \"recent\"},\n\t\tlast_core_leaked           :
+    {result: new Date(0), type: \"recent\"},\n\t\tlast_destroyable_destroyed : {result:
+    new Date(0), type: \"recent\"},\n\t};\n\n\t// call finalize function (can be null)\n\tif
+    (finalize) {\n\t\tfor (var profile in value) {\n\t\t\tfor (var family in value[profile])
+    {\n\t\t\t\tfinalize(key, value[profile][family]);\n\t\t\t}\n\t\t}\n\t}\n\n\tfor
+    (var stat in totals) {\n\t\tfor (var profile in value) {\n\t\t\tfor (var family
+    in value[profile]) {\n\t\t\t\tif(family == \"global\") continue;\n\n\t\t\t\tif(_.meaningless(value[profile][family][stat]))
+    {\n\t\t\t\t\tdelete value[profile][family][stat];\n\t\t\t\t\tcontinue;\n\t\t\t\t}\n\n\t\t\t\tswitch
+    (totals[stat].type) {\n\t\t\t\tcase \"total\":\n\t\t\t\t\ttotals[stat].result
+    += (value[profile][family][stat] || 0);\n\t\t\t\t\tbreak;\n\t\t\t\tcase \"recent\":\n\t\t\t\t\tif(value[profile][family][stat]
+    > (totals[stat].result || new Date(0))) {\n\t\t\t\t\t\ttotals[stat].result = value[profile][family][stat];\n\t\t\t\t\t}\n\t\t\t\t\tbreak;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\ttotals[stat]
+    = totals[stat].result;\n\n\t\tif(_.meaningless(totals[stat])) delete totals[stat];\n\t}\n\n\t_.calculate_kd(totals);\n\n\tvalue[profile][\"global\"]
+    = totals;\n\n\treturn value;\n}\n\nvar stats = {}; // records how to mapreduce
+    on certain collections\n\n// -------------------------------\n// ---- Deaths Implementation
+    ----\n// -------------------------------\n\ndeaths_map = function() {\n\tvar family
+    = this.family || \"default\";\n\n\tvar victim = {last_death: this.date};\n\tvar
+    killer = {};\n\n\tif (this.teamkill) {\n\t\tvictim.deaths_team = 1;\n\t\tif (this.killer)
+    killer.kills_team = 1;\n\t} else {\n\t\tvictim.deaths = 1;\n\t\tif (this.killer)
+    {\n\t\t\tvictim.deaths_player = 1;\n\t\t\tkiller.kills = 1;\n\t\t\tkiller.last_kill
+    = this.date;\n\t\t}\n\t}\n\n\tvar emit = {};\n\temit[this.victim] = victim;\n\tif
+    (this.killer) emit[this.killer] = killer;\n\n\treturn { \"date\": this.date, \"family\":
+    family, \"emit\": emit };\n}\n\ndeaths_reduce = function(key, result, obj) {\n\t[\"deaths\",
+    \"deaths_player\", \"deaths_team\", \"kills\", \"kills_team\"].forEach(function(field)
+    {\n\t\t_.sum(field, result, obj);\n\t});\n\n\t[\"last_death\", \"last_kill\"].forEach(function(field)
+    {\n\t\t_.greatest(field, new Date(0), result, obj);\n\t});\n}\n\ndeaths_finalize
+    = function(key, value) {\n\t_.calculate_kd(value);\n\treturn value;\n}\n\nstats[\"deaths\"]
+    = {\n\tmap: deaths_map,\n\treduce: deaths_reduce,\n\tfinalize: deaths_finalize,\n\tkey:
+    \"date\",\n\tquery: {\n\t\tdate: {$exists: 1},\n\t\tvictim: {$exists: 1}\n\t},\n\tdb:
+    \"oc_deaths\",\n};\n\n// ---------------------------------------\n// ---- Participations
+    Implementation ----\n// ---------------------------------------\n\nparticipations_map
+    = function() {\n\tvar emit = {};\n\n\tvar family = this.family || \"default\";\n\tvar
+    duration = this.end.getTime() - this.start.getTime();\n\n\t// 'team_id' is the
+    current field, 'team' is only on legacy documents\n\tif (this.team_id || (this.team
+    && this.team != \"Observers\" && this.team != \"Spectators\")) {\n\t\temit[\"playing_time\"]
+    = duration;\n\t}\n\n\tvar emit_result = {};\n\temit_result[this.player] = emit;\n\n\treturn
+    { date: this.end, family: family, emit: emit_result };\n}\n\nparticipations_reduce
+    = function(key, result, obj) {\n\t[\"playing_time\"].forEach(function(field) {\n\t\t_.sum(field,
+    result, obj);\n\t});\n}\n\nstats[\"participations\"] = {\n\tmap: participations_map,\n\treduce:
+    participations_reduce,\n\tkey: \"end\",\n\tquery: {\n\t\tstart: {$exists: 1},\n\t\tend:
+    {$exists: 1},\n\t\tplayer: {$exists: 1},\n\t},\n\tdb: \"oc_participations\",\n};\n\n//
+    -----------------------------------\n// ---- Objectives Implementation ----\n//
+    -----------------------------------\n\nobjectives_map = function() {\n\tvar emit
+    = {};\n\n\tvar family = this.family || \"default\";\n\n\tswitch (this.type) {\n\tcase
+    \"wool_place\":\n\t\temit[\"wool_placed\"] = 1;\n\t\temit[\"last_wool_placed\"]
+    = this.date;\n\t\tbreak;\n\tcase \"destroyable_destroy\":\n\t\temit[\"destroyables_destroyed\"]
+    = 1;\n\t\temit[\"last_destroyable_destroyed\"] = this.date;\n\t\tbreak;\n\tcase
+    \"core_break\":\n\t\temit[\"cores_leaked\"] = 1;\n\t\temit[\"last_core_leaked\"]
+    = this.date;\n\t\tbreak;\n\t}\n\n\tvar emit_result = {};\n\temit_result[this.player]
+    = emit;\n\n\treturn { date: this.date, family: family, emit: emit_result };\n}\n\nobjectives_reduce
+    = function(key, result, obj) {\n\t[\"wool_placed\", \"destroyables_destroyed\",
+    \"cores_leaked\"].forEach(function(field) {\n\t\t_.sum(field, result, obj);\n\t});\n\n\t[\"last_wool_placed\",
+    \"last_destroyable_destroyed\", \"last_core_leaked\"].forEach(function(field)
+    {\n\t\t_.greatest(field, new Date(0), result, obj);\n\t});\n}\n\nstats[\"objectives\"]
+    = {\n\tmap: objectives_map,\n\treduce: objectives_reduce,\n\tkey: \"date\",\n\tquery:
+    {\n\t\tdate: {$exists: 1},\n\t\tplayer: {$exists: 1},\n\t},\n\tdb: \"oc_objectives\",\n};\n\n//
+    ----------------------------------\n// ---- Execution Implementation ----\n//
+    ----------------------------------\n\n/*\n * We subtract 1 minute from the current
+    time to help deal with improper statistics.\n *\n * Improper statistics happen
+    because the timestamp is generated on the client side\n * and there can be anywhere
+    from a millisecond to a multiple second delay on insertion.\n *\n * This bug originally
+    caused negative statistics because the death/objective/playing time\n * statistic
+    wasn't credited to the player but was later subtracted.\n *\n * Sliding our time
+    frame window lets us catch some of these delayed statistics and\n * massively
+    decrease the number of improper statistics. Using server-side timestamps\n * would
+    fix the problem, but, we would rather have timestamps match the game.\n */\nvar
+    now = new Date(new Date().getTime() - (1 * minute_duration));\n\nvar upsert =
+    {};\n\nfor (var profile in profiles) {\n\tupsert[\"last_run.\" + profile] = now;\n}\n\nvar
+    jobsDB = db.getSiblingDB(\"oc_jobs\");\nvar j = jobsDB.jobs.findAndModify({\n\tquery:
+    {name: \"player_stats\"},\n\tupdate: {$set: upsert},\n\tupsert: true\n});\n\nvar
+    scope_base = { \"_\": _ };\n\nfor (var profile in profiles) {\n\t// calculate
+    when the profile was last run\n\tvar last_run = (j && j.last_run && j.last_run[profile])
+    || new Date(0);\n\n\tprint(\"Profile '\" + profile + \"' last run at \" + last_run);\n\n\tvar
+    duration = profiles[profile];\n\n\t// calculate the add / re\n\tvar add_start
+    = last_run;\n\tvar add_end = now;\n\tvar sub_start = new Date(Math.max(0, add_start.getTime()
+    - duration));\n\tvar sub_end = new Date(Math.max(0, add_end.getTime() - duration));\n\n\t//
+    sub: |-----------|\n\t// add:\t\t|--------------|\n\t//\n\t// sub: |------|\n\t//
+    add:\t\t\t |---------|\n\tif (add_start < sub_end) {\n\t\tvar old_end = sub_end;\n\t\tsub_end
+    = add_start;\n\t\tadd_start = old_end;\n\t}\n\n\t// describes what function needs
+    to apply to a selected range\n\t// the commented out identity transformation exists
+    for educational purposes\n\tvar transformations = [\n\t\t/*\n\t\t{\n\t\t\tstart:
+    add_start,\n\t\t\tend: add_end,\n\t\t\tfn: _.id,\n\t\t},\n\t\t*/\n\t\t{\n\t\t\tstart:
+    sub_start,\n\t\t\tend: sub_end,\n\t\t\tfn: _.inverse,\n\t\t},\n\t];\n\n\tvar scope_profile
+    = _.merge(scope_base, {\n\t\tprofile: profile,\n\t\ttransformations: transformations,\n\t});\n\n\tvar
+    total_result = {\n\t\tresult: \"oc_player_stats_\" + profile,\n\t\ttimeMillis:
+    0,\n\t\tcounts: {\n\t\t\tinput:  0,\n\t\t\temit:   0,\n\t\t\treduce: 0,\n\t\t\toutput:
+    0,\n\t\t},\n\t};\n\n\tfor (var collection in stats) {\n\t\tprint(\"Processing
+    collection: \" + collection);\n\n\t\tvar info = stats[collection];\n\n\t\t// local
+    variables accessible by the map, reduce, and finalize functions\n\t\tvar scope
+    = _.merge(scope_profile, {\n\t\t\tkey: info.key,\n\t\t\tmap: info.map,\n\t\t\treduce:
+    info.reduce,\n\t\t\tfinalize: info.finalize,\n\t\t});\n\n\t\tvar add_range = {};\n\t\tadd_range[info.key]
+    = {$gte: add_start, $lt: add_end};\n\n\t\tvar sub_range = {};\n\t\tsub_range[info.key]
+    = {$gte: sub_start, $lt: sub_end};\n\n\t\tvar query = _.merge(info.query || {},
+    {\n\t\t\t$or: [ add_range, sub_range ]\n\t\t});\n\n\t\t// do mapreduce\n\t\tvar
+    options = {\n\t\t\tout: {reduce: \"player_stats_\" + profile, db: \"oc_playerstats\"},\n\t\t\tscope:
+    scope,\n\t\t\tquery: query,\n\t\t\tfinalize: stats_finalize,\n\t\t};\n\n\t\tvar
+    database = db.getSiblingDB(info.db);\n\t\tvar result = database[collection].mapReduce(stats_map,
+    stats_reduce, options);\n\n\t\tprintjson(result);\n\n\t\tif (result.ok) {\n\t\t\ttotal_result.timeMillis
+    += result.timeMillis;\n\t\t\ttotal_result.counts.input += result.counts.input;\n\t\t\ttotal_result.counts.emit
+    += result.counts.emit;\n\t\t\ttotal_result.counts.reduce += result.counts.reduce;\n\t\t\ttotal_result.counts.output
+    += result.counts.output;\n\t\t}\n\t}\n\n\tprint(\"Results for '\" + profile +
+    \"' profile\")\n\tprintjson(total_result);\n}\n\n"
