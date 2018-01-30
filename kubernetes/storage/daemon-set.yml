@@ -9,14 +9,8 @@ spec:
       labels:
         role: storage
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                 - key: no-storage
-                   operator: DoesNotExist
-                   values: []
+      nodeSelector:
+        minecraft: 'true'
       containers:
         - name: maps
           image: stratusnetwork/git
