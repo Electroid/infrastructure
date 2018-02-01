@@ -31,6 +31,7 @@ settings:
   isolate-plugins: true
   tick-empty-worlds: false
   empty-server-suspend: 1m
+  advancements-enabled: false
 spawn-limits:
   monsters: 70
   animals: 15
