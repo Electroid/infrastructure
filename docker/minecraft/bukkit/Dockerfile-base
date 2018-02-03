@@ -31,7 +31,7 @@ ADD $URL/tc/oc/raven-bukkit/1.11-SNAPSHOT/raven-bukkit-1.11-SNAPSHOT.jar raven.j
 ADD $URL/other/protocolsupport.jar protocol.jar
 ADD $URL/other/commandbook.jar commandbook.jar
 ADD $URL/other/buycraft.jar buycraft.jar
+ADD $URL/other/worldedit.jar worldedit.jar
 # TODO: CommandBook, ChatModerator, ...
-ADD https://dev.bukkit.org/projects/worldedit/files/latest worldedit.jar
 
 WORKDIR ..
