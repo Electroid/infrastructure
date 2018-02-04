@@ -17,15 +17,15 @@ rotation:
         priority: 1
       mini:
         path: /minecraft/rotations/!SERVER_ROTATION/mini
-        count: 22
+        count: 26
         priority: 2
       medium:
         path: /minecraft/rotations/!SERVER_ROTATION/medium
-        count: 34
+        count: 40
         priority: 3		
       mega:
         path: /minecraft/rotations/!SERVER_ROTATION/mega
-        count: 54
+        count: 60
         priority: 4
 poll:
   enabled: $SERVER_POLL
