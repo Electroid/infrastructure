@@ -1,6 +1,6 @@
 restart:
   interval: 1m
-  uptime: 18h
+  uptime: $SERVER_UPTIME_LIMIT
   kick-limit: $SERVER_KICK_LIMIT
   defer-timeout: 72h
   empty-timeout: $SERVER_EMPTY_TIMEOUT
