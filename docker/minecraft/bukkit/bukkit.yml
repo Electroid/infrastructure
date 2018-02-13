@@ -32,6 +32,7 @@ settings:
   tick-empty-worlds: false
   empty-server-suspend: 1m
   advancements-enabled: false
+  disable-shield-knockback: true
 spawn-limits:
   monsters: 70
   animals: 15
