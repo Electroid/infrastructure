@@ -51,7 +51,7 @@ fi
 echo "Performing role specific commands..."
 if [[ "$SERVER_ROLE" == "PGM" ]]; then
 	rm plugins/lobby.jar
-	if [[ "$SERVER_SENTRY_DSN" == "null" ]]; then
+	if [[ "$SERVER_TOURNAMENT_ID" == "null" ]]; then
 		rm plugins/tourney.jar
 	fi
 	if [[ "$SERVER_ROTATION" == "null" ]]; then
