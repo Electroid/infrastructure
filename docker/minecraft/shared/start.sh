@@ -13,10 +13,7 @@ if [ -z "$SERVER_IDS" ]; then
 else
 	SERVER_IDS_ARRAY=(`echo $SERVER_IDS | sed 's/,/\n/g'`)
 	SERVER_INDEX="${HOSTNAME: -1}"
-	if [[ "$SERVER_INDEX" =~ ^-?[0-9]+$ ]]; then
-		export SERVER_ID="${SERVER_IDS_ARRAY[${SERVER_INDEX}]}"
-		echo "Selected list server id at index $SERVER_INDEX... $SERVER_ID"
-	else
+	if [[ "$SERVER_SET" == "true" ]]; then
 		for id in "${SERVER_IDS_ARRAY[@]}"; do
 			if [[ $(curl -m 5 -s http://$SERVER_API_IP/servers/$id | jq .online) == "false" ]]; then
 				export SERVER_ID="$id"
@@ -27,6 +24,9 @@ else
 		if [[ "$SERVER_ID" == "null" ]]; then
 			echo "Could not find a possible server id for hostname... $HOSTNAME" && exit 1
 		fi
+	else
+		export SERVER_ID="${SERVER_IDS_ARRAY[${SERVER_INDEX}]}"
+		echo "Selected list server id at index $SERVER_INDEX... $SERVER_ID"
 	fi
 fi
 
