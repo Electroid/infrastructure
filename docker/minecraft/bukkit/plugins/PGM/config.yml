@@ -17,15 +17,15 @@ rotation:
         priority: 1
       mini:
         path: /minecraft/rotations/!SERVER_ROTATION/mini
-        count: 20
+        count: 24
         priority: 2
       medium:
         path: /minecraft/rotations/!SERVER_ROTATION/medium
-        count: 32
+        count: 34
         priority: 3		
       mega:
         path: /minecraft/rotations/!SERVER_ROTATION/mega
-        count: 48
+        count: 50
         priority: 4
       mammoth:
         path: /minecraft/rotations/!SERVER_ROTATION/mammoth
