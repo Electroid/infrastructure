@@ -17,7 +17,7 @@ rotation:
         priority: 1
       mini:
         path: /minecraft/rotations/!SERVER_ROTATION/mini
-        count: 22
+        count: 24
         priority: 2
       medium:
         path: /minecraft/rotations/!SERVER_ROTATION/medium
