@@ -10,27 +10,8 @@ rotation:
   default-name: default
   initial-wait: 20000
   providers:
-    file:
-      default:
-        path: /minecraft/rotations/!SERVER_ROTATION/default
-        count: 0
-        priority: 1
-      mini:
-        path: /minecraft/rotations/!SERVER_ROTATION/mini
-        count: 24
-        priority: 2
-      medium:
-        path: /minecraft/rotations/!SERVER_ROTATION/medium
-        count: 34
-        priority: 3		
-      mega:
-        path: /minecraft/rotations/!SERVER_ROTATION/mega
-        count: 50
-        priority: 4
-      mammoth:
-        path: /minecraft/rotations/!SERVER_ROTATION/mammoth
-        count: 64
-        priority: 5
+    files:
+      - /minecraft/rotations/!SERVER_ROTATION
 poll:
   enabled: $SERVER_POLL
   maps:
