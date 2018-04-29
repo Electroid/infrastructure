@@ -7,7 +7,7 @@ environment:
   ranked: false
 rotation:
   dynamic: true
-  default-name: default
+  default-name: Default
   initial-wait: 20000
   providers:
     files:
