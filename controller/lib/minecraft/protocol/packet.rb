@@ -1,4 +1,4 @@
-require_relative 'data'
+require "minecraft/protocol/data"
 
 module Minecraft
     module Protocol

@@ -1,4 +1,4 @@
-require_relative 'protocol/packet'
+require "minecraft/protocol/packet"
 
 module Minecraft
     module Protocol

@@ -1,43 +1,30 @@
 require "kubeclient"
 require "celluloid/io"
- 
+
+# Represents an object that interacts with the Kubernetes cluster. 
 module Kubernetes
- 
-    # TODO:
-    # All of this code is still in a testing phase
- 
     def cluster
-        @kubernetes ||= Kubeclient::Client.new(
-            "https://192.168.99.100:8443/api/", "v1",
-            ssl_options: {
-                client_cert: OpenSSL::X509::Certificate.new(File.read('/Users/fun/.minikube/client.crt')),
-                client_key:  OpenSSL::PKey::RSA.new(File.read('/Users/fun/.minikube/client.key')),
-                ca_file:     '/Users/fun/.minikube/ca.crt',
-                verify_ssl:  OpenSSL::SSL::VERIFY_PEER
-            },
-            socket_options: {
-                socket_class: Celluloid::IO::TCPSocket,
-                ssl_socket_class: Celluloid::IO::SSLSocket
+        @config ||= Kubeclient::Config.read(File.expand_path("~/.kube/config"))
+        unless @client
+            context = @config.context
+            ssl_options = context.ssl_options
+            ssl_options[:verify_ssl] = 0
+        end
+        @client ||= Kubeclient::Client.new(
+            context.api_endpoint,
+            context.api_version,
+            {
+                ssl_options: ssl_options,
+                auth_options: context.auth_options,
+                socket_options: {
+                    socket_class: Celluloid::IO::TCPSocket,
+                    ssl_socket_class: Celluloid::IO::SSLSocket
+                }
             }
         )
     end
- 
-    # HACK: should be 'name' of droplet
-    def name
-        "minikube"
+
+    def nodes
+        cluster.get_nodes.map{|node| Node.new(node.metadata.name)}
     end
- 
-    def node
-        cluster.get_node(name) 
-    end
- 
-    def labels
-        node.metadata.labels.to_h.keys.map{|label| label.to_s}
-    end
- 
-    # TODO:
-    # Restart set (patching deployment strategy)
-    # Scale up sets
-    # Scale up nodes
- 
 end
