@@ -4,18 +4,19 @@ metadata:
   name: nginx-ingress
   namespace: kube-system
 spec:
-  type: NodePort
-  externalTrafficPolicy: Local
-  sessionAffinity: ClientIP
+  clusterIP: None
+  # type: NodePort
+  # externalTrafficPolicy: Local
+  # sessionAffinity: ClientIP
   ports:
   - name: http
     port: 8080
-    nodePort: 80
+    # nodePort: 80
     targetPort: 80
     protocol: TCP
   - name: https
     port: 443
-    nodePort: 443
+    # nodePort: 443
     targetPort: 443
     protocol: TCP
   selector:

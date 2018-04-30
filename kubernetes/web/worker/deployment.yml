@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: worker
 spec:
-  minReadySeconds: 30
-  revisionHistoryLimit: 2
+  minReadySeconds: 60
   replicas: 1
   strategy:
     type: Recreate
@@ -34,11 +33,8 @@ spec:
                 - api/users/by_username/Notch
           resources:
             requests:
-              memory: 1Gi
-              cpu: 100m
-            limits:
-              memory: 1Gi
-              cpu: 100m
+              memory: 100Mi
+              cpu: 50m
           envFrom:
             - secretRef:
                 name: web-secret

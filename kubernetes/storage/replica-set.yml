@@ -4,6 +4,9 @@ metadata:
   name: data
   namespace: kube-system
 spec:
+  selector:
+    matchLabels:
+      role: data
   template:
     metadata:
       labels:

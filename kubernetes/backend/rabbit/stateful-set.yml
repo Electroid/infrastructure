@@ -25,12 +25,16 @@ spec:
           ports:
             - name: queue
               containerPort: 5672
+              hostPort: 5672
             - name: management
               containerPort: 15672
+              hostPort: 15672
             - name: cluster
               containerPort: 4369
+              hostPort: 4369
             - name: dist
               containerPort: 25672
+              hostPort: 25672
           livenessProbe:
             initialDelaySeconds: 30
             timeoutSeconds: 5
@@ -47,15 +51,11 @@ spec:
                 - status
           resources:
             requests:
-              memory: 300Mi
-              cpu: 250m
-            limits:
-              memory: 300Mi
-              cpu: 250m
+              memory: 100Mi
+              cpu: 50m
           volumeMounts:
             - name: rabbit
               mountPath: /var/lib/rabbitmq:rw
       volumes:
         - name: rabbit
-          hostPath:
-            path: /persistent/rabbit
+          emptyDir:

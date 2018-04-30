@@ -32,13 +32,11 @@ spec:
           command:
             - mongod
             - --smallfiles
-            - --noprealloc
             - --wiredTigerCacheSizeGB=1
-            - --replSet=rs0
           ports:
             - containerPort: 27017
           volumeMounts:
-            - name: mongo
+            - name: storage
               mountPath: /data/db:rw
           livenessProbe:
             exec:
@@ -48,12 +46,14 @@ spec:
                 - echo 'db.stats().ok' | mongo --quiet || exit 1
           resources:
             requests:
-              memory: 1Gi
-              cpu: 125m
-            limits:
-              memory: 1Gi
-              cpu: 125m
-      volumes:
-        - name: mongo
-          hostPath:
-            path: /persistent/mongo
+              memory: 750Mi
+              cpu: 100m
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi

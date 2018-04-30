@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  minReadySeconds: 10
-  revisionHistoryLimit: 2
+  minReadySeconds: 30
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -64,11 +63,8 @@ spec:
               mountPath: /minecraft/repo/data:ro
           resources:
             requests:
-              memory: 400Mi
-              cpu: 500m
-            limits:
-              memory: 400Mi
-              cpu: 500m
+              memory: 200Mi
+              cpu: 100m
         - name: smtp
           image: gcr.io/stratus-181519/smtp:latest
           imagePullPolicy: IfNotPresent
@@ -78,7 +74,20 @@ spec:
           envFrom:
             - secretRef:
                 name: web-secret
+          resources:
+            requests:
+              memory: 10Mi
+              cpu: 10m
+        - name: data
+          image: stratusnetwork/git
+          env:
+            - name: GIT_CMD
+              value: curl http://stratus.network/load_models
+            - name: GIT_URL
+              value: https://github.com/StratusNetwork/Data.git
+          volumeMounts:
+            - name: data
+              mountPath: /data
       volumes:
         - name: data
-          hostPath:
-            path: /storage/data
+          emptyDir:

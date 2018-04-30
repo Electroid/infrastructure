@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: avatar
 spec:
-  minReadySeconds: 10
-  revisionHistoryLimit: 2
+  minReadySeconds: 30
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -52,8 +51,5 @@ spec:
               value: avatar
           resources:
             requests:
-              memory: 400Mi
-              cpu: 200m
-            limits:
-              memory: 400Mi
-              cpu: 200m
+              memory: 200Mi
+              cpu: 100m

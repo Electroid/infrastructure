@@ -21,14 +21,22 @@ spec:
             - containerPort: 5984
               name: http
           volumeMounts:
-            - name: data
+            - name: storage
+              subPath: data
               mountPath: /opt/couchdb/data:rw
-            - name: config
+            - name: storage
+              subPath: config
               mountPath: /opt/couchdb/etc:rw
-      volumes:
-        - name: data
-          hostPath:
-            path: /persistent/couch/data
-        - name: config
-          hostPath:
-            path: /persistent/couch/config
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 50m
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 3Gi

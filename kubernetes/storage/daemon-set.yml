@@ -4,6 +4,9 @@ metadata:
   name: storage
   namespace: kube-system
 spec:
+  selector:
+    matchLabels:
+      role: storage
   template:
     metadata:
       labels:
@@ -61,6 +64,14 @@ spec:
           volumeMounts:
             - name: rotations
               mountPath: /data
+        - name: config
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: config-secret
+          volumeMounts:
+            - name: config
+              mountPath: /data
         - name: data
           image: stratusnetwork/git
           env:
@@ -87,6 +98,9 @@ spec:
         - name: rotations
           hostPath:
             path: /storage/rotations
+        - name: config
+          hostPath:
+            path: /storage/Config
         - name: data
           hostPath:
             path: /storage/data

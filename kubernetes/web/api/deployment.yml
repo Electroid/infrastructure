@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api
 spec:
-  minReadySeconds: 10
+  minReadySeconds: 30
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -51,8 +51,5 @@ spec:
               value: api
           resources:
             requests:
-              memory: 400Mi
-              cpu: 300m
-            limits:
-              memory: 400Mi
-              cpu: 300m
+              memory: 200Mi
+              cpu: 100m

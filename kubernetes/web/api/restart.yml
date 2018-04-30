@@ -21,8 +21,8 @@ spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
           restartPolicy: Never
-          nodeSelector:
-            node-role.kubernetes.io/master: ''
+          #nodeSelector:
+          #  node-role.kubernetes.io/master: ''
           containers:
             - name: api
               image: stratusnetwork/kubectl:latest
