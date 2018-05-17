@@ -5,7 +5,7 @@ class Env
         # If an index is specified and the value is an
         # array, the value will be at the specified index.
         def get(key, index=0, splitter=",")
-            raw = override[key.upcase] || ENV[key.upcase]
+            raw = override[key.to_s.upcase] || ENV[key.to_s.upcase]
             if raw != nil && !raw.empty? && raw != "null"
                 values = raw.split(splitter) rescue [raw]
                 if index >= 0 && index < values.size
@@ -29,7 +29,7 @@ class Env
         # Override the value of an environment variable.
         def set(key, value, force=false)
             if force || !has?(key)
-                override[key.upcase] = value
+                override[key.to_s.upcase] = value
             end
         end
 
@@ -51,6 +51,13 @@ class Env
         # Get a hash of all variables including override.
         def all
             ENV.to_h.merge(override)
+        end
+
+        # Replace environment variable references with their actual values.
+        def substitute(string)
+            string.gsub(/\$\{([ a-zA-Z0-9_-]{1,})\b\}|\$([a-zA-Z0-9_-]{1,})\b/) do |var|
+                get(var.gsub(/[\{\}\$]/, "")) or raise "Unable to find variable #{var} in '#{string}'"
+            end
         end
     end
 end

@@ -1,5 +1,5 @@
-require "worker/base"
-require "kubernetes/all"
+require "worker"
+require "kubernetes"
 require "stratus"
 require "git"
 

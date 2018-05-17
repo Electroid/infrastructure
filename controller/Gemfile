@@ -1,21 +1,26 @@
 source 'https://rubygems.org'
 
-gem 'kubeclient'
-gem 'rest-client'
-gem 'json'
-gem 'recursive-open-struct'
-gem 'async-dns'
-gem 'mongoid'
-gem 'lru_redux'
-gem 'droplet_kit'
-gem 'net-ssh-simple'
-gem 'celluloid-io'
-gem 'whenever'
-gem 'aspector'
-gem 'timecop'
-gem 'test_helper'
-gem 'rspec'
-gem 'workers'
-gem 'levenshtein-ffi'
-gem 'git'
-gem 'deepmap'
+group :base do
+    gem 'bigdecimal'
+    gem 'rest-client'
+    gem 'json'
+    gem 'recursive-open-struct'
+    gem 'mongoid'
+    gem 'lru_redux'
+    gem 'git'
+end
+
+group :worker do
+    gem 'workers'
+    gem 'kubeclient'
+    gem 'droplet_kit'
+    gem 'net-ssh-simple'
+    gem 'celluloid-io'
+    gem 'levenshtein-ffi'
+end
+
+group :test do
+    gem 'timecop'
+    gem 'test_helper'
+    gem 'rspec'
+end

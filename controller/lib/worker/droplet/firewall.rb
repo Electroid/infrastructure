@@ -1,6 +1,6 @@
-require "worker/base"
+require "worker"
 require "google/api"
-require "digital_ocean/all"
+require "digital_ocean"
 
 # Ensures that droplets are whitelisted on the API firewall on Google
 class FirewallWorker < Worker

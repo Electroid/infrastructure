@@ -1,7 +1,7 @@
 require "set"
-require "worker/base"
-require "kubernetes/all"
-require "digital_ocean/all"
+require "worker"
+require "kubernetes"
+require "digital_ocean"
 
 # Ensures that droplet tags are properly converted into node labels.
 class LabelWorker < Worker
@@ -9,27 +9,27 @@ class LabelWorker < Worker
     include Kubernetes
 
     def initialize(parent_label)
-    	@parent_label = parent_label
+        @parent_label = parent_label
     end
 
     def run
-    	droplets = digital_ocean.droplets.all
-    	nodes.each do |node|
-    		if droplet = (droplets.select{|droplet| droplet.name == node.name}.first rescue nil)
-    			tags_to_labels(droplet, node)
-    		end
-    	end
+        droplets = digital_ocean.droplets.all
+        nodes.each do |node|
+            if droplet = (droplets.select{|droplet| droplet.name == node.name}.first rescue nil)
+                tags_to_labels(droplet, node)
+            end
+        end
     end
 
     def tags_to_labels(droplet, node)
-    	return unless droplet && node
+        return unless droplet && node
         expected = tags(droplet)
         actual = labels(node)
         patch = {}
         # Add keys that are defined as tags on the droplet,
         # but are not labels on the node.
         for key in expected
-            unless actual.include?(key) 
+            unless actual.include?(key)
                 patch[key] = "true"
                 # Delete keys of already synced labels
                 # to prevent double-checking.
@@ -45,21 +45,21 @@ class LabelWorker < Worker
         end
         # Only send the patch if there are any changes.
         unless patch.empty?
-        	log("Node #{node.name} patched with labels #{patch.to_s}")
+            log("Node #{node.name} patched with labels #{patch.to_s}")
             node.label(patch)
         end
     end
 
     def tags(droplet)
-		droplet.tags
-			   .map{|tag| "#{@parent_label}/#{tag}"}
-			   .to_set
+        droplet.tags
+               .map{|tag| "#{@parent_label}/#{tag}"}
+               .to_set
     end
 
     def labels(node)
-		node.labels
-			.select{|label| label.starts_with?(@parent_label)}
-			.map{|label| label.first}
-			.to_set
+        node.labels
+            .select{|label| label.starts_with?(@parent_label)}
+            .map{|label| label.first}
+            .to_set
     end
 end

@@ -1,7 +1,7 @@
-require "worker/base"
+require "worker"
 require "document"
 require "stratus"
-require "digital_ocean/all"
+require "digital_ocean"
 
 # Listens to changes in server documents and allocates droplets.
 class DropletWorker < Worker
@@ -58,7 +58,7 @@ class DropletWorker < Worker
             server_set_droplet(server, droplet)
             droplet.untag("delete")
         end
-        
+
     end
 
     # Shutdown and destroy the droplet for the given server.

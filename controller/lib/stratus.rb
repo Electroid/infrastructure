@@ -1,4 +1,5 @@
 require "recursive-open-struct"
+require "environment"
 require "rest-client"
 require "mongoid"
 require "json"
@@ -133,7 +134,7 @@ class Stratus
 
     # Send a simple GET request.
     def get(route)
-        request("GET", url + route, payload)
+        request("GET", url + route, nil)
     end
 
     Response = Class.new(RecursiveOpenStruct)
@@ -154,7 +155,7 @@ class Stratus
 
     # Get the base URL of the Stratus API.
     def url
-        @url ||= ENV["API_URL"] || "localhost:3010"
+        @url ||= Env.get("api") || "localhost:3010"
     end
 
 end

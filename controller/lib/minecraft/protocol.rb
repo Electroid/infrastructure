@@ -96,12 +96,16 @@ module Minecraft
         end
 
         class << self
-            def ping(host:, port: 25565, payload: nil)
+            def ping(host: "localhost", port: 25565, payload: nil)
                 Client.new(host: host, port: port).ping(payload)
             end
 
-            def status(host:, port: 25565)
+            def status(host: "localhost", port: 25565)
                 Client.new(host: host, port: port).status
+            end
+
+            def safe_status(host: "localhost", port: 25565)
+                status(host: host, port: port) rescue nil
             end
         end
     end
