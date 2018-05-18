@@ -23,7 +23,7 @@ steps:
       - build
       - --tag=gcr.io/$PROJECT_ID/minecraft:bukkit-$_BRANCH
       - --file=infrastructure/models/minecraft/Dockerfile-bukkit
-      - --build-arg=BUKKIT_VERSION=$BUKKIT_VERSION
+      - --build-arg=BUKKIT_VERSION=$_BUKKIT_VERSION
       - infrastructure
     wait_for:
       - base
@@ -33,7 +33,7 @@ steps:
       - build
       - --tag=gcr.io/$PROJECT_ID/minecraft:bungee-$_BRANCH
       - --file=infrastructure/models/minecraft/Dockerfile-bungee
-      - --build-arg=BUNGEE_VERSION=$BUNGEE_VERSION
+      - --build-arg=BUNGEE_VERSION=$_BUNGEE_VERSION
       - infrastructure
     wait_for:
       - base
