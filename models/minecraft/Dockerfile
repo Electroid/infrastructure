@@ -27,6 +27,7 @@ ARG PROJECT_ID=stratus-181519
 ARG BRANCH=master
 ENV URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2
 ARG VERSION=1.12.2-SNAPSHOT
+ENV VERSION=$VERSION
 
 ENV STAGE=DEVELOPMENT
 ENV API=http://api
