@@ -17,6 +17,7 @@ WORKDIR server
 COPY lib lib
 COPY Gemfile Gemfile
 COPY models/minecraft .
+RUN rm build.yml
 
 RUN bundle install --without test worker
 
