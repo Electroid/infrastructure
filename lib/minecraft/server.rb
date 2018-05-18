@@ -60,7 +60,7 @@ class LocalServer
         if role_cache == "PGM" && Dir.entries("#{path}/maps").empty?
             FileUtils.mv("world", "#{path}/maps/map")
         elsif role_cache == "LOBBY" && Dir.exists?("#{path}/maps/lobby")
-            File.delete("world")
+            FileUtils.rm_rf("world")
             FileUtils.mv("#{path}/maps/lobby", "world")
         end
         cache.to_h.each{|k,v| Env.set(k, v.to_s, true)}
