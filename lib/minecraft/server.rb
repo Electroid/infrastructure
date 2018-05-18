@@ -56,7 +56,7 @@ class LocalServer
                 "#{path}/server/plugins"
             )
         end
-        Dir.mkdir("#{path}/maps") 
+        FileUtils.mkdir_p("#{path}/maps") 
         if role_cache == "PGM" && Dir.entries("#{path}/maps").empty?
             FileUtils.mv("world", "#{path}/maps/map")
         elsif role_cache == "LOBBY" && Dir.exists?("#{path}/maps/lobby")
