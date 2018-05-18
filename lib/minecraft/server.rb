@@ -56,12 +56,12 @@ class LocalServer
                 "#{path}/server/plugins"
             )
         end
-        FileUtils.mkdir_p("#{path}/maps") 
+        Dir.mkdir("#{path}/maps") 
         if role_cache == "PGM" && Dir.entries("#{path}/maps").empty?
-            File.symlink("world", "#{path}/maps/map")
+            FileUtils.mv("world", "#{path}/maps/map")
         elsif role_cache == "LOBBY" && Dir.exists?("#{path}/maps/lobby")
             File.delete("world")
-            File.symlink("#{path}/maps/lobby", "world")
+            FileUtils.mv("#{path}/maps/lobby", "world")
         end
         cache.to_h.each{|k,v| Env.set(k, v.to_s, true)}
         for file in ["yml", "yaml", "json", "properties"].flat_map{|ext| Dir.glob("#{path}/server/**/*.#{ext}")}
