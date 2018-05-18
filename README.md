@@ -1,6 +1,7 @@
 # Infrastructure
-Kubernetes and Docker infrastructure files for @StratusNetwork
+Microservices and configurations to maintain and deploy [stratus.network](https://stratus.network)
 
-- `docker` - custom Docker manifests and scripts for building images
-- `kubernetes` - pod and set configurations for orchestrating containers
-- `controller` - *in progress*, microservice in Ruby to monitor the cluster and auto scale nodes
+- `models` - Dockerfiles and scripts for building images
+- `manifests` - Kubernetes configurations for orchestrating containers
+- `lib` - Ruby microservices to auto-managing the cluster
+- `spec` - Unit testing of utilities

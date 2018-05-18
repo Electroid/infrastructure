@@ -1,3 +1,0 @@
-raven:
-  enabled: $SERVER_SENTRY
-  dsn: "$SERVER_SENTRY_DSN"

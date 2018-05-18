@@ -5,13 +5,13 @@ steps:
       - build
       - --tag=git
       - --tag=gcr.io/$PROJECT_ID/git:latest
-      - docker/other/git
+      - docker/util/git
   - id: maven
     name: gcr.io/cloud-builders/docker
     args:
       - build
       - --tag=gcr.io/$PROJECT_ID/maven:latest
-      - docker/other/maven
+      - docker/util/maven
     wait_for:
       - '-'
   - id: gradle
@@ -19,7 +19,7 @@ steps:
     args:
       - build
       - --tag=gcr.io/$PROJECT_ID/gradle:latest
-      - docker/other/gradle
+      - docker/util/gradle
     wait_for:
       - '-'
   - id: kubectl
@@ -27,7 +27,7 @@ steps:
     args:
       - build
       - --tag=gcr.io/$PROJECT_ID/kubectl:latest
-      - docker/other/kubectl
+      - docker/util/kubectl
     wait_for:
       - '-'
   - id: spaces
@@ -35,7 +35,7 @@ steps:
     args:
       - build
       - --tag=gcr.io/$PROJECT_ID/spaces:latest
-      - docker/other/spaces
+      - docker/util/spaces
     wait_for:
       - git
   - id: proxy
@@ -43,15 +43,7 @@ steps:
     args:
       - build
       - --tag=gcr.io/$PROJECT_ID/proxy:latest
-      - docker/other/proxy
-    wait_for:
-      - '-'
-  - id: request
-    name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - --tag=gcr.io/$PROJECT_ID/minecraft:request
-      - docker/other/request
+      - docker/util/proxy
     wait_for:
       - '-'
 images:
@@ -61,4 +53,3 @@ images:
   - gcr.io/$PROJECT_ID/kubectl:latest
   - gcr.io/$PROJECT_ID/spaces:latest
   - gcr.io/$PROJECT_ID/proxy:latest
-  - gcr.io/$PROJECT_ID/minecraft:request
