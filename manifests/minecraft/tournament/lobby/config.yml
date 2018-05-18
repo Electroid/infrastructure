@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lobby-config
+  namespace: tm
+data:
+  SERVER_IDS: 59de7cffb6cda90001000024,5aa4192b8465f6000100011f,5aa419668465f60001000121
+  SERVER_ROLE: LOBBY
+  SERVER_PORT: "1337"
+  SERVER_FLAIRS_OVERHEAD: "true"
+  SERVER_FLAIRS_LIMIT: "-1"
+  SERVER_UPTIME_LIMIT: ""

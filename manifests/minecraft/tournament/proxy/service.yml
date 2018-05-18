@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy
+  namespace: tm
+  labels:
+    role: proxy
+spec:
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    role: proxy

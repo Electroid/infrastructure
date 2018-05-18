@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bungee
+  namespace: tm
+spec:
+  serviceName: bungee
+  replicas: 1
+  selector:
+    matchLabels:
+      role: bungee
+  template:
+    metadata:
+      labels:
+        role: bungee
+    spec:
+      nodeSelector:
+        # tm-bungee: 'true'
+        tm: 'true'
+      containers:
+        - name: bungee
+          image: gcr.io/stratus-181519/minecraft:bungee-master
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25567
+              name: minecraft
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 3Gi
+            limits:
+              cpu: 4000m
+              memory: 5Gi
+          envFrom:
+            - configMapRef:
+                name: minecraft-config
+            - configMapRef:
+                name: bungee-config

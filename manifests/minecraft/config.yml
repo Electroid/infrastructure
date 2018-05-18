@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minecraft-config
+data:
+  SERVER_BOX: production
+  SERVER_PUBLISH: 'false'
+  SERVER_SIGNAL: '10'
+  SERVER_RABBIT_IP: rabbit.stratus.network
+  SERVER_API_IP: api.stratus.network:31113
+  SERVER_DEFAULT_ROUTE: lobby
+  SERVER_BUYCRAFT: a13a52df72ac4e570089902994387b6019cbbe10
+  SERVER_LOCAL: 'false'
+  SERVER_FLAIRS_LIMIT: '1'
+  SERVER_CHAT_FORMAT: "§r§f<§r§f{1}§r§f>: {3}"

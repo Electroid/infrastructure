@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: event-config
+data:
+  SERVER_ID: 5a6d2af3e3d25e000100007f
+  JAVA_OPTS: "-Xms3G -Xmx4G"
+  SERVER_AUTO_BALANCE: "false"
+  SERVER_AUTO_START: "false"
+  SERVER_CYCLE_MATCH_END: "false"
+  SERVER_POLL: "false"

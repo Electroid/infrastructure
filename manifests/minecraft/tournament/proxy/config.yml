@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tm-proxy-config
+  namespace: tm
+data:
+  PROXY_EXTERNAL_PORT: '25565'
+  PROXY_INTERNAL_PORT: '25567'
+  PROXY_INTERNAL_PORT_SECONDARY: '25567'

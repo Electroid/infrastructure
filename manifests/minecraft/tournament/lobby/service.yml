@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lobby
+  namespace: tm
+  labels:
+    role: lobby
+spec:
+  clusterIP: None
+  ports:
+    - port: 1337
+      name: mc
+    - port: 25565
+      targetPort: 1337
+      name: mc-route
+  selector:
+    role: lobby

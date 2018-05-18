@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: event
+spec:
+  serviceName: event
+  selector:
+    matchLabels:
+      role: event
+  template:
+    metadata:
+      labels:
+        role: event
+    spec:
+      nodeSelector:
+        minecraft: 'true'
+      containers:
+        - name: event
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1Gi 
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          envFrom:
+            - configMapRef:
+                name: event-config
+            - configMapRef:
+                name: minecraft-config
+          volumeMounts:
+            - name: maps
+              mountPath: /minecraft/maps:ro
+            - name: rotations
+              mountPath: /minecraft/rotations:ro
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps
+        - name: rotations
+          hostPath:
+            path: /storage/data/rotations

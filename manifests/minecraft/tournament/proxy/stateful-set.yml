@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: proxy
+  namespace: tm
+spec:
+  serviceName: proxy
+  replicas: 1
+  selector:
+    matchLabels:
+      role: proxy
+  template:
+    metadata:
+      labels:
+        role: proxy
+    spec:
+      nodeSelector:
+        # tm-bungee: 'true'
+        tm: 'true'
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: proxy
+          image: stratusnetwork/proxy
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              hostPort: 25565
+              name: mc
+          envFrom:
+            - configMapRef:
+                name: tm-proxy-config
+          env:
+            - name: PROXY_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          resources:
+            requests:
+              cpu: 10m
+              memory: 50Mi

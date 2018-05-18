@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: official
+  namespace: tm
+spec:
+  serviceName: official
+  replicas: 12
+  selector:
+    matchLabels:
+      role: official
+  template:
+    metadata:
+      labels:
+        role: official
+    spec:
+      nodeSelector:
+        tm: 'true'
+        # official: 'true'
+      containers:
+        - name: official
+          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25565
+              name: mc
+          envFrom:
+            - configMapRef:
+                name: minecraft-config
+            - configMapRef:
+                name: official-config
+          resources:
+            requests:
+              cpu: 500m
+              memory: 0.3Gi
+            limits:
+              cpu: 1950m
+              memory: 3.95Gi
+          volumeMounts:
+            - name: maps
+              mountPath: /minecraft/maps:ro
+            - name: config
+              mountPath: /minecraft/repo/Config:ro
+      volumes:
+        - name: maps
+          hostPath:
+            path: /storage/maps-tournament
+        - name: config
+          hostPath:
+            path: /storage/Config

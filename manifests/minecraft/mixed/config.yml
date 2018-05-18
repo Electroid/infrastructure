@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mixed-config
+data:
+  SERVER_ID: 59a1f894659e930001000004
+  JAVA_OPTS: "-Xms3G -Xmx4G"

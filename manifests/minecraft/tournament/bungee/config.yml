@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bungee-config
+  namespace: tm
+data:
+  SERVER_ID: 59de7e17b6cda90001000026
+  SERVER_PORT: '25567'
+  SERVER_SIGNAL: '11'
+  SERVER_PROXY: 'true'
+  SERVER_ONLINE: 'true'
+  SERVER_PUBLISH: 'false'
