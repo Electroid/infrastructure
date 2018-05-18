@@ -5,11 +5,11 @@ $: << File.expand_path("../lib", __FILE__)
 require "minecraft/server"
 
 # Load the local server
-server = LocalServer.new("/minecraft")
+@server = LocalServer.new("/minecraft")
 
 # Response with a health check for a given method for server.
 def check(method)
-	value = server.send(method.to_s)
+	value = @server.send(method.to_s)
 	print "#{method.to_s}: #{value}"
 	exit(value ? 0 : 1)
 end
@@ -17,9 +17,9 @@ end
 # Run different commands depending on argument
 case arg = ARGV[0]
 when "load!"
-	server.load!
+	@server.load!
 when "ready?"
-	if server.role == "BUNGEE"
+	if @server.role == "BUNGEE"
 		check(:dns_enabled)
 	else
 		check(:online)
