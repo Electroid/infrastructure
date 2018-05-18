@@ -49,7 +49,7 @@ class LocalServer
             Plugin.new("CommandBook", role_cache != "BUNGEE"),
             Plugin.new("Tourney",     role_cache != "BUNGEE" && tournament_id_cache != nil),
             Plugin.new("Raven",       Env.has?("sentry_dsn")),
-            Plugin.new("BuycraftX",   Env.has?("buycraft_key"))
+            Plugin.new("BuycraftX",   Env.has?("buycraft_secret"))
         ].each do |plugin|
             plugin.load_and_save!(
                 "#{path}/data/plugins/#{update_server_path_cache}",
