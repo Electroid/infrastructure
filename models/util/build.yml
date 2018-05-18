@@ -22,14 +22,6 @@ steps:
       - models/util/gradle
     wait_for:
       - '-'
-  - id: kubectl
-    name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - --tag=gcr.io/$PROJECT_ID/kubectl:latest
-      - models/util/kubectl
-    wait_for:
-      - '-'
   - id: spaces
     name: gcr.io/cloud-builders/docker
     args:
@@ -50,6 +42,5 @@ images:
   - gcr.io/$PROJECT_ID/git:latest
   - gcr.io/$PROJECT_ID/maven:latest
   - gcr.io/$PROJECT_ID/gradle:latest
-  - gcr.io/$PROJECT_ID/kubectl:latest
   - gcr.io/$PROJECT_ID/spaces:latest
   - gcr.io/$PROJECT_ID/proxy:latest
