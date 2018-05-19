@@ -18,7 +18,7 @@ class LocalServer
 
     # Get the hostname of the container or unique ID of the server.
     def id
-        @id ||= Env.host.split("-").first
+        @id ||= Env.has?("replica") ? Env.host : Env.host.split("-").first
     end
 
     # Find the server ID from the container hostname.
