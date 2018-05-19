@@ -8,5 +8,6 @@ ADD $URL/tc/oc/api-bungee/$VERSION/api-bungee-$VERSION.jar plugins/api.jar
 ADD $URL/tc/oc/commons-bungee/$VERSION/commons-bungee-$VERSION.jar plugins/commons.jar
 ADD $URL/tc/oc/raven-bungee/1.11-SNAPSHOT/raven-bungee-1.11-SNAPSHOT.jar plugins/raven.jar
 
-CMD ruby run.rb "load!" && \
-    exec java -jar server.jar -stage $STAGE
+CMD cd ../data   && git pull && \
+    cd ../server && ruby run.rb "load!" && \
+    				exec java -jar server.jar -stage $STAGE
