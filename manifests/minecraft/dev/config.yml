@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dev-config
-data:
-  SERVER_ID: "5a2f4b89021add000100003a"
-  SERVER_COMMAND_BLOCK: "true"
-  SERVER_REQUEST: "true"

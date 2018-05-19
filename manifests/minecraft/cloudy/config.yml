@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cloudy-config
-data:
-  SERVER_ROLE: MAPDEV
