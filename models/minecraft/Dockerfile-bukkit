@@ -16,7 +16,3 @@ ADD $URL/other/protocolsupport.jar plugins/protocol.jar
 ADD $URL/other/commandbook.jar plugins/commandbook.jar
 ADD $URL/other/buycraft.jar plugins/buycraftx.jar
 ADD $URL/other/worldedit.jar plugins/worldedit.jar
-
-CMD cd ../data   && git pull && \
-    cd ../server && ruby run.rb "load!" && \
-    				exec java -jar server.jar -stage $STAGE

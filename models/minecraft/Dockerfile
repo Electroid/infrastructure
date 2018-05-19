@@ -39,3 +39,7 @@ ENV ESC=$
 ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XshowSettings:vm -XX:MaxRAMFraction=1 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:LargePageSizeInBytes=2M -XX:+UseLargePages -XX:+UseLargePagesInMetaspace -XX:+AggressiveHeap -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -Xnoclassgc"
 
 ENV JAVA_EXPERIMENTAL_OPTS="-XX:+UseG1GC -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=50 -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10"
+
+CMD cd ../data   && git pull && \
+    cd ../server && ruby run.rb "load!" && \
+                    exec java -jar server.jar -stage $STAGE
