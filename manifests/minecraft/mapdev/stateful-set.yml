@@ -16,7 +16,7 @@ spec:
         minecraft: 'true'
       containers:
         - name: minecraft
-          image: gcr.io/stratus-181519/minecraft:bukkit-master
+          image: gcr.io/stratus-197318/minecraft:bukkit-master
           imagePullPolicy: Always
           stdin: true
           tty: true
@@ -25,18 +25,22 @@ spec:
               name: minecraft
           readinessProbe:
             initialDelaySeconds: 15
-            timeoutSeconds: 5
             periodSeconds: 15
+            timeoutSeconds: 5
             exec:
               command:
-                - ./health.sh
+                - ruby
+                - run.rb
+                - ready?
           livenessProbe:
             initialDelaySeconds: 60
-            timeoutSeconds: 5
             periodSeconds: 30
+            timeoutSeconds: 5
             exec:
               command:
-                - ./health.sh
+                - ruby
+                - run.rb
+                - alive?
           resources:
             requests:
               cpu: 1000m
@@ -46,14 +50,12 @@ spec:
               memory: 2Gi
           envFrom:
             - configMapRef:
-                name: mapdev-config
-            - configMapRef:
                 name: minecraft-config
           volumeMounts:
             - name: dropbox
               mountPath: /minecraft/maps:rw
         - name: dropbox
-          image: stratusnetwork/dropbox
+          image: gcr.io/stratus-197318/dropbox:master
           envFrom:
             - secretRef:
                 name: dropbox-secret

@@ -7,7 +7,7 @@ metadata:
 spec:
   clusterIP: 10.96.0.51
   ports:
-    - port: 1337
+    - port: 25565
       name: mc
   selector:
     role: lobby

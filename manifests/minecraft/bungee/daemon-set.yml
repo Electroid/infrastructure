@@ -17,20 +17,23 @@ spec:
         bungee: 'true'
       containers:
         - name: proxy
-          image: stratusnetwork/proxy
+          image: gcr.io/stratus-181519/proxy:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 25565
               hostPort: 25565
-              name: mc
-          envFrom:
-            - configMapRef:
-                name: proxy-config
+              name: minecraft
           env:
             - name: PROXY_HOST
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: PROXY_EXTERNAL_PORT
+              value: '25565'
+            - name: PROXY_INTERNAL_PORT
+              value: '32223'
+            - name: PROXY_INTERNAL_PORT_SECONDARY
+              value: '32223'
           resources:
             requests:
               cpu: 10m

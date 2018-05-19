@@ -29,20 +29,34 @@ spec:
                     role: bungee
       containers:
         - name: bungee
-          image: gcr.io/stratus-181519/minecraft:bungee-master
+          image: gcr.io/stratus-197318/minecraft:bungee-master
           imagePullPolicy: Always
           stdin: true
           tty: true
           readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
             exec:
               command:
-                - ./health.sh
+                - ruby
+                - run.rb
+                - ready?
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ruby
+                - run.rb
+                - alive?
           livenessProbe:
             initialDelaySeconds: 60
             tcpSocket:
-              port: 25566
+              port: 32223
           ports:
-            - containerPort: 25566
+            - containerPort: 32223
               name: minecraft
           resources:
             requests:
@@ -54,5 +68,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: minecraft-config
-            - configMapRef:
-                name: bungee-config
+          env:
+            - name: REPLICA
+              value: enabled

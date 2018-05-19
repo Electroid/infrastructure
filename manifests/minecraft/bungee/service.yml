@@ -9,8 +9,8 @@ spec:
   externalTrafficPolicy: Cluster
   clusterIP: 10.96.0.50
   ports:
-    - port: 25566
-      nodePort: 25566
+    - port: 32223
+      nodePort: 32223
       name: minecraft
   selector:
     role: bungee
