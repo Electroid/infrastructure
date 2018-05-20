@@ -36,7 +36,7 @@ class LocalServer
     # Move over files from the data folder, format plugin configuration files,
     # ensure at least one map available, and inject server variables into text-based files.
     def load!
-        for folder in ["base", role_cache == "BUNGEE" ? "bungee" : "bukkit"]
+        for folder in ["base", server_path_cache]
             FileUtils.copy_entry("#{path}/data/servers/#{folder}", "#{path}/server")
         end
         [
@@ -52,7 +52,7 @@ class LocalServer
             Plugin.new("BuycraftX",   Env.has?("buycraft_secret"))
         ].each do |plugin|
             plugin.load_and_save!(
-                "#{path}/data/plugins/#{update_server_path_cache}",
+                "#{path}/data/plugins/#{plugins_path_cache}",
                 "#{path}/server/plugins"
             )
         end
