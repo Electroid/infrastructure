@@ -24,7 +24,7 @@ RUN bundle install --without test worker
 RUN apt-get remove -y build-essential ruby-dev rubygems && \
     apt-get -y autoremove
 
-ARG PROJECT_ID=stratus-181519
+ARG PROJECT_ID=stratus-197318
 ARG BRANCH=master
 ENV URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2
 ARG VERSION=1.12.2-SNAPSHOT
@@ -32,7 +32,7 @@ ENV VERSION=$VERSION
 
 ENV STAGE=DEVELOPMENT
 ENV API=http://api
-ENV RABBIT=api
+ENV RABBIT=rabbit
 
 ENV ESC=$
 

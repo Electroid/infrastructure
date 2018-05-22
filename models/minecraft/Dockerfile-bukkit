@@ -9,7 +9,6 @@ ADD $URL/tc/oc/commons-bukkit/$VERSION/commons-bukkit-$VERSION.jar plugins/commo
 ADD $URL/tc/oc/Lobby/$VERSION/Lobby-$VERSION.jar plugins/lobby.jar
 ADD $URL/tc/oc/PGM/$VERSION/PGM-$VERSION.jar plugins/pgm.jar
 ADD $URL/net/anxuiz/Tourney/$VERSION/Tourney-$VERSION.jar plugins/tourney.jar
-ADD $URL/com/github/rmsy/Channels/Channels/1.9-SNAPSHOT/Channels-1.9-SNAPSHOT.jar plugins/channels.jar
 ADD $URL/me/anxuiz/bukkit-settings/1.9-SNAPSHOT/bukkit-settings-1.9-SNAPSHOT.jar plugins/settings.jar
 ADD $URL/tc/oc/raven-bukkit/1.11-SNAPSHOT/raven-bukkit-1.11-SNAPSHOT.jar plugins/raven.jar
 ADD $URL/other/protocolsupport.jar plugins/protocol.jar
