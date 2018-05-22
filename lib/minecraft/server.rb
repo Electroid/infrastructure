@@ -44,7 +44,6 @@ class LocalServer
             Plugin.new("Commons",     true),
             Plugin.new("PGM",         role_cache == "PGM"),
             Plugin.new("Lobby",       role_cache == "LOBBY"),
-            Plugin.new("Channels",    role_cache != "BUNGEE"),
             Plugin.new("WorldEdit",   role_cache != "BUNGEE"),
             Plugin.new("CommandBook", role_cache != "BUNGEE"),
             Plugin.new("Tourney",     role_cache != "BUNGEE" && tournament_id_cache != nil),
