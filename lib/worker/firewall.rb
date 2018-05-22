@@ -2,10 +2,12 @@ require "worker"
 require "google/api"
 require "digital_ocean"
 
-# Ensures that droplets are whitelisted on the API firewall on Google
+# Ensures that droplets are whitelisted on the API firewall on Google.
 class FirewallWorker < Worker
     include Google
     include DigitalOcean
+
+    instance("api")
 
     def initialize(name)
         @name = name

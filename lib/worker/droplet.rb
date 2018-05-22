@@ -8,6 +8,14 @@ class DropletWorker < Worker
     include DigitalOcean
     include Document
 
+    instance(
+        region: "nyc3",
+        size: "c-2",
+        image: "kubernetes",
+        ssh_key: "stratus",
+        script_path: "init.sh"
+    )
+
     def initialize(attributes)
         @attributes = attributes
     end
@@ -144,7 +152,7 @@ class DropletWorker < Worker
             raise "Size #{size.slug} does not have enough disk space for the #{image.name} image"
         end
         ssh_key = digital_ocean.ssh_keys.find_one_or_throw(ssh_key)
-        script = script_path ? File.read(script_path).to_s : ""
+        script = script_path ? File.read(File.expand_path("../../../#{script_path}", __FILE__)).to_s : ""
         droplet = digital_ocean.droplets.create(DropletKit::Droplet.new(
             name: name,
             region: region.slug,

@@ -8,6 +8,8 @@ class LabelWorker < Worker
     include DigitalOcean
     include Kubernetes
 
+    instance("stratus.network")
+
     def initialize(parent_label)
         @parent_label = parent_label
     end

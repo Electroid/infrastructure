@@ -1,6 +1,6 @@
 require "worker/server"
 
-class PrivateWorker < ServerWorker
+class GenericWorker < ServerWorker
 
     def initialize
         super
@@ -8,14 +8,16 @@ class PrivateWorker < ServerWorker
                     required_roles: roles("admin"),
                     min_args: 1,
                     max_args: 1,
-                    usage: "/server [username]") do |event, name|
-            begin
+                    usage: "/enable [server]") do |event, name|
+            respond(event) do
                 allocate(name)
-                event.respond("Server #{name} has been allocated and will be online in a few minutes!")
-            rescue Exception => e
-                event.respond("**Error:** #{e}")
+                "Server #{name} has been allocated and will be online in a few minutes!"
             end
         end
+    end
+
+    def server_manage?(server)
+        server.family == "pgm"
     end
 
     def server_up(server, name)

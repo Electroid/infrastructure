@@ -14,14 +14,28 @@ class ServerWorker < DiscordWorker
     end
 
     def server_up(server, name)
-        raise NotImplementedError
+        Stratus::Server.update(server._id, {ensure: "running"})
     end
 
     def server_down(server)
+        Stratus::Server.update(server._id, {ensure: "stopping"})
+    end
+
+    def server_manage?(server)
         raise NotImplementedError
     end
 
     protected
+
+    def respond(event)
+        reply = begin
+            ["\u274c", "#{yield}"]
+        rescue Exception => e
+            ["\u2705", "An exception occured while running your command!\n```#{e}```"]
+        end
+        event.react(reply.first)
+        message.respond(reply.second)
+    end
 
     def allocate(name)
         server = servers_next or raise "No servers left to allocate #{name}"
@@ -42,7 +56,7 @@ class ServerWorker < DiscordWorker
 
     def servers
         Stratus::Server.all
-                       .select{|server| server_can_manage?(server)}
+                       .select{|server| server_manage?(server)}
                        .sort_by{|server| BSON::ObjectId.from_string(server._id).generation_time}
     end
 
@@ -62,10 +76,6 @@ class ServerWorker < DiscordWorker
         servers_unallocated.first rescue nil
     end
 
-    def server_can_manage?(server)
-        server.settings_profile == "private" && server.tournament_id == nil
-    end
-
     def server_is_allocated?(server)
         server.ensure == "running"
     end
@@ -74,7 +84,7 @@ class ServerWorker < DiscordWorker
         Stratus::Server.restart(server._id, 100, "Server has been automatically deallocated")
     end
 
-    def server_reset(server, name: nil, user: nil, lobby: false, priv: false, tm: false, index: 0, priority: nil, status: nil)
+    def server_reset(server, name: nil, user: nil, lobby: false, priv: false, tm: false, index: 0, priority: nil)
         name = if user
             user.username 
         elsif name == nil
@@ -114,8 +124,7 @@ class ServerWorker < DiscordWorker
             visibility: "UNLISTED",
             startup_visibility: priv ? "UNLISTED" : "PUBLIC",
             realms: ["global", tm ? "tournament" : "normal"],
-            operator_ids: user ? [user._id] : [],
-            ensure: status
+            operator_ids: user ? [user._id] : []
         })
     end
 end

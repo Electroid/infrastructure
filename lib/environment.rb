@@ -21,9 +21,14 @@ class Env
             get(key, -1, splitter)
         end
 
+        # Get a key or throw an exception if it does not exist.
+        def need(key, context=nil)
+            get(key) or raise "Unable to find required variable '#{key}' #{context ? "in '#{context}'" : ""}"
+        end
+
         # Determine whether the key has a value.
-        def has?(key, index=0)
-            get(key, index) != nil
+        def has?(key)
+            get(key) != nil
         end
 
         # Override the value of an environment variable.
@@ -56,7 +61,7 @@ class Env
         # Replace environment variable references with their actual values.
         def substitute(string)
             string.gsub(/\$\{([ a-zA-Z0-9_-]{1,})\b\}|\$([a-zA-Z0-9_-]{1,})\b/) do |var|
-                get(var.gsub(/[\{\}\$]/, "")) or raise "Unable to find variable #{var} in '#{string}'"
+                need(var.gsub(/[\{\}\$]/, ""), string)
             end
         end
     end

@@ -25,13 +25,6 @@ class DiscordWorker < Worker
         )
     end
 
-    def stop!
-        super
-        bot.update_status(nil, nil, nil)
-        bot.invisible
-        bot.stop
-    end
-
     protected
 
     def roles(name)
