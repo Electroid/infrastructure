@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 group :base do
+    gem 'activesupport'
     gem 'bigdecimal'
     gem 'rest-client'
     gem 'json'

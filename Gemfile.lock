@@ -147,6 +147,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   bigdecimal
   celluloid-io
   droplet_kit

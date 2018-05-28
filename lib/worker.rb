@@ -1,5 +1,6 @@
 require "workers"
 require "environment"
+require "active_support/time"
 
 # Represents a task that is run periodically in a background thread.
 class Worker
@@ -46,16 +47,27 @@ class Worker
 
         def instance(*args, every: 1.minute)
             return unless worker?
-            Workers::Timer.new(1.second) do
-                new(args).run!(every)
+            internal(Proc.new do
+                new(*args).run!(every)
+            end)
+        end
+
+        def internal(value=nil)
+            if value
+                @@internal = value
             end
+            @@internal
         end
     end
 
     # If the script is a worker, block the program from exiting naturally.
     END {
-        while worker?
-            sleep(1.day)
+        if worker? && internal
+            sleep(1.second)
+            internal.call
+            while worker?
+                sleep(1.day)
+            end
         end
     }
 end
