@@ -12,95 +12,73 @@ spec:
       labels:
         role: storage
     spec:
+      serviceAccountName: api
       nodeSelector:
         minecraft: 'true'
       containers:
         - name: maps
-          image: stratusnetwork/git
+          image: gcr.io/stratus-197318/worker:latest
+          args:
+            - repo.rb
+            - Electroid/maps
+            - master
+            - data
           envFrom:
             - secretRef:
-                name: maps-secret
+                name: api-secret
           volumeMounts:
             - name: maps
-              mountPath: /data
-        - name: maps-private-basic
-          image: stratusnetwork/git
-          envFrom:
-            - secretRef:
-                name: maps-secret
-          env:
-            - name: GIT_BRANCH
-              value: private-basic
-          volumeMounts:
-            - name: maps-private-basic
-              mountPath: /data
-        - name: maps-private-pro
-          image: stratusnetwork/git
-          envFrom:
-            - secretRef:
-                name: maps-secret
-          env:
-            - name: GIT_BRANCH
-              value: private-pro
-          volumeMounts:
-            - name: maps-private-pro
-              mountPath: /data
+              mountPath: data
         - name: maps-tournament
-          image: stratusnetwork/git
+          image: gcr.io/stratus-197318/worker:latest
+          args:
+            - repo.rb
+            - Electroid/maps
+            - tournament
+            - data
           envFrom:
             - secretRef:
-                name: maps-secret
-          env:
-            - name: GIT_BRANCH
-              value: tournament
+                name: api-secret
           volumeMounts:
             - name: maps-tournament
-              mountPath: /data
-        - name: rotations
-          image: stratusnetwork/git
+              mountPath: data
+        - name: maps-staging
+          image: gcr.io/stratus-197318/worker:latest
+          args:
+            - repo.rb
+            - Electroid/maps
+            - staging
+            - data
           envFrom:
             - secretRef:
-                name: rotations-secret
+                name: api-secret
           volumeMounts:
-            - name: rotations
-              mountPath: /data
-        - name: config
-          image: stratusnetwork/git
-          envFrom:
-            - secretRef:
-                name: config-secret
-          volumeMounts:
-            - name: config
-              mountPath: /data
+            - name: maps-staging
+              mountPath: data
         - name: data
-          image: stratusnetwork/git
-          env:
-            - name: GIT_CMD
-              value: curl http://stratus.network/load_models
-            - name: GIT_URL
-              value: https://github.com/StratusNetwork/Data.git
+          image: gcr.io/stratus-197318/worker:latest
+          args:
+            - repo.rb
+            - StratusNetwork/data
+            - master
+            - data
+            - curl -s http://stratus.network/load_models
+          envFrom:
+            - secretRef:
+                name: api-secret
           volumeMounts:
             - name: data
-              mountPath: /data
+              mountPath: data
       volumes:
         - name: maps
           hostPath:
             path: /storage/maps
-        - name: maps-private-basic
-          hostPath:
-            path: /storage/maps-private-basic
-        - name: maps-private-pro
-          hostPath:
-            path: /storage/maps-private-pro
         - name: maps-tournament
           hostPath:
             path: /storage/maps-tournament
-        - name: rotations
+        - name: maps-staging
           hostPath:
-            path: /storage/rotations
-        - name: config
-          hostPath:
-            path: /storage/Config
+            path: /storage/maps-staging
         - name: data
           hostPath:
             path: /storage/data
