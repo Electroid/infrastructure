@@ -15,8 +15,8 @@ class DiscordWorker < Worker
     def bot(command="")
         @bot ||= Discordrb::Commands::CommandBot.new(
             prefix: command.empty? ? "/" : "/#{command} ",
-            client_id: Env.get("discord_client_id"),
-            token: Env.get("discord_token"),
+            client_id: Env.need("discord_client_id"),
+            token: Env.need("discord_key"),
             log_mode: :quiet,
             supress_ready: true,
             parse_self: false,
