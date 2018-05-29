@@ -6,11 +6,11 @@ require "fileutils"
 class RepoWorker < Worker
     include Github
 
-    instance(
-        ARGV[0], # Git repo      (ie. Electroid/infrastructure)
-        ARGV[1], # Git branch    (ie. master)
-        ARGV[2], # Git directory (ie. ~/repo)
-        ARGV[3]  # Hook command  (ie. curl http://example.com/webhook)
+    template(
+        repo:   nil,      # Git repo (ie. Electroid/infrastructure)
+        branch: "master", # Git branch
+        dir:    "data",   # Git directory
+        hook:   "pwd"     # Hook command  (ie. curl http://example.com/webhook)
     )
 
     def initialize(repo, branch, path, hook=nil)

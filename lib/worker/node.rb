@@ -7,7 +7,7 @@ class NodeWorker < Worker
     include DigitalOcean
     include Kubernetes
 
-    instance
+    template({}) # No arguments required
 
     def run
         droplets = digital_ocean.droplets.all.map{|droplet| [droplet.name, droplet]}.to_h

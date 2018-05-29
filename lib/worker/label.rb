@@ -8,8 +8,8 @@ class LabelWorker < Worker
     include DigitalOcean
     include Kubernetes
 
-    instance(
-        ARGV[0] # Name of the label prefix (ie. 'net.electroid')
+    template(
+        prefix: "stratus.network" # Name of the parent label
     )
 
     def initialize(parent_label)

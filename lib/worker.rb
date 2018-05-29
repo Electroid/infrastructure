@@ -41,33 +41,38 @@ class Worker
     end
 
     class << self
+        def worker(value=[])
+            @@worker ||= value
+        end
+
         def worker?
-            Env.has?("worker")
+            File.basename(File.dirname($0)) == "worker"
         end
 
-        def instance(*args, every: 1.minute)
-            return unless worker?
-            internal(Proc.new do
-                new(*args).run!(every)
-            end)
-        end
-
-        def internal(value=nil)
-            if value
-                @@internal = value
+        def template(expected, every: 1.minute, i: 0)
+            received = ARGV.map{|arg| arg.split("=")}.to_h
+            args = Array.new(expected.size)
+            expected.each do |key, val|
+                args[i] = received[key.to_s] || val or \
+                          raise "Missing worker argument '#{key}'"
+                i += 1
             end
-            @@internal
+            args.compact!
+            worker([self, every, *args])
         end
     end
 
     # If the script is a worker, block the program from exiting naturally.
     END {
-        if worker? && internal
-            sleep(1.second)
-            internal.call
-            while worker?
+        if worker?
+            clazz, every, *args = worker
+            (args.empty? ? clazz.new
+                         : clazz.new(*args)).run!(every)
+            while true
                 sleep(1.day)
             end
+        else
+            worker(nil)
         end
     }
 end

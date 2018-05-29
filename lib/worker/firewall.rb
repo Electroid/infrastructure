@@ -7,8 +7,8 @@ class FirewallWorker < Worker
     include Google
     include DigitalOcean
 
-    instance(
-        ARGV[0] # Firewall name
+    template(
+        name: nil # Name of the Google firewall resource
     )
 
     def initialize(name)
