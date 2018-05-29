@@ -1,7 +1,6 @@
 # Secret files
 secret.yml
 *.secret
-init.sh
 google.json
 
 # Maven generated files
