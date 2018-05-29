@@ -18,6 +18,7 @@ group :worker do
     gem 'net-ssh-simple'
     gem 'celluloid-io'
     gem 'levenshtein-ffi'
+    gem 'google-api-client'
 end
 
 group :test do
