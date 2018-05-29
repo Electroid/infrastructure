@@ -31,7 +31,7 @@ class RepoWorker < Worker
     # Called after successful update of repository.
     def hook
         log("Updated #{@repo} to '#{%x(git log --oneline -1).strip}'")
-        exec(@hook, false)
+        execute(@hook, false)
     end
 
     protected
@@ -45,8 +45,8 @@ class RepoWorker < Worker
 
     # Pull the latest changes from the remote branch.
     def pull
-        exec("git reset --hard origin/#{@branch}") &&
-        exec("git fetch --update-head-ok origin #{@branch}:#{@branch} --depth 1")
+        execute("git reset --hard origin/#{@branch}") &&
+        execute("git fetch --update-head-ok origin #{@branch}:#{@branch} --depth 1")
     end
 
     # Initially clone or fix the repository before pull.
@@ -62,16 +62,17 @@ class RepoWorker < Worker
                 log("Found valid repository for #{@name}")
             end
             FileUtils.rm_rf(@path) unless valid
-        elsif exec("git clone --single-branch --depth 1 -b #{@branch} #{@uri} #{@path}")
+        elsif execute("git clone --single-branch --depth 1 -b #{@branch} #{@uri} #{@path}")
             log("Cloned initial repository for #{@name}")
         else
             log("Failed to clone initial repository at #{@uri}")
             exit(1)
         end
+        Dir.chdir(@path)
     end
 
     # Execute a shell command or exit the program if a failure occurs.
-    def exec(cmd, fails=true)
+    def execute(cmd, fails=true)
         unless system("#{cmd}", :out => File::NULL)
             log("Error executing shell command '#{cmd}'")
             exit(1) if fails
