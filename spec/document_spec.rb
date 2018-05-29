@@ -60,7 +60,7 @@ describe Document do
             include Document
 
             def fetch!
-                Array.new(5){rand(1...999999)}
+                Array.new(5){rand(1...9999)}
             end
         end
 
