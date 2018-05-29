@@ -26,7 +26,7 @@ class DropletWorker < Worker
         droplets = droplets_fetch
         servers_to_droplet = servers.map{|server| [
             server,
-            (droplets.select{|droplet| droplet.id.to_s == server.status}.first rescue nil)
+            (droplets.select{|droplet| droplet.id.to_s == server.machine_id}.first rescue nil)
         ]}.to_h
         {
             droplets: droplets,
@@ -41,7 +41,7 @@ class DropletWorker < Worker
         servers.each do |server|
             droplet = server_to_droplet(server)
             if !droplet
-                if server.status && (server.status.to_i rescue 1) > 0
+                if server.machine_id
                     scale_fix(server)
                 elsif server.ensure == "running"
                     scale_up(server)
@@ -85,7 +85,7 @@ class DropletWorker < Worker
     # Remove any ensure commitments for the given server.
     # This can occur when the droplet is deleted outside the worker.
     def scale_fix(server)
-        raise "Server #{server.name} is not assigned a Droplet to fix" unless server.status
+        raise "Server #{server.name} is not assigned a Droplet to fix" unless server.machine_id
         log("Removing #{server.ensure} ensure from #{server.name} because Droplet was externally deleted")
         server_set_ensure(server, nil)
         server_set_droplet(server, nil)

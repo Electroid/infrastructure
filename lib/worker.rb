@@ -46,7 +46,7 @@ class Worker
         end
 
         def worker?
-            File.basename(File.dirname($0)) == "worker"
+            Env.has?("worker")
         end
 
         def template(expected, every: 1.minute, i: 0)
