@@ -1,5 +1,6 @@
 require "kubeclient"
 require "celluloid/current"
+require "celluloid/io"
 
 # Represents an object that interacts with the Kubernetes cluster. 
 module Kubernetes
