@@ -25,7 +25,12 @@ class FirewallWorker < Worker
             request = Google::Apis::ComputeBeta::Firewall.new
             request.source_ranges = droplet_ips
             @service.patch_firewall(project_id, @name, request)
-            log("Firewall #{firewall.name} patched with #{droplet_ips}")
+            unless (add = droplet_ips - google_ips).empty?
+                log("Added #{add} to firewall #{@name}")
+            end
+            unless (remove = google_ips - droplet_ips).empty?
+                log("Removed #{remove} from firewall #{@name}")
+            end
         end
     end
 end
