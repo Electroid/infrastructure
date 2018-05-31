@@ -49,6 +49,10 @@ class Worker
             Env.has?("worker")
         end
 
+        def static_template(*args, every: 1.minute)
+            worker([self, every, *args])
+        end
+
         def template(expected, every: 1.minute, i: 0)
             received = ARGV.map{|arg| arg.split("=")}.to_h
             args = Array.new(expected.size)

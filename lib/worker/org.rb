@@ -11,11 +11,11 @@ class OrgWorker < Worker
     MAP_DEV = "Map Developers"
     ALL     = [ADMIN, DEV, JR_DEV, MAP_DEV]
 
-    instance(
+    static_template(
         "StratusNetwork",
         [
-            {repo: "Electroid/maps", teams: ALL},
-            {repo: "Electroid/plugins", teams: [ADMIN, DEV, JR_DEV]},
+            {repo: "Electroid/maps",           teams: ALL},
+            {repo: "Electroid/plugins",        teams: [ADMIN, DEV, JR_DEV]},
             {repo: "Electroid/infrastructure", teams: [ADMIN, DEV]}
         ],
         every: 1.day
