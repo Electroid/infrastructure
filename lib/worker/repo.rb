@@ -57,7 +57,7 @@ class RepoWorker < Worker
             if !Dir.exist?(File.join(@path, ".git"))
                 log("Removing empty repository")
             elsif @uri != (uri = %x(cd #{@path} && git config --get remote.origin.url).strip)
-                log("Removing another repository: #{uri.spit("/").last.split(".").first}")
+                log("Removing another repository: #{uri.split("/").last.split(".").first}")
             elsif @branch != (branch = %(cd #{@path} && git symbolic-ref --short -q HEAD).strip)
                 log("Removing another branch: #{branch}")
             else
