@@ -3,7 +3,7 @@ RUN gem install bundle
 
 # Clone the repository
 RUN git clone https://github.com/StratusNetwork/web.git
-WORKDIR OCN
+WORKDIR web
 
 # Build the cached version of the repo
 ARG CACHE=77f70ff5811c6da31a437118343575d8dc2e57b3
