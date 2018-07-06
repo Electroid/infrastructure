@@ -84,7 +84,7 @@ class Stratus
         end
 
         def search
-            get("#{route}")
+            get("#{route}").documents
         end
 
         def current
