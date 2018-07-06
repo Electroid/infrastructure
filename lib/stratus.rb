@@ -50,7 +50,7 @@ class Stratus
         end
 
         def by_name(name)
-            get("#{route}/by_name/#{name}").documents.first
+            get("#{route}/by_name/#{name}?bungee_name=true").documents.first
         end
 
         def restart(id, priority=0, reason="Automated restart queued")
