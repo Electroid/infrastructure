@@ -88,7 +88,7 @@ class Stratus
         end
 
         def current
-            search.sort_by!{|tm| tm.end ? Time.parse(tm.end) : Time.now}.last
+            search.sort_by{|tm| tm.end ? Time.parse(tm.end) : Time.now}.last
         end
     end
 
