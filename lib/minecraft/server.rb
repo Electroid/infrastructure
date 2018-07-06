@@ -32,6 +32,14 @@ class LocalServer
             raise "Unable to find server using #{id}"
         end
     end
+    
+    # Determine if the server is part of a tournament.
+    def tournament?
+        if tm = role_cache == "PGM" && network_cache == "TOURNAMENT"
+            Env.set("tournament_id", Stratus::Tournament.current._id, true)  
+        end
+        tm
+    end
 
     # Move over files from the data folder, format plugin configuration files,
     # ensure at least one map available, and inject server variables into text-based files.
@@ -46,7 +54,7 @@ class LocalServer
             Plugin.new("Lobby",       role_cache == "LOBBY"),
             Plugin.new("WorldEdit",   role_cache != "BUNGEE"),
             Plugin.new("CommandBook", role_cache != "BUNGEE"),
-            Plugin.new("Tourney",     role_cache != "BUNGEE" && tournament_id_cache != nil),
+            Plugin.new("Tourney",     tournament?),
             Plugin.new("Raven",       Env.has?("sentry_dsn")),
             Plugin.new("BuycraftX",   Env.has?("buycraft_secret"))
         ].each do |plugin|
