@@ -10,6 +10,7 @@ spec:
     metadata:
       labels:
         role: proxy
+        type: minecraft
     spec:
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
@@ -31,10 +32,10 @@ spec:
             - name: PROXY_EXTERNAL_PORT
               value: '25565'
             - name: PROXY_INTERNAL_PORT
-              value: '32223'
+              value: '25566'
             - name: PROXY_INTERNAL_PORT_SECONDARY
-              value: '32223'
+              value: '25566'
           resources:
             requests:
               cpu: 10m
-              memory: 50Mi
+              memory: 10Mi

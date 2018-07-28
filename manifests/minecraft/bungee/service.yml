@@ -6,11 +6,12 @@ metadata:
     role: bungee
 spec:
   type: NodePort
-  externalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   clusterIP: 10.96.0.50
   ports:
-    - port: 32223
-      nodePort: 32223
+    - targetPort: 25565
+      port: 25566
+      nodePort: 25566
       name: minecraft
   selector:
     role: bungee

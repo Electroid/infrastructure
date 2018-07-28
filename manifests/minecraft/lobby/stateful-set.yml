@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: lobby
+  name: lobby-us
 spec:
   serviceName: lobby
   selector:
@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         role: lobby
+        type: minecraft
     spec:
       nodeSelector:
         minecraft: 'true'
@@ -49,8 +50,11 @@ spec:
               cpu: 1500m
               memory: 2Gi
           envFrom:
-            - configMapRef:
-                name: minecraft-config
+            - secretRef:
+                name: minecraft-secret
+          env:
+            - name: REPLICA
+              value: enabled
           volumeMounts:
             - name: maps
               mountPath: /minecraft/maps:ro

@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: avatar
+  name: bungee-patch
 spec:
   schedule: '0 10 * * *' # 2am pst
   startingDeadlineSeconds: 60
@@ -11,27 +11,26 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        role: avatar  
+        role: bungee-patch
     spec:
       template:
         metadata:
           labels:
-            role: avatar
+            role: bungee-patch
         spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
           restartPolicy: Never
-          #nodeSelector:
-          #  node-role.kubernetes.io/master: ''
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
           containers:
-            - name: avatar
+            - name: bungee-patch
               image: stratusnetwork/kubectl:latest
               args:
-                - patch
-                - deployment
-                - avatar
-                - -p
-                - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+                - delete
+                - pods
+                - -l
+                - role=bungee
               volumeMounts:
                 - name: kube
                   mountPath: /config/.kube

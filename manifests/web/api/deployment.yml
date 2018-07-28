@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: api
 spec:
-  minReadySeconds: 30
+  minReadySeconds: 15
   replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+      maxSurge: 100%
+      maxUnavailable: 0%
   selector:
     matchLabels:
       role: api
@@ -17,25 +17,34 @@ spec:
     metadata:
       labels:
         role: api
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
     spec:
       nodeSelector:
         backend: 'true'
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  role: mongo
       containers:
         - name: api
-          image: gcr.io/stratus-181519/web:master
+          image: gcr.io/stratus-197318/web:master
           imagePullPolicy: Always
           ports:
             - containerPort: 80
               name: http
           readinessProbe:
-            initialDelaySeconds: 60
-            timeoutSeconds: 30
-            periodSeconds: 30
+            initialDelaySeconds: 15
+            timeoutSeconds: 15
+            periodSeconds: 15
             httpGet:
               path: /users/by_username/Notch
               port: 80
           livenessProbe:
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             timeoutSeconds: 60
             periodSeconds: 60
             httpGet:
@@ -44,8 +53,6 @@ spec:
           envFrom:
             - secretRef:
                 name: web-secret
-            - configMapRef:
-                name: web-config
           env:
             - name: WEB_ROLE
               value: api

@@ -8,8 +8,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 25567
-      nodePort: 25567
+    - targetPort: 25565
+      nodePort: 25576
+      port: 25576
       name: minecraft
   selector:
     role: bungee

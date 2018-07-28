@@ -6,12 +6,9 @@ metadata:
   labels:
     role: lobby
 spec:
-  clusterIP: None
+  clusterIP: 10.96.0.59
   ports:
-    - port: 1337
-      name: mc
     - port: 25565
-      targetPort: 1337
-      name: mc-route
+      name: minecraft
   selector:
     role: lobby

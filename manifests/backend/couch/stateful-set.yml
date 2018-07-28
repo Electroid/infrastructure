@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         role: couch
+        type: backend
     spec:
       nodeSelector:
         backend: 'true'
@@ -21,22 +22,18 @@ spec:
             - containerPort: 5984
               name: http
           volumeMounts:
-            - name: storage
+            - name: volume
               subPath: data
               mountPath: /opt/couchdb/data:rw
-            - name: storage
+            - name: volume
               subPath: config
               mountPath: /opt/couchdb/etc:rw
           resources:
             requests:
               memory: 100Mi
               cpu: 50m
-  volumeClaimTemplates:
-    - metadata:
-        name: storage
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 3Gi
+      volumes:
+        # Manual setup for a mounted EXT4 block storage device
+        - name: volume
+          hostPath:
+            path: /mnt/couch

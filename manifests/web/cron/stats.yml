@@ -23,7 +23,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: stats
-              image: mongo:3.4.6
+              image: mongo:4.0.0
               command:
                 - mongo
                 - --host=mongo:27017

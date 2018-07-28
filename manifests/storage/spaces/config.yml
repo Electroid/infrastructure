@@ -29,12 +29,3 @@ data:
   BUCKET_FOLDER: maps
   BUCKET_ACL: public
   BUCKET_ACL_SELECTOR: xml,png
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: spaces-cloudy-config
-  namespace: kube-system
-data:
-  BUCKET_FOLDER: cloudy
-  BUCKET_ACL: private

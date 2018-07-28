@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: lobby
+  name: vapeazu
   labels:
-    role: lobby
+    role: vapeazu
 spec:
-  clusterIP: 10.96.0.51
+  clusterIP: None
   ports:
     - port: 25565
       name: minecraft
   selector:
-    role: lobby
+    role: vapeazu

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: proxy
-  namespace: tm
+  name: staging
   labels:
-    role: proxy
+    role: staging
 spec:
+  clusterIP: None
   ports:
     - port: 25565
       name: minecraft
   selector:
-    role: proxy
+    role: staging

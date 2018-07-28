@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+      kubernetes.io/ingress.class: argo-tunnel
+spec:
+  rules:
+    - host: stratus.network
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 80
+

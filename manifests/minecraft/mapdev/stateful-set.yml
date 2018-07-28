@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         role: mapdev
+        type: minecraft
     spec:
       nodeSelector:
         minecraft: 'true'
@@ -49,8 +50,8 @@ spec:
               cpu: 2000m
               memory: 2Gi
           envFrom:
-            - configMapRef:
-                name: minecraft-config
+            - secretRef:
+                name: minecraft-secret
           volumeMounts:
             - name: dropbox
               mountPath: /minecraft/maps:rw

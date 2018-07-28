@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: dns
 spec:
-  schedule: '*/15 * * * *'
+  schedule: '*/5 * * * *'
   startingDeadlineSeconds: 120
   failedJobsHistoryLimit: 0
   successfulJobsHistoryLimit: 0
@@ -23,7 +23,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: dns
-              image: gcr.io/stratus-181519/web:master
+              image: gcr.io/stratus-197318/web:master
               imagePullPolicy: Always
               command:
                 - rails
@@ -32,5 +32,3 @@ spec:
               envFrom:
                 - secretRef:
                     name: web-secret
-                - configMapRef:
-                    name: web-config

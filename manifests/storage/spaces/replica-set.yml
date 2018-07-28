@@ -8,9 +8,10 @@ spec:
     metadata:
       labels:
         role: spaces
+        type: storage
     spec:
       nodeSelector:
-        backend: 'true'
+        minecraft: 'true'
       containers:
         - name: maps
           image: stratusnetwork/spaces

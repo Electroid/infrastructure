@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         role: bungee
+        type: minecraft
     spec:
       nodeSelector:
         bungee: 'true'
@@ -54,9 +55,9 @@ spec:
           livenessProbe:
             initialDelaySeconds: 60
             tcpSocket:
-              port: 32223
+              port: 25565
           ports:
-            - containerPort: 32223
+            - containerPort: 25565
               name: minecraft
           resources:
             requests:
@@ -66,8 +67,8 @@ spec:
               cpu: 2000m
               memory: 3Gi
           envFrom:
-            - configMapRef:
-                name: minecraft-config
+            - secretRef:
+                name: minecraft-secret
           env:
             - name: REPLICA
               value: enabled

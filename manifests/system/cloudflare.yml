@@ -1,0 +1,86 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: argo
+  namespace: kube-system
+  labels:
+    role: argo
+spec:
+  selector:
+    matchLabels:
+      role: argo
+  template:
+    metadata:
+      labels:
+        role: argo
+    spec:
+      serviceAccount: cloudflare
+      serviceAccountName: cloudflare
+      nodeSelector:
+        backend: 'true'
+      containers:
+        - name: argo
+          image: gcr.io/stackpoint-public/argot:0.5.1
+          command:
+            - /argot
+            - -v=6
+            - -namespace
+            - kube-system
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cloudflare
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cloudflare
+subjects:
+  - kind: ServiceAccount
+    name: cloudflare
+    namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudflare
+  namespace: kube-system
+rules:
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    verbs:
+    - get
+  - apiGroups:
+    - ""
+    - "extensions"
+    resources:
+    - endpoints
+    - services
+    - ingresses
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - "extensions"
+    resources:
+    - ingresses/status
+    verbs:
+    - get
+    - update
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloudflare
+  namespace: kube-system

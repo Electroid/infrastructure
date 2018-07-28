@@ -1,0 +1,71 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: git
+spec:
+  template:
+    metadata:
+      labels:
+        role: git
+        type: storage
+    spec:
+      nodeSelector:
+        minecraft: 'true'
+      containers:
+        - name: master
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: master
+          volumeMounts:
+            - name: master
+              mountPath: /data
+        - name: staging
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: staging
+          volumeMounts:
+            - name: staging
+              mountPath: /data
+        - name: tournament
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: tournament
+          volumeMounts:
+            - name: tournament
+              mountPath: /data
+        - name: private
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: private-server
+          volumeMounts:
+            - name: private
+              mountPath: /data
+      volumes:
+        - name: master
+          hostPath:
+            path: /storage/maps
+        - name: staging
+          hostPath:
+            path: /storage/maps-staging
+        - name: tournament
+          hostPath:
+            path: /storage/maps-tournament
+        - name: private
+          hostPath:
+            path: /storage/maps-private
