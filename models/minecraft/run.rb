@@ -19,8 +19,15 @@ case arg = ARGV[0]
 when "load!"
 	@server.load!
 when "ready?"
-	if @server.role == "BUNGEE"
-		check(:dns_enabled)
+	# HACK: DNS script broke, so now we alternate between
+	# server ordinals based on the day of the week.
+	if @server.role_cache == "BUNGEE"
+		# check(:dns_enabled)
+		if Time.now.wday % 2 == @server.name_cache.split("-").last.to_i rescue 0
+			exit(0)
+		else
+			exit(1)
+		end
 	else
 		check(:online)
 	end
