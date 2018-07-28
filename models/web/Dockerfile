@@ -6,13 +6,13 @@ RUN git clone https://github.com/StratusNetwork/web.git
 WORKDIR web
 
 # Build the cached version of the repo
-ARG CACHE=77f70ff5811c6da31a437118343575d8dc2e57b3
+ARG CACHE=bffdb24bd56980d4aac85824feefc71fb12c4759
 RUN git reset --hard $CACHE
 RUN bundle install
 
 # Break the cache and get the latest version of the repository
 ARG BRANCH=master
-ADD https://${AUTH}api.github.com/repos/StratusNetwork/web/git/refs/heads/${BRANCH} ocn.json
+ADD https://${AUTH}api.github.com/repos/StratusNetwork/web/git/refs/heads/${BRANCH} web.json
 RUN git pull && git reset --hard origin/$BRANCH && git pull
 RUN bundle install
 
