@@ -23,7 +23,7 @@ when "ready?"
 	# server ordinals based on the day of the week.
 	if @server.role_cache == "BUNGEE"
 		# check(:dns_enabled)
-		if Time.now.wday % 2 == @server.name_cache.split("-").last.to_i rescue 0
+		if Time.now.wday % 2 == @server.name_cache.split("-").last.to_i
 			exit(0)
 		else
 			exit(1)
