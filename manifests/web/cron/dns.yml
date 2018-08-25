@@ -11,7 +11,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        role: dns  
+        role: dns
     spec:
       template:
         metadata:

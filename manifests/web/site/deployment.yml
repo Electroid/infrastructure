@@ -59,8 +59,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /minecraft/repo/data:ro
-            - name: google
-              mountPath: /web/config/google.json
           resources:
             requests:
               cpu: 100m
@@ -95,6 +93,3 @@ spec:
       volumes:
         - name: data
           emptyDir:
-        - name: google
-          secret:
-            secretName: google-secret
