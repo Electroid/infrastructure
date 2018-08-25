@@ -1,23 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: staging
+  name: draakoos455
 spec:
-  serviceName: staging
+  serviceName: draakoos455
   selector:
     matchLabels:
-      role: staging
+      role: private
+      user: draakoos455
   template:
     metadata:
       labels:
-        role: staging
+        role: private
+        user: draakoos455
         type: minecraft
     spec:
       nodeSelector:
         minecraft: 'true'
       containers:
         - name: minecraft
-          image: gcr.io/stratus-197318/minecraft:bukkit-staging
+          image: gcr.io/stratus-197318/minecraft:bukkit-master
           imagePullPolicy: Always
           stdin: true
           tty: true
@@ -44,8 +46,11 @@ spec:
                 - alive?
           resources:
             requests:
+              cpu: 100m
+              memory: 500Mi
+            limits:
               cpu: 2000m
-              memory: 4Gi 
+              memory: 1Gi
           envFrom:
             - secretRef:
                 name: minecraft-secret
@@ -55,4 +60,4 @@ spec:
       volumes:
         - name: maps
           hostPath:
-            path: /storage/maps-staging
+            path: /storage/maps-private

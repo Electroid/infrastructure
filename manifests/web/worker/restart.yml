@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: worker
 spec:
-  schedule: '0 11 * * *' # 3am pst
+  schedule: '0 */3 * * *' # every 3 hours
   startingDeadlineSeconds: 60
   failedJobsHistoryLimit: 0
   successfulJobsHistoryLimit: 0
@@ -11,7 +11,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        role: worker  
+        role: worker
     spec:
       template:
         metadata:
@@ -21,21 +21,13 @@ spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
           restartPolicy: Never
-          nodeSelector:
-            node-role.kubernetes.io/master: ''
+          serviceAccountName: system
           containers:
-            - name: worker
-              image: stratusnetwork/kubectl:latest
+            - name: api
+              image: lachlanevenson/k8s-kubectl:latest
               args:
                 - patch
                 - deployment
                 - worker
                 - -p
                 - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-              volumeMounts:
-                - name: kube
-                  mountPath: /config/.kube
-          volumes:
-            - name: kube
-              hostPath:
-                path: /root/.kube

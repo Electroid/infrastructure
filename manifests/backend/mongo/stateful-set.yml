@@ -31,7 +31,7 @@ spec:
           command:
             - mongod
             - --storageEngine=wiredTiger
-            - --wiredTigerCacheSizeGB=1
+            - --wiredTigerCacheSizeGB=0.5
             - --wiredTigerIndexPrefixCompression=true
             - --smallfiles
             - --bind_ip_all
@@ -52,8 +52,8 @@ spec:
                 - echo 'db.stats().ok' | mongo --quiet || exit 1
           resources:
             requests:
-              memory: 1Gi
               cpu: 100m
+              memory: 500Mi
       volumes:
         # Manual setup for a mounted XFS block storage device
         - name: volume

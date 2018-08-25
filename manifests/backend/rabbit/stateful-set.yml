@@ -45,8 +45,8 @@ spec:
                 - status
           resources:
             requests:
-              memory: 100Mi
               cpu: 50m
+              memory: 50Mi
           volumeMounts:
             - name: volume
               mountPath: /var/lib/rabbitmq:rw

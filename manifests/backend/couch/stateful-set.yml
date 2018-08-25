@@ -30,8 +30,8 @@ spec:
               mountPath: /opt/couchdb/etc:rw
           resources:
             requests:
-              memory: 100Mi
               cpu: 50m
+              memory: 25Mi
       volumes:
         # Manual setup for a mounted EXT4 block storage device
         - name: volume

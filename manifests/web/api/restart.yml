@@ -11,7 +11,7 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        role: api  
+        role: api
     spec:
       template:
         metadata:
@@ -21,21 +21,13 @@ spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
           restartPolicy: Never
-          #nodeSelector:
-          #  node-role.kubernetes.io/master: ''
+          serviceAccountName: system
           containers:
             - name: api
-              image: stratusnetwork/kubectl:latest
+              image: lachlanevenson/k8s-kubectl:latest
               args:
                 - patch
                 - deployment
                 - api
                 - -p
                 - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
-              volumeMounts:
-                - name: kube
-                  mountPath: /config/.kube
-          volumes:
-            - name: kube
-              hostPath:
-                path: /root/.kube

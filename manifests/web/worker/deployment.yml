@@ -16,7 +16,8 @@ spec:
         role: worker
     spec:
       nodeSelector:
-        backend: 'true'
+        # HACK: Offload from backend because of memory pressure
+        minecraft: 'true'
       containers:
         - name: worker
           image: gcr.io/stratus-197318/web:master
@@ -33,8 +34,15 @@ spec:
                 - api/users/by_username/Notch
           resources:
             requests:
-              memory: 100Mi
               cpu: 50m
+              memory: 1Gi
           envFrom:
             - secretRef:
                 name: web-secret
+          volumeMounts:
+            - name: google
+              mountPath: /web/config/google.json
+      volumes:
+        - name: google
+          secret:
+            secretName: google-secret

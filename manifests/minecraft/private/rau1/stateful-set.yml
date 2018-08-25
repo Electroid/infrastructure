@@ -1,16 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: lobby-us
+  name: raul
 spec:
-  serviceName: lobby
+  serviceName: raul
   selector:
     matchLabels:
-      role: lobby
+      role: private
+      user: raul
   template:
     metadata:
       labels:
-        role: lobby
+        role: private
+        user: raul
         type: minecraft
     spec:
       nodeSelector:
@@ -47,18 +49,15 @@ spec:
               cpu: 100m
               memory: 500Mi
             limits:
-              cpu: 3000m
-              memory: 2Gi
+              cpu: 2000m
+              memory: 1Gi
           envFrom:
             - secretRef:
                 name: minecraft-secret
-          env:
-            - name: REPLICA
-              value: enabled
           volumeMounts:
             - name: maps
               mountPath: /minecraft/maps:ro
       volumes:
         - name: maps
           hostPath:
-            path: /storage/maps
+            path: /storage/maps-private

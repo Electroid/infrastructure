@@ -4,7 +4,7 @@ metadata:
   name: official
   namespace: tm
 spec:
-  replicas: 1
+  replicas: 8
   serviceName: official
   selector:
     matchLabels:

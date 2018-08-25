@@ -5,7 +5,9 @@ metadata:
   labels:
     role: lobby
 spec:
-  clusterIP: 10.96.0.51
+  # Give Lobby dedicated IP so restarts don't cause
+  # DNS issues where the cached IP is served.
+  clusterIP: 10.96.0.69
   ports:
     - port: 25565
       name: minecraft

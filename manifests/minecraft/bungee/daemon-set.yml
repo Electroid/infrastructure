@@ -18,7 +18,7 @@ spec:
         bungee: 'true'
       containers:
         - name: proxy
-          image: gcr.io/stratus-181519/proxy:latest
+          image: gcr.io/stratus-197318/proxy:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 25565
@@ -37,5 +37,5 @@ spec:
               value: '25566'
           resources:
             requests:
-              cpu: 10m
+              cpu: 5m
               memory: 10Mi

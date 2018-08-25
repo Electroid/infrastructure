@@ -59,10 +59,12 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /minecraft/repo/data:ro
+            - name: google
+              mountPath: /web/config/google.json
           resources:
             requests:
-              memory: 200Mi
               cpu: 100m
+              memory: 300Mi
         - name: smtp
           image: gcr.io/stratus-197318/smtp:latest
           imagePullPolicy: IfNotPresent
@@ -74,8 +76,8 @@ spec:
                 name: web-secret
           resources:
             requests:
-              memory: 10Mi
               cpu: 10m
+              memory: 10Mi
         - name: data
           image: stratusnetwork/git
           env:
@@ -86,6 +88,13 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
       volumes:
         - name: data
           emptyDir:
+        - name: google
+          secret:
+            secretName: google-secret

@@ -5,7 +5,7 @@ metadata:
   labels:
     role: mapdev
 spec:
-  clusterIP: 10.96.0.68
+  clusterIP: None
   ports:
     - port: 25565
       name: minecraft

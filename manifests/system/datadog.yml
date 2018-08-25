@@ -1,0 +1,79 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: datadog
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      name: datadog
+      labels:
+        app: datadog
+    spec:
+      containers:
+      - name: datadog 
+        image: datadog/agent:latest
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8125
+            name: dogstatsdport
+            protocol: UDP
+          - containerPort: 8126
+            name: traceport
+            protocol: TCP
+        envFrom:
+          - secretRef:
+              name: datadog-secret
+        env:
+          - name: KUBERNETES
+            value: 'yes'
+          - name: DD_COLLECT_KUBERNETES_EVENTS
+            value: 'true'
+          - name: DD_LEADER_ELECTION
+            value: 'true'
+          - name: DD_LOGS_ENABLED
+            value: 'true'
+          #- name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+          #  value: 'true'
+          - name: DD_KUBERNETES_KUBELET_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+        resources:
+          requests:
+            memory: 10Mi
+            cpu: 10m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+        volumeMounts:
+          - name: dockersocket
+            mountPath: /var/run/docker.sock
+          - name: procdir
+            mountPath: /host/proc
+            readOnly: true
+          - name: cgroups
+            mountPath: /host/sys/fs/cgroup
+            readOnly: true
+          - name: pointerdir
+            mountPath: /opt/datadog-agent/run
+        livenessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          exec:
+            command:
+            - ./probe.sh
+      volumes:
+        - hostPath:
+            path: /var/run/docker.sock
+          name: dockersocket
+        - hostPath:
+            path: /proc
+          name: procdir
+        - hostPath:
+            path: /sys/fs/cgroup
+          name: cgroups
+        - hostPath:
+            path: /opt/datadog-agent/run
+          name: pointerdir
+# TODO: Extra datadog apps here: https://docs.datadoghq.com/agent/basic_agent_usage/kubernetes/#custom-integrations

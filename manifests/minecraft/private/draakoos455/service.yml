@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nothqck
+  name: draakoos455
   labels:
-    role: nothqck
+    user: draakoos455
 spec:
   clusterIP: None
   ports:
     - port: 25565
       name: minecraft
   selector:
-    role: nothqck
+    user: draakoos455

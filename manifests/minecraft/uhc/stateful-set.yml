@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: nothqck
+  name: uhc
 spec:
-  serviceName: nothqck
+  serviceName: uhc
   selector:
     matchLabels:
-      role: nothqck
+      role: uhc
   template:
     metadata:
       labels:
-        role: nothqck
+        role: uhc
         type: minecraft
     spec:
       nodeSelector:
         minecraft: 'true'
       containers:
         - name: minecraft
-          image: gcr.io/stratus-197318/minecraft:bukkit-master
+          image: gcr.io/stratus-197318/minecraft:bukkit-staging
           imagePullPolicy: Always
           stdin: true
           tty: true
@@ -33,21 +33,12 @@ spec:
                 - ruby
                 - run.rb
                 - ready?
-          livenessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 5
-            exec:
-              command:
-                - ruby
-                - run.rb
-                - alive?
           resources:
             requests:
               cpu: 100m
-              memory: 1Gi 
+              memory: 2Gi
             limits:
-              cpu: 2000m
+              cpu: 4000m
               memory: 5Gi
           envFrom:
             - secretRef:
@@ -58,4 +49,4 @@ spec:
       volumes:
         - name: maps
           hostPath:
-            path: /storage/maps-private
+            path: /storage/maps-staging

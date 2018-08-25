@@ -20,6 +20,10 @@ spec:
           env:
             - name: GIT_BRANCH
               value: master
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
           volumeMounts:
             - name: master
               mountPath: /data
@@ -31,6 +35,10 @@ spec:
           env:
             - name: GIT_BRANCH
               value: staging
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
           volumeMounts:
             - name: staging
               mountPath: /data
@@ -42,6 +50,10 @@ spec:
           env:
             - name: GIT_BRANCH
               value: tournament
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
           volumeMounts:
             - name: tournament
               mountPath: /data
@@ -53,6 +65,10 @@ spec:
           env:
             - name: GIT_BRANCH
               value: private-server
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
           volumeMounts:
             - name: private
               mountPath: /data

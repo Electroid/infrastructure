@@ -61,11 +61,8 @@ spec:
               name: minecraft
           resources:
             requests:
-              cpu: 1000m
-              memory: 3Gi
-            limits:
-              cpu: 2000m
-              memory: 3Gi
+              cpu: 300m
+              memory: 300Mi
           envFrom:
             - secretRef:
                 name: minecraft-secret
