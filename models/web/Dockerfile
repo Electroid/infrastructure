@@ -6,7 +6,7 @@ RUN git clone https://github.com/StratusNetwork/web.git
 WORKDIR web
 
 # Build the cached version of the repo
-ARG CACHE=bffdb24bd56980d4aac85824feefc71fb12c4759
+ARG CACHE=ccd5ccbcdd7dd84a654abf9d3bfde0b8e638855d
 RUN git reset --hard $CACHE
 RUN bundle install
 
