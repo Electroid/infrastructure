@@ -6,22 +6,6 @@ steps:
       - --tag=git
       - --tag=gcr.io/$PROJECT_ID/git:latest
       - models/util/git
-  - id: maven
-    name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - --tag=gcr.io/$PROJECT_ID/maven:latest
-      - models/util/maven
-    wait_for:
-      - '-'
-  - id: gradle
-    name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - --tag=gcr.io/$PROJECT_ID/gradle:latest
-      - models/util/gradle
-    wait_for:
-      - '-'
   - id: spaces
     name: gcr.io/cloud-builders/docker
     args:
@@ -40,7 +24,5 @@ steps:
       - '-'
 images:
   - gcr.io/$PROJECT_ID/git:latest
-  - gcr.io/$PROJECT_ID/maven:latest
-  - gcr.io/$PROJECT_ID/gradle:latest
   - gcr.io/$PROJECT_ID/spaces:latest
   - gcr.io/$PROJECT_ID/proxy:latest
