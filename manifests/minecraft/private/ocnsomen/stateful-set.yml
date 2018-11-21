@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: randy
+  name: ocnsomen
 spec:
-  serviceName: randy
+  serviceName: ocnsomen
   selector:
     matchLabels:
       role: private
-      user: randy
+      user: ocnsomen
   template:
     metadata:
       labels:
         role: private
-        user: randy
+        user: ocnsomen
         type: minecraft
     spec:
       nodeSelector:
@@ -48,8 +48,6 @@ spec:
             requests:
               cpu: 100m
               memory: 500Mi
-            limits:
-              memory: 1Gi
           envFrom:
             - secretRef:
                 name: minecraft-secret

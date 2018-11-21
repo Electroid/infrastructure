@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: sorx4s
+  name: xerocoles
 spec:
-  serviceName: sorx4s
+  serviceName: xerocoles
   selector:
     matchLabels:
       role: private
-      user: sorx4s
+      user: xerocoles
   template:
     metadata:
       labels:
         role: private
-        user: sorx4s
+        user: xerocoles
         type: minecraft
     spec:
       nodeSelector:
@@ -48,8 +48,6 @@ spec:
             requests:
               cpu: 100m
               memory: 500Mi
-            limits:
-              memory: 1Gi
           envFrom:
             - secretRef:
                 name: minecraft-secret

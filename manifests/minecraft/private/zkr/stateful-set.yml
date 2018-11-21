@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: draakoos455
+  name: zkr
 spec:
-  serviceName: draakoos455
+  serviceName: zkr
   selector:
     matchLabels:
       role: private
-      user: draakoos455
+      user: zkr
   template:
     metadata:
       labels:
         role: private
-        user: draakoos455
+        user: zkr
         type: minecraft
     spec:
       nodeSelector:

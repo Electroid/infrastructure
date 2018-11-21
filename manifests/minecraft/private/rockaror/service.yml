@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rockaror
+  labels:
+    user: rockaror
+spec:
+  clusterIP: None
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    user: rockaror

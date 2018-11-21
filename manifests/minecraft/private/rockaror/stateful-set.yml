@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: draakoos455
+  name: rockaror
 spec:
-  serviceName: draakoos455
+  serviceName: rockaror
   selector:
     matchLabels:
       role: private
-      user: draakoos455
+      user: rockaror
   template:
     metadata:
       labels:
         role: private
-        user: draakoos455
+        user: rockaror
         type: minecraft
     spec:
       nodeSelector:

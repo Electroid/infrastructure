@@ -48,8 +48,6 @@ spec:
             requests:
               cpu: 100m
               memory: 500Mi
-            limits:
-              memory: 1Gi
           envFrom:
             - secretRef:
                 name: minecraft-secret
