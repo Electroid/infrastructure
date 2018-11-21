@@ -23,17 +23,20 @@ spec:
           ports:
             - containerPort: 25565
               hostPort: 25565
-              name: minecraft
+              name: proxy
+            - containerPort: 25568
+              hostPort: 25568
+              name: passthrough
           env:
-            - name: PROXY_HOST
+            - name: INTERNAL_HOST
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
-            - name: PROXY_EXTERNAL_PORT
+            - name: PROXY_PORT
               value: '25565'
-            - name: PROXY_INTERNAL_PORT
-              value: '25566'
-            - name: PROXY_INTERNAL_PORT_SECONDARY
+            - name: PASSTHROUGH_PORT
+              value: '25568'
+            - name: INTERNAL_PORT
               value: '25566'
           resources:
             requests:
