@@ -23,11 +23,11 @@ spec:
           restartPolicy: Never
           serviceAccountName: system
           containers:
-            - name: api
+            - name: kubectl
               image: lachlanevenson/k8s-kubectl:latest
               args:
                 - patch
                 - deployment
                 - web
                 - -p
-                - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+                - "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"restart\":\"$(HOSTNAME)\"}}}}}"
