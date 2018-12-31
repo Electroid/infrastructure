@@ -27,6 +27,7 @@ RUN apt-get remove -y build-essential ruby-dev rubygems && \
 ARG PROJECT_ID=stratus-197318
 ARG BRANCH=master
 ENV URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/$BRANCH/.m2
+ENV MASTER_URL=https://storage.googleapis.com/artifacts.$PROJECT_ID.appspot.com/artifacts/master/.m2
 ARG VERSION=1.12.2-SNAPSHOT
 ENV VERSION=$VERSION
 

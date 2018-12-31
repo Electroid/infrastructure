@@ -86,7 +86,7 @@ class ServerWorker < DiscordWorker
 
     def server_reset(server, name: nil, user: nil, lobby: false, priv: false, tm: false, index: 0, priority: nil)
         name = if user
-            user.username 
+            user.username
         elsif name == nil
             "Unknown-#{priority ? priority % 10 : Random.new.rand(99)}"
         else
