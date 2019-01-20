@@ -13,7 +13,8 @@ RUN bundle install
 # Break the cache and get the latest version of the repository
 ARG BRANCH=master
 ADD https://${AUTH}api.github.com/repos/StratusNetwork/web/git/refs/heads/${BRANCH} web.json
-RUN git pull && git reset --hard origin/$BRANCH && git pull
+
+RUN git reset --hard && git pull && git reset --hard origin/$BRANCH && git pull
 RUN bundle install
 
 # Website role and port variables
