@@ -1,4 +1,4 @@
-FROM ruby:2.1.5
+FROM ruby:2.3.8
 RUN gem install bundle
 
 # Clone the repository
