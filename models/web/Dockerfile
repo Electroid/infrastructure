@@ -5,8 +5,8 @@ RUN gem install bundle
 RUN git clone https://github.com/StratusNetwork/web.git
 WORKDIR web
 
-RUN gem install libv8 -v '3.16.14.5'  -- --with-system-v8
 RUN gem install therubyracer -v '0.12.1'
+RUN gem install libv8 -v '3.16.14.5'  -- --with-system-v8
 
 # Build the cached version of the repo
 ARG CACHE=ccd5ccbcdd7dd84a654abf9d3bfde0b8e638855d
