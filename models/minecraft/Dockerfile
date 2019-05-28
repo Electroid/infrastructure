@@ -12,7 +12,10 @@ WORKDIR minecraft
 ADD https://${AUTH}api.github.com/repos/StratusNetwork/Data/git/refs/heads/${BRANCH} data.json
 RUN git clone -b master --depth 1 https://github.com/StratusNetwork/Data.git data
 
-WORKDIR server
+WORKDIR repo
+RUN git clone -b master --depth 1 https://gitlab.com/stratus/config.git Config
+
+WORKDIR /minecraft/server
 
 COPY lib lib
 COPY Gemfile Gemfile
@@ -41,6 +44,6 @@ ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
 
 ENV JAVA_EXPERIMENTAL_OPTS="-XX:+UseG1GC -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=50 -XX:MaxGCPauseMillis=100 -XX:+DisableExplicitGC -XX:TargetSurvivorRatio=90 -XX:InitiatingHeapOccupancyPercent=10"
 
-CMD cd ../data   && git pull && \
-    cd ../server && ruby run.rb "load!" && \
+CMD cd ../data && git pull && cd ../repo/Config && git pull && \
+    cd ../../server && ruby run.rb "load!" && \
                     exec java -jar server.jar -stage $STAGE
