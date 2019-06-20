@@ -32,10 +32,10 @@ class LocalServer
             raise "Unable to find server using #{id}"
         end
     end
-    
+
     # Determine if the server is part of a tournament.
     def tournament?
-        if tm = role_cache == "PGM" && network_cache == "TOURNAMENT"
+        if tm = role_cache == "PGM" && (network_cache == "TOURNAMENT" || Env.has?("tournament"))
             Env.set("tournament_id", Stratus::Tournament.current._id, true)  
         end
         tm
@@ -63,7 +63,7 @@ class LocalServer
                 "#{path}/server/plugins"
             )
         end
-        FileUtils.mkdir_p("#{path}/maps") 
+        FileUtils.mkdir_p("#{path}/maps")
         if role_cache == "PGM" && Dir.entries("#{path}/maps").empty?
             FileUtils.mv("world", "#{path}/maps/map")
         elsif role_cache == "LOBBY" && Dir.exists?("#{path}/maps/lobby")
