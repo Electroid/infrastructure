@@ -1,7 +1,9 @@
 require 'socket'
 require 'uri'
 
-server = TCPServer.new('localhost', 8080)
+server = TCPServer.new(Socket.gethostname, 8080)
+
+STDERR.puts "Listening for requests on #{Socket.gethostname}:8080"
 
 loop do
   socket       = server.accept
