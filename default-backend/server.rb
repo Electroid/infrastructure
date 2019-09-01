@@ -12,7 +12,7 @@ loop do
   STDERR.puts request_line
 
   case request_line.downcase
-  when "healtz"
+  when "healthz"
     message = "ok\n"
     socket.print "HTTP/1.1 200 OK\r\n" +
                  "Content-Type: text/plain\r\n" +
