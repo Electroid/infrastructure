@@ -1,7 +1,7 @@
 require 'socket'
 require 'uri'
 
-server = TCPServer.new('localhost', 2345)
+server = TCPServer.new('localhost', 8080)
 
 loop do
   socket       = server.accept
