@@ -31,7 +31,7 @@ spec:
           command:
             - mongod
             - --storageEngine=wiredTiger
-            - --wiredTigerCacheSizeGB=0.5
+            - --wiredTigerCacheSizeGB=2.5
             - --wiredTigerIndexPrefixCompression=true
             - --smallfiles
             - --bind_ip_all
