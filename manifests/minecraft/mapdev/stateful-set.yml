@@ -54,22 +54,25 @@ spec:
               mountPath: /minecraft/maps:rw
         - name: dropbox
           image: gcr.io/stratus-197318/dropbox:master
+          imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: dropbox-secret
           env:
             - name: DROPBOX_FOLDER_REMOTE
               value: /mapdev
+            - name: DROPBOX_FOLDER_LOCAL
+              value: /minecraft/maps
           resources:
             requests:
               cpu: 50m
               memory: 250Mi
             limits:
               cpu: 250m
-              memory: 250Mi
+              memory: 500Mi
           volumeMounts:
             - name: dropbox
-              mountPath: /dropbox:rw
+              mountPath: /minecraft/maps:rw
       volumes:
         - name: dropbox
           hostPath:
