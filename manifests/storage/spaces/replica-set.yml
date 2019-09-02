@@ -11,7 +11,7 @@ spec:
         type: storage
     spec:
       nodeSelector:
-        minecraft: 'true'
+        needs-maps: 'true'
       containers:
         - name: maps
           image: stratusnetwork/spaces
