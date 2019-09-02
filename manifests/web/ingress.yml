@@ -6,6 +6,12 @@ metadata:
   #  kubernetes.io/ingress.class: argo-tunnel
 spec:
   rules:
+    - host: api.stratus.network
+      http:
+       paths:
+         - backend:
+             serviceName: api-public
+             servicePort: 80
     - host: stratus.network
       http:
         paths:
@@ -24,3 +30,4 @@ spec:
           - backend:
               serviceName: web
               servicePort: 80
+
