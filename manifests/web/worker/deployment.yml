@@ -45,8 +45,6 @@ spec:
               subPath: google.json
       volumes:
         - name: google
-          secret:
-            secretName: google-secret
-            items:
-              - key: google.json
-                path: google.json
+          hostPath:
+            path: /web/config/
+
