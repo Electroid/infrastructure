@@ -55,4 +55,4 @@ spec:
       volumes:
         - name: maps
           hostPath:
-            path: /storage/maps-tournament
+            path: /storage/maps
