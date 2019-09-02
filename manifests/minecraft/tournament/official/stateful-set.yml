@@ -4,7 +4,7 @@ metadata:
   name: official
   namespace: tm
 spec:
-  replicas: 8
+  replicas: 1
   serviceName: official
   selector:
     matchLabels:
@@ -47,7 +47,7 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1Gi 
+              memory: 1Gi
             limits:
               cpu: 4000m
               memory: 4Gi
@@ -56,6 +56,8 @@ spec:
                 name: minecraft-secret
           env:
             - name: REPLICA
+              value: enabled
+            - name: TOURNAMENT
               value: enabled
           volumeMounts:
             - name: maps
