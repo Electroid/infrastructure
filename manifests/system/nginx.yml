@@ -13,8 +13,6 @@ spec:
         k8s-app: nginx-ingress-lb
     spec:
       serviceAccountName: nginx-ingress-serviceaccount
-      nodeSelector:
-        backend: 'true'
       containers:
         - name: nginx-ingress-controller
           image: gcr.io/google_containers/nginx-ingress-controller:0.9.0-beta.13
@@ -38,8 +36,8 @@ spec:
               containerPort: 443
           resources:
             requests:
-              memory: 25Mi
               cpu: 10m
+              memory: 25Mi
 ---
 apiVersion: v1
 kind: Service
@@ -47,19 +45,16 @@ metadata:
   name: nginx-ingress
   namespace: kube-system
 spec:
-  type: NodePort
-  externalTrafficPolicy: Local
+  type: LoadBalancer
   ports:
     - name: http
-      port: 8080
+      port: 80
       targetPort: 80
-      nodePort: 80
       protocol: TCP
-    - name: https
-      port: 443
-      targetPort: 443
-      nodePort: 443
-      protocol: TCP
+    #- name: https
+    #  port: 443
+    #  targetPort: 443
+    #  protocol: TCP
   selector:
     k8s-app: nginx-ingress-lb
 ---
@@ -191,7 +186,7 @@ subjects:
     name: nginx-ingress-serviceaccount
     namespace: kube-system
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: default-http-backend
@@ -199,6 +194,9 @@ metadata:
     k8s-app: default-http-backend
   namespace: kube-system
 spec:
+  selector:
+    matchLabels:
+      k8s-app: default-http-backend
   replicas: 1
   template:
     metadata:

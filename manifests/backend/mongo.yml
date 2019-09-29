@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    role: mongo
+spec:
+  clusterIP: None
+  ports:
+    - port: 27017
+      name: mongo
+  selector:
+    role: mongo
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo
+spec:
+  storageClassName: do-block-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: mongo
+  selector:
+    matchLabels:
+      role: mongo
+  template:
+    metadata:
+      labels:
+        role: mongo
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  role: mongo
+      containers:
+        - name: mongo
+          image: mongo:4.2.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - mongod
+            - --storageEngine=wiredTiger
+            - --wiredTigerCacheSizeGB=2.0
+            - --wiredTigerJournalCompressor=zstd
+            - --wiredTigerCollectionBlockCompressor=zstd
+            - --wiredTigerIndexPrefixCompression=true
+            - --bind_ip_all
+            - --quiet
+            - --serviceExecutor=adaptive
+            - --enableFreeMonitoring=on
+            - --setParameter=ttlMonitorEnabled=false
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo
+              mountPath: /data/db:rw
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - echo 'db.stats().ok' | mongo --quiet || exit 1
+          resources:
+            requests:
+              cpu: 200m
+              memory: 2Gi
+            limits:
+              # cpu: 1000m
+              # memory: 2Gi
+      volumes:
+        - name: mongo
+          persistentVolumeClaim:
+            claimName: mongo

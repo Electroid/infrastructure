@@ -1,0 +1,32 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: dns
+spec:
+  schedule: '*/5 * * * *'
+  startingDeadlineSeconds: 120
+  failedJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 0
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        role: dns
+    spec:
+      template:
+        metadata:
+          labels:
+            role: dns
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: dns
+              image: gcr.io/stratus-197318/web:master
+              imagePullPolicy: Always
+              command:
+                - rails
+                - runner
+                - script/dns_rotate.rb
+              envFrom:
+                - secretRef:
+                    name: web-secret

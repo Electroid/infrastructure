@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    role: web
+spec:
+  clusterIP: None
+  ports:
+    - port: 80
+      name: http
+  selector:
+    role: web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  minReadySeconds: 15
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0%
+  selector:
+    matchLabels:
+      role: web
+  template:
+    metadata:
+      labels:
+        role: web
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: 'true'
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  role: mongo
+      containers:
+        - name: site
+          image: gcr.io/stratus-197318/web:master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            initialDelaySeconds: 15
+            timeoutSeconds: 15
+            periodSeconds: 15
+            httpGet:
+              path: /
+              port: 80
+          livenessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 60
+            periodSeconds: 60
+            httpGet:
+              path: /
+              port: 80
+          envFrom:
+            - secretRef:
+                name: web-secret
+          env:
+            - name: WEB_ROLE
+              value: octc
+          volumeMounts:
+            - name: git
+              subPath: data
+              mountPath: /minecraft/repo/data:ro
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+        - name: smtp
+          image: gcr.io/stratus-197318/smtp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 25
+              name: smtp
+          envFrom:
+            - secretRef:
+                name: web-secret
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+      volumes:
+        - name: git
+          persistentVolumeClaim:
+            claimName: git

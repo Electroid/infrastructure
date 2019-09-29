@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couch
+  labels:
+    role: couch
+spec:
+  clusterIP: None
+  ports:
+    - port: 5984
+      name: couch
+  selector:
+    role: couch
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: couch
+spec:
+  storageClassName: do-block-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: couch
+spec:
+  serviceName: couch
+  selector:
+    matchLabels:
+      role: couch
+  template:
+    metadata:
+      labels:
+        role: couch
+    spec:
+      containers:
+        - name: couch
+          image: couchdb:1.7
+          ports:
+            - containerPort: 5984
+              name: couch
+          volumeMounts:
+            - name: couch
+              subPath: data
+              mountPath: /opt/couchdb/data:rw
+            - name: couch
+              subPath: config
+              mountPath: /opt/couchdb/etc:rw
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      volumes:
+        - name: couch
+          persistentVolumeClaim:
+            claimName: couch

@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: git
+spec:
+  storageClassName: do-block-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 25Gi
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: git
+spec:
+  selector:
+    matchLabels:
+      role: git
+  template:
+    metadata:
+      labels:
+        role: git
+    spec:
+      containers:
+        - name: data
+          image: stratusnetwork/git
+          env:
+            - name: GIT_CMD
+              value: curl http://web/load_models
+            - name: GIT_URL
+              value: https://github.com/StratusNetwork/data.git
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+          volumeMounts:
+            - name: git
+              subPath: data
+              mountPath: /data
+        - name: maps-master
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: master
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+          volumeMounts:
+            - name: git
+              subPath: maps-master
+              mountPath: /data
+        - name: maps-staging
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: staging
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+          volumeMounts:
+            - name: git
+              subPath: maps-staging
+              mountPath: /data
+        - name: maps-tournament
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: tournament
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+          volumeMounts:
+            - name: git
+              subPath: maps-tournament
+              mountPath: /data
+        - name: maps-private
+          image: stratusnetwork/git
+          envFrom:
+            - secretRef:
+                name: maps-secret
+          env:
+            - name: GIT_BRANCH
+              value: private-server
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+          volumeMounts:
+            - name: git
+              subPath: maps-private
+              mountPath: /data
+      volumes:
+        - name: git
+          persistentVolumeClaim:
+            claimName: git

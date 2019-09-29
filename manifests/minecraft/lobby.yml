@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lobby
+  labels:
+    role: lobby
+spec:
+  # Give Lobby dedicated IP so restarts don't cause
+  # DNS issues where the cached IP is served.
+  clusterIP: 10.245.0.69
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    role: lobby
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lobby
+spec:
+  serviceName: lobby
+  selector:
+    matchLabels:
+      role: lobby
+  template:
+    metadata:
+      labels:
+        role: lobby
+    spec:
+      containers:
+        - name: minecraft
+          image: gcr.io/stratus-197318/minecraft:bukkit-master
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ruby
+                - run.rb
+                - ready?
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ruby
+                - run.rb
+                - alive?
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          envFrom:
+            - secretRef:
+                name: minecraft-secret
+          env:
+            - name: REPLICA
+              value: enabled
+          volumeMounts:
+            - name: git
+              subPath: maps-master
+              mountPath: /minecraft/maps:ro
+      volumes:
+        - name: git
+          persistentVolumeClaim:
+            claimName: git

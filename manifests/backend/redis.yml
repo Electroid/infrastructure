@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    role: redis
+spec:
+  clusterIP: None
+  ports:
+    - port: 6379
+      name: redis
+  selector:
+    role: redis
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  serviceName: redis
+  selector:
+    matchLabels:
+      role: redis
+  template:
+    metadata:
+      labels:
+        role: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:4.0.1-alpine
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi

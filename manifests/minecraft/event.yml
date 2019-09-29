@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: event
+  labels:
+    role: event
+spec:
+  clusterIP: None
+  ports:
+    - port: 25565
+      name: minecraft
+  selector:
+    role: event
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: event
+spec:
+  serviceName: event
+  selector:
+    matchLabels:
+      role: event
+  template:
+    metadata:
+      labels:
+        role: event
+    spec:
+      containers:
+        - name: minecraft
+          image: gcr.io/stratus-197318/minecraft:bukkit-master
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25565
+              name: minecraft
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ruby
+                - run.rb
+                - ready?
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            exec:
+              command:
+                - ruby
+                - run.rb
+                - alive?
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          envFrom:
+            - secretRef:
+                name: minecraft-secret
+          volumeMounts:
+            - name: git
+              subPath: maps-master
+              mountPath: /minecraft/maps:ro
+      volumes:
+        - name: git
+          persistentVolumeClaim:
+            claimName: git
+
