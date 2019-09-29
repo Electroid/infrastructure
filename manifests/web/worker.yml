@@ -15,6 +15,7 @@ spec:
       labels:
         role: worker
     spec:
+      serviceAccountName: system
       containers:
         - name: worker
           image: gcr.io/stratus-197318/web:master
@@ -36,3 +37,14 @@ spec:
           envFrom:
             - secretRef:
                 name: web-secret
+          volumeMounts:
+            - name: google
+              mountPath: /web/config/google.json
+              subPath: google.json
+      volumes:
+        - name: google
+          secret:
+            secretName: web-secret
+            items:
+              - key: GOOGLE_JSON
+                path: google.json
